@@ -182,7 +182,7 @@ Prometheus - http://localhost:9090
 ## Конфигурация компонентов 
 ```
 monitoring/
-├── docker-compose.monitoring.yml  # Основной compose файл
+├── docker-compose.monitoring.yaml  # Основной compose файл
 ├── loki/
 │   └── loki-config.yaml          # Конфиг Loki
 ├── prometheus/
