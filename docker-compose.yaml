@@ -1,4 +1,8 @@
-version: "3.9"
+x-logging: &default-logging
+  driver: loki
+  options:
+    loki-url: "${LOKI_URL:-http://localhost:3100/loki/api/v1/push}"
+    loki-external-labels: "service=${LOKI_SERVICE:-unknown}"
 
 x-env: &env
   env_file:
@@ -23,11 +27,7 @@ services:
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
       - BOT_REDIS_DSN=redis://rediska:6379/0
-    logging:
-      driver: loki
-      options:
-        loki-url: "${LOKI_URL:-http://localhost:3100/loki/api/v1/push}"
-        loki-external-labels: "service=backend"
+    logging: *default-logging
 
   db:
     <<: [ *env ]
@@ -42,11 +42,9 @@ services:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - bms
-    logging:
-      driver: loki
-      options:
-        loki-url: "${LOKI_URL:-http://localhost:3100/loki/api/v1/push}"
-        loki-external-labels: "service=db"
+    environment:
+      - LOKI_SERVICE=db
+    logging: *default-logging
 
   rediska:
     image: redis:8.2.1-alpine
@@ -61,11 +59,9 @@ services:
       - target: 6379
         published: 6379
         protocol: tcp
-    logging:
-      driver: loki
-      options:
-        loki-url: "${LOKI_URL:-http://localhost:3100/loki/api/v1/push}"
-        loki-external-labels: "service=redis"
+    environment:
+      - LOKI_SERVICE=redis
+    logging: *default-logging
 
 volumes:
   postgres-data:
