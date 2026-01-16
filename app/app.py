@@ -1,6 +1,7 @@
 import logging
 
 from fastapi import FastAPI
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from .api import routes
 from .bot import bot_manager
@@ -44,6 +45,9 @@ def get_application() -> FastAPI:
         on_startup=[bot_manager.run_all, user_service.create_test_user],
         on_shutdown=[bot_manager.stop_all],
     )
+
+    Instrumentator().instrument(application).expose(application, endpoint="/metrics")
+
     application.middleware("http")(LoggingMiddleware())
     for route in routes:
         application.include_router(route, prefix="/api")

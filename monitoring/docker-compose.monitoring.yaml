@@ -55,4 +55,3 @@ volumes:
     name: bms-prometheus-data
   grafana-data:
     name: bms-grafana-data
-
