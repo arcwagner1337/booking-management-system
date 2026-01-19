@@ -1,4 +1,5 @@
 from typing import Annotated
+from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
@@ -31,12 +32,12 @@ async def create_booking(
     session: Annotated[AsyncSession, Depends(provider.get_session)],
 ):
     """Create a new booking with automatic conflict detection."""
-    # Get customer for current user
-    customer = await Customer.get_by(owner_id=current_user.id, session=session)
+    # Verify customer exists
+    customer = await Customer.get(id=data.customer_id, session=session)
     if not customer:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="User must be associated with a customer",
+            detail="Customer not found",
         )
 
     # Validate time range
@@ -46,7 +47,7 @@ async def create_booking(
             detail="End time must be after start time",
         )
 
-    # Check if resource exists
+    # Check if resource exists and belongs to customer
     resource = await Resource.get(id=data.resource_id, session=session)
     if not resource:
         raise HTTPException(
@@ -54,18 +55,17 @@ async def create_booking(
             detail="Resource not found",
         )
 
-    # Check if resource belongs to customer
-    if resource.customer_id != customer.id:
+    if resource.customer_id != data.customer_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Resource does not belong to your customer",
+            detail="Resource does not belong to specified customer",
         )
 
     # Create booking with conflict detection
     booking = await booking_service.create_booking(
         params=BookingParams(
             user_id=current_user.id,
-            customer_id=customer.id,
+            customer_id=data.customer_id,
             resource_id=data.resource_id,
             start_time=data.start_time,
             end_time=data.end_time,
@@ -89,29 +89,37 @@ async def create_booking(
     "/",
     response_model=list[BookingResponse],
     summary="Get user's bookings",
-    description="Get all bookings for the current user within their customer",
+    description="Get all bookings for the current user within a customer",
     responses={
         200: {"description": "List of bookings"},
-        403: {"description": "User must be associated with a customer"},
+        400: {"description": "Missing required customer_id parameter"},
+        403: {"description": "Customer not found"},
     },
 )
 async def list_user_bookings(
-    current_user: Annotated[User, Depends(security.get_current_user)],
-    session: Annotated[AsyncSession, Depends(provider.get_session)],
+    customer_id: UUID | None = None,
+    current_user: Annotated[User, Depends(security.get_current_user)] = None,
+    session: Annotated[AsyncSession, Depends(provider.get_session)] = None,
 ):
     """Get all bookings for the current user."""
-    # Get customer for current user
-    customer = await Customer.get_by(owner_id=current_user.id, session=session)
+    if not customer_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="customer_id parameter is required",
+        )
+
+    # Verify customer exists
+    customer = await Customer.get(id=customer_id, session=session)
     if not customer:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="User must be associated with a customer",
+            detail="Customer not found",
         )
 
     # Get all bookings for user in this customer
     bookings = await booking_service.get_user_bookings(
         user_id=current_user.id,
-        customer_id=customer.id,
+        customer_id=customer_id,
         session=session,
     )
 

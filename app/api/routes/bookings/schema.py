@@ -7,6 +7,10 @@ from pydantic import BaseModel, Field
 class BookingCreate(BaseModel):
     """Schema for creating a new booking."""
 
+    customer_id: UUID = Field(
+        ...,
+        description="ID of the customer who owns the resource",
+    )
     resource_id: int = Field(..., description="ID of the resource to book")
     start_time: datetime = Field(..., description="Booking start time (ISO format)")
     end_time: datetime = Field(..., description="Booking end time (ISO format)")

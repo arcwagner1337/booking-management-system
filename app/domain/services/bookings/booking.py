@@ -161,17 +161,3 @@ class BookingService:
             await session.rollback()
             raise
         return True
-
-    @provider.inject_session
-    async def get_booking_with_resource(
-        self,
-        booking_id: int,
-        session: AsyncSession = None,
-    ) -> tuple[Booking, Resource] | None:
-        """Get booking with its resource details (for response formatting)."""
-        booking = await Booking.get(id=booking_id, session=session)
-        if not booking:
-            return None
-
-        resource = await Resource.get(id=booking.resource_id, session=session)
-        return (booking, resource) if resource else None
