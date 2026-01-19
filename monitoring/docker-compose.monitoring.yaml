@@ -9,6 +9,9 @@ services:
     volumes:
       - ./loki/loki-config.yaml:/etc/loki/local-config.yaml
       - loki-data:/loki
+    networks:
+      - bms-monitoring
+      - bms
     command: -config.file=/etc/loki/local-config.yaml
 
   prometheus:
@@ -18,9 +21,12 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./prometheus/alerts.yml:/etc/prometheus/alerts.yml
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
+      - ./prometheus/alerts.yaml:/etc/prometheus/alerts.yml
       - prometheus-data:/prometheus
+    networks:
+      - bms-monitoring
+      - bms
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.path=/prometheus"
@@ -55,3 +61,11 @@ volumes:
     name: bms-prometheus-data
   grafana-data:
     name: bms-grafana-data
+
+networks:
+  bms-monitoring:
+    name: bms-monitoring
+    driver: bridge
+  bms:
+    name: bms
+    external: true
