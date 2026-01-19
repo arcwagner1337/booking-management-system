@@ -1,8 +1,9 @@
 x-logging: &default-logging
   driver: loki
   options:
-    loki-url: "${LOKI_URL:-http://localhost:3100/loki/api/v1/push}"
-    loki-external-labels: "service=${LOKI_SERVICE:-unknown}"
+    loki-url: "${LOKI_URL:-http://bms-loki:3100/loki/api/v1/push}"
+    loki-batch-size: "400"
+    loki-batch-wait: "1s"
 
 x-env: &env
   env_file:
