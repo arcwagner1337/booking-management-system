@@ -21,14 +21,14 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
-      - ./prometheus/alerts.yaml:/etc/prometheus/alerts.yml
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
+      - ./prometheus/alerts.yaml:/etc/prometheus/alerts.yaml
       - prometheus-data:/prometheus
     networks:
       - bms-monitoring
       - bms
     command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--config.file=/etc/prometheus/prometheus.yaml"
       - "--storage.tsdb.path=/prometheus"
       - "--web.console.libraries=/usr/share/prometheus/console_libraries"
       - "--web.console.templates=/usr/share/prometheus/consoles"
