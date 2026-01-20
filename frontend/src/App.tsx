@@ -1,4 +1,8 @@
-import Button from "./components/small/button/button";
+
+
+
+
+
 function App() {
   window.Telegram?.WebApp?.ready();
 
@@ -13,31 +17,20 @@ function App() {
   const hintColor = theme?.hint_color || "#6b7280";
   // Закоментить строки ниже для тестов визуальной части в браузере
   // Параметры из тг там не появятся!
-  if (!user) {
-    return (
-      <div
-        style={{
-          backgroundColor: bgColor,
-          color: textColor,
-          minHeight: "100vh",
-        }}
-        className="p-4 flex items-center justify-center">
-
-      <Button label="Загрузка или приложение открыто не в Telegram..." size="lg" variant="danger" onClick={function (): void {
-          throw new Error("Function not implemented.");
-        } }></Button>
-
-         <Button label="Загрузка или приложение открыто не в Telegram..." size="md" variant="danger" onClick={function (): void {
-          throw new Error("Function not implemented.");
-        } }></Button>
-
-         <Button label="Загрузка или приложение открыто не в Telegram..." size="xs" variant="danger" onClick={function (): void {
-          throw new Error("Function not implemented.");
-        } }></Button>
-        
-      </div>
-    );
-  }
+  // if (!user) {
+  //   return (
+  //     <div
+  //       style={{
+  //         backgroundColor: bgColor,
+  //         color: textColor,
+  //         minHeight: "100vh",
+  //       }}
+  //       className="p-4 flex items-center justify-center"
+  //     >
+  //       Загрузка или приложение открыто не в Telegram...
+  //     </div>
+  //   );
+  // }
   // Коментировать до этой строчки!
   // Далее идет код страницы
   return (
@@ -122,9 +115,8 @@ function App() {
               {[
                 {
                   label: "NAME",
-                  value: `${user?.first_name || "Unknown"} ${
-                    user?.last_name || ""
-                  }`,
+                  value: `${user?.first_name || "Unknown"} ${user?.last_name || ""
+                    }`,
                 },
                 {
                   label: "USERNAME",
@@ -133,9 +125,9 @@ function App() {
                 { label: "USER ID", value: `#${user?.id || "000000"}` },
                 user?.language_code
                   ? {
-                      label: "LANGUAGE",
-                      value: user.language_code.toUpperCase(),
-                    }
+                    label: "LANGUAGE",
+                    value: user.language_code.toUpperCase(),
+                  }
                   : null,
               ]
                 .filter(
