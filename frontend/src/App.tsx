@@ -164,9 +164,8 @@ function App() {
               {[
                 {
                   label: "NAME",
-                  value: `${user?.first_name || "Unknown"} ${
-                    user?.last_name || ""
-                  }`,
+                  value: `${user?.first_name || "Unknown"} ${user?.last_name || ""
+                    }`,
                 },
                 {
                   label: "USERNAME",
@@ -175,9 +174,9 @@ function App() {
                 { label: "USER ID", value: `#${user?.id || "000000"}` },
                 user?.language_code
                   ? {
-                      label: "LANGUAGE",
-                      value: user.language_code.toUpperCase(),
-                    }
+                    label: "LANGUAGE",
+                    value: user.language_code.toUpperCase(),
+                  }
                   : null,
               ]
                 .filter(
