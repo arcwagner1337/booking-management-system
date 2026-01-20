@@ -1,4 +1,7 @@
-import Button from "./components/small/button/button";
+// import Button from "./components/small/button/button";
+import Input from "./components/small/input/input";
+// import TagButton from "./components/small/tags/tags";
+
 function App() {
   window.Telegram?.WebApp?.ready();
 
@@ -11,6 +14,7 @@ function App() {
   const buttonColor = theme?.button_color || "#3b82f6";
   const linkColor = theme?.link_color || "#06b6d4";
   const hintColor = theme?.hint_color || "#6b7280";
+
   // Закоментить строки ниже для тестов визуальной части в браузере
   // Параметры из тг там не появятся!
   if (!user) {
@@ -21,20 +25,58 @@ function App() {
           color: textColor,
           minHeight: "100vh",
         }}
-        className="p-4 flex items-center justify-center">
-
-      <Button label="Загрузка или приложение открыто не в Telegram..." size="lg" variant="danger" onClick={function (): void {
-          throw new Error("Function not implemented.");
-        } }></Button>
-
-         <Button label="Загрузка или приложение открыто не в Telegram..." size="md" variant="danger" onClick={function (): void {
-          throw new Error("Function not implemented.");
-        } }></Button>
-
-         <Button label="Загрузка или приложение открыто не в Telegram..." size="xs" variant="danger" onClick={function (): void {
-          throw new Error("Function not implemented.");
-        } }></Button>
-        
+        className="p-4 flex items-center justify-center"
+      >
+        <Input
+          id="v1"
+          variant="default"
+          placeholder="penisis"
+          onChange={() => {}}
+          span="TEXT"
+          label="TEXT"
+        ></Input>
+        <Input
+          id="v2"
+          variant="error"
+          label="TEXT"
+          placeholder="TEXT"
+          onChange={() => {}}
+          span="TEXT"
+          isFloating
+        ></Input>
+        <Input
+          id="v3"
+          variant="success"
+          label="TEXT"
+          placeholder="TEXT"
+          onChange={() => {}}
+          span="TEXT"
+          isFloating
+        ></Input>
+        {/* <Button
+          label="Загрузка или приложение открыто не в Telegram..."
+          size="lg"
+          variant="error"
+          onClick={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+        ></Button>
+        <Button
+          label="Загрузка или приложение открыто не в Telegram..."
+          size="md"
+          variant="error"
+          onClick={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+        ></Button>
+        <Button
+          label="Загрузка или приложение открыто не в Telegram..."
+          size="xs"
+          variant="error"
+          onClick={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+        ></Button> */}
       </div>
     );
   }
@@ -140,7 +182,7 @@ function App() {
               ]
                 .filter(
                   (item): item is { label: string; value: string } =>
-                    item !== null
+                    item !== null,
                 )
                 .map((item, i) => (
                   <div

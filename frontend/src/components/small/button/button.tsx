@@ -4,7 +4,7 @@ type ButtonVariant = // Варианты стиля
   | "tertiary"
   | "info"
   | "success"
-  | "danger"
+  | "error"
   | "warning";
 type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
 
@@ -30,9 +30,9 @@ const Button = ({
     primary: "btn-primary",
     secondary: "btn-secondary",
     tertiary: "btn-tertiary",
-    info: "btn-info", 
+    info: "btn-info",
     success: "btn-success",
-    danger: "btn-error",
+    error: "btn-error",
     warning: "btn-warning",
   };
   const sizes = {

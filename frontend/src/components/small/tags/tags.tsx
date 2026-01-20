@@ -35,9 +35,7 @@ const TagButton = ({
     md: "tag-md",
   };
 
-  const activeStyles = active
-    ? "opacity-100"
-    : "opacity-60 hover:opacity-90";
+  const activeStyles = active ? "opacity-100" : "opacity-60 hover:opacity-90";
 
   return (
     <button

@@ -1,42 +1,43 @@
-type InputVariant =
-  | "primary"
-  | "secondary"
-  | "success"
-  | "danger"
-  | "warning";
+import React, { useState } from "react";
+
+type InputVariant = "default" | "success" | "error";
 
 type InputSize = "xs" | "sm" | "md" | "lg" | "xl";
-
 interface InputProps {
-  value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   variant?: InputVariant;
   size?: InputSize;
   disabled?: boolean;
   type?: React.HTMLInputTypeAttribute;
+  label?: string;
+  id?: string;
+  isFloating?: boolean;
+  span?: string;
 }
-
 const Input = ({
-  value,
-  onChange,
-  placeholder = "",
-  variant = "primary",
-  size = "xs",
+  label,
+  id,
+  placeholder,
+  variant = "default",
+  size = "md",
   disabled = false,
-  type = "text",
+  isFloating = false,
+  span,
 }: InputProps): React.ReactElement => {
-  const baseStyles =
-    "input font-medium rounded transition-all duration-200 focus:outline-none";
-
-  const variants: Record<InputVariant, string> = {
-    primary: "input-primary",
-    secondary: "input-secondary",
-    success: "input-success",
-    danger: "input-error",
-    warning: "input-warning",
+  const [text, setText] = useState("");
+  const handleChange = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setText(event.target.value);
   };
-
+  const baseStyles =
+    "input font-medium transition-all duration-200 focus:outline-none";
+  const variants: Record<InputVariant, string> = {
+    default: "",
+    success: "is-valid",
+    error: "is-invalid",
+  };
   const sizes: Record<InputSize, string> = {
     xs: "input-xs",
     sm: "input-sm",
@@ -44,16 +45,44 @@ const Input = ({
     lg: "input-lg",
     xl: "input-xl",
   };
-
+  if (isFloating) {
+    return (
+      <>
+        <div className="input-floating max-w-sm">
+          <input
+            id={id}
+            value={text}
+            className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
+            placeholder={`${placeholder}`}
+            disabled={disabled}
+            onChange={handleChange}
+          />
+          <label className="input-floating-label" htmlFor={`${id}`}>
+            {label}
+          </label>
+          <span className="helper-text ps-3">{span}</span>
+        </div>
+      </>
+    );
+  }
   return (
-    <input
-      type={type}
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      disabled={disabled}
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
-    />
+    <>
+      <div className="max-w-sm">
+        <label className="label-text" htmlFor={`${id}`}>
+          {label}
+        </label>
+        <input
+          id={id}
+          value={text}
+          type="text"
+          className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
+          placeholder={`${placeholder}`}
+          disabled={disabled}
+          onChange={handleChange}
+        />
+        <span className="helper-text">{span}</span>
+      </div>
+    </>
   );
 };
 
