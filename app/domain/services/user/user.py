@@ -40,6 +40,10 @@ class UserService:
             .on_conflict_do_update(index_elements=["tlg_id"], set_=kwargs)
             .returning(User)
         )
+
+        usr = await session.scalar(stmt)
+        if bot_id == config.bot.ADMINBOT_ID:
+            return usr
         stmt_member = (
             pg_insert(CustomerMember)
             .values(
@@ -58,7 +62,6 @@ class UserService:
             )
             .on_conflict_do_nothing()
         )
-        usr = await session.scalar(stmt)
         await session.execute(stmt_member)
         return usr
 
