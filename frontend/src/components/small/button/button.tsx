@@ -30,7 +30,7 @@ const Button = ({
     primary: "btn-primary",
     secondary: "btn-secondary",
     tertiary: "btn-tertiary",
-    info: "btn-info",
+    info: "btn-info", 
     success: "btn-success",
     danger: "btn-error",
     warning: "btn-warning",
