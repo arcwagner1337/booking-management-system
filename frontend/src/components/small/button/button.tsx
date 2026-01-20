@@ -5,7 +5,7 @@ type ButtonVariant = // Варианты стиля
   | "info"
   | "success"
   | "danger"
-  | "warning"; 
+  | "warning";
 type ButtonSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 interface ButtonProps {
@@ -18,7 +18,7 @@ interface ButtonProps {
 }
 const Button = ({
   label,
-  onClick = ()=>{},
+  onClick = () => {},
   size = "xs",
   variant = "primary",
   disabled = false,
@@ -29,7 +29,7 @@ const Button = ({
   const variants: Record<ButtonVariant, string> = {
     primary: "btn-primary",
     secondary: "btn-secondary",
-    tertiary: "btn-tertiary", 
+    tertiary: "btn-tertiary",
     info: "btn-info",
     success: "btn-success",
     danger: "btn-error",
@@ -38,7 +38,7 @@ const Button = ({
   const sizes = {
     xs: "btn-xs",
     sm: "btn-sm",
-    md: "btn-md", //default 
+    md: "", //default
     lg: "btn-lg",
     xl: "btn-xl",
   };
