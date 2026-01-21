@@ -6,10 +6,11 @@ from sqlalchemy import select
 
 from app.api.security import security
 from app.depends import AsyncSession, provider
+from app.infrastructure.database import models  # To ensure models are loaded
 from app.infrastructure.database.models.resources import Resource
-from app.infrastructure.database.models.users import User, Customer
-from app.infrastructure.database import models # To ensure models are loaded
-from .schema import ResourceModel, ResourceCreate, ResourceUpdate
+from app.infrastructure.database.models.users import Customer, User
+
+from .schema import ResourceCreate, ResourceModel, ResourceUpdate
 
 router = APIRouter(prefix="/resources", tags=["Resources"])
 
@@ -30,28 +31,32 @@ async def create_resource(
     # Looking at User model, it doesn't strictly link back easily without extra queries if not loaded.
     # But let's check if user creates it, we need to know WHICH customer.
     # Usually passed in header or inferred. Let's try to infer from ownership for now based on previous context.
-    
+
     # Simple logic: Find customer where owner_id is current_user.id
     customer = await Customer.get_by(owner_id=current_user.id, session=session)
     if not customer:
-        # Try finding if instance is a member (if that logic exists). 
+        # Try finding if instance is a member (if that logic exists).
         # For now, restricting to Owner for creation or assuming single tenant context.
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, 
-            detail="User does not have a customer profile to add resources to."
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User does not have a customer profile to add resources to.",
         )
 
     new_resource = await Resource.create(
         session=session,
         customer_id=customer.id,
-        **resource_in.model_dump()
+        **resource_in.model_dump(),
     )
     return ResourceModel.model_validate(new_resource, from_attributes=True)
 
 
-@router.get("/", response_model=List[ResourceModel], summary="Список ресурсов (для админов)")
+@router.get(
+    "/",
+    response_model=list[ResourceModel],
+    summary="Список ресурсов (для админов)",
+)
 async def read_resources(
-    current_user: Annotated[User, Depends(security.get_current_user)], # Authenticaton
+    current_user: Annotated[User, Depends(security.get_current_user)],  # Authenticaton
     session: Annotated[AsyncSession, Depends(provider.get_session)],
     skip: int = 0,
     limit: int = 100,
@@ -63,11 +68,11 @@ async def read_resources(
     """
     # For admin only, we would check permissions here.
     # resources = await Resource.get_all(session=session) # This might get ALL resources of ALL customers
-    
+
     # If the requirement "только для админов" means System Admin -> All resources
     # If it means Customer Admin -> Their resources.
     # Given the prompt "GET /api/resources - список ресурсов (только для админов)", let's assume System Admin for now or filter.
-    
+
     stmt = select(Resource).offset(skip).limit(limit)
     result = await session.scalars(stmt)
     return [ResourceModel.model_validate(r, from_attributes=True) for r in result.all()]
@@ -86,13 +91,13 @@ async def update_resource(
     resource = await Resource.get(id=resource_id, session=session)
     if not resource:
         raise HTTPException(status_code=404, detail="Resource not found")
-    
+
     # TODO: Check permission (does user own this resource's customer?)
-    
+
     updated_resource = await Resource.update(
         id=resource_id,
         session=session,
-        **resource_in.model_dump(exclude_unset=True)
+        **resource_in.model_dump(exclude_unset=True),
     )
     return ResourceModel.model_validate(updated_resource, from_attributes=True)
 
@@ -109,13 +114,9 @@ async def delete_resource(
     resource = await Resource.get(id=resource_id, session=session)
     if not resource:
         raise HTTPException(status_code=404, detail="Resource not found")
-        
+
     # TODO: Check permission
-    
+
     # Soft delete
-    await Resource.update(
-        id=resource_id,
-        session=session,
-        is_active=False
-    )
+    await Resource.update(id=resource_id, session=session, is_active=False)
     return {"ok": True}
