@@ -52,6 +52,6 @@ def get_application() -> FastAPI:
     Instrumentator(
         should_group_status_codes=True,
         should_ignore_untemplated=False,
-    ).instrument(application).expose(application)
+    ).instrument(application).expose(application, include_in_schema=False)
 
     return application
