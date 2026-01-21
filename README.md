@@ -81,11 +81,8 @@ POSTGRES_PORT=6432
 
 USE_REDIS_STORAGE=true
 
-TEST_USER_TLG_ID=""
-TEST_BOT_TOKEN=""
-
 ADMINBOT_TOKEN = "<Ваш токен для админ бота (взять в botfather)>"
-ADMINBOT_ID = "<Ваш Айди админ бота (взять в botfather)>"
+ADMINBOT_ID = "<Ваш Айди админ бота(взять в User InfoBot>"
 ```
 
 #### 2. Запустить PostgreSQL и Redis (Docker)
