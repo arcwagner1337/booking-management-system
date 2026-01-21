@@ -204,6 +204,16 @@ Prometheus - http://localhost:9090
 4. Вы увидите папку BMS в которую нужно провалиться
 5. После чего вы увидите dashboard под названием Backend, тыкаем по нему и дашборд покажется
 
+### Как остановть?
+1. Останавливаем bms-db, bms-redis, bms-backend
+   ``` bash
+   docker compose --profile prod stop
+   ```
+2. Останавливаем bms-loki, bms-prometheus, bms-grafana
+   ``` bash 
+   docker compose --profile monitoring stop
+   ```
+
 ### Конфигурация компонентов 
 ```
 BMS/
