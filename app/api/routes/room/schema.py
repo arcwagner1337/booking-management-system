@@ -1,6 +1,4 @@
-"""
-Pydantic схемы для работы с комнатами (ресурсами).
-"""
+"""Pydantic schemas for room (resource) operations."""
 
 from datetime import datetime
 import uuid
@@ -9,20 +7,28 @@ from pydantic import BaseModel, Field
 
 
 class RoomCreate(BaseModel):
-    """Схема для создания комнаты (POST /api/rooms)."""
+    """Schema for creating a room (POST /api/rooms)."""
 
-    customer_id: uuid.UUID = Field(..., description="ID заказчика")
-    name: str = Field(..., min_length=1, max_length=255, description="Название комнаты")
+    customer_id: uuid.UUID | None = Field(
+        None,
+        description="Customer ID. If not provided, uses user's customer.",
+    )
+    name: str = Field(
+        ...,
+        min_length=1,
+        max_length=255,
+        description="Room name",
+    )
 
 
 class RoomUpdate(BaseModel):
-    """Схема для обновления комнаты (PUT /api/rooms/{id})."""
+    """Schema for partial room update (PATCH /api/rooms/{id})."""
 
     name: str | None = Field(None, min_length=1, max_length=255)
 
 
 class RoomResponse(BaseModel):
-    """Схема ответа с данными комнаты."""
+    """Response schema with room data."""
 
     id: int
     customer_id: uuid.UUID

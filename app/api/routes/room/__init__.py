@@ -1,11 +1,12 @@
 """
-API эндпоинты для работы с комнатами (переговорными).
+API endpoints for room (resource) management.
 
-Структура файлов:
-- create.py  - POST   /api/rooms       - создание комнаты
-- read.py    - GET    /api/rooms/{id}  - получение данных о комнате
-- update.py  - PUT    /api/rooms/{id}  - обновление данных о комнате
-- delete.py  - DELETE /api/rooms/{id}  - удаление комнаты
+Structure:
+- create.py  - POST   /api/rooms       - create a room
+- read.py    - GET    /api/rooms       - list rooms (admin only)
+               GET    /api/rooms/{id}  - get room details
+- update.py  - PATCH  /api/rooms/{id}  - partial update
+- delete.py  - DELETE /api/rooms/{id}  - delete room
 """
 
 from fastapi import APIRouter
@@ -17,7 +18,7 @@ from .update import router as update_router
 
 router = APIRouter(prefix="/rooms", tags=["Rooms"])
 
-# Подключаем все роутеры
+# Include all routers
 router.include_router(create_router)
 router.include_router(read_router)
 router.include_router(update_router)
