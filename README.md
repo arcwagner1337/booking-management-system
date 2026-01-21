@@ -80,6 +80,9 @@ POSTGRES_HOST=localhost
 POSTGRES_PORT=6432
 
 USE_REDIS_STORAGE=true
+
+ADMINBOT_TOKEN = ""
+ADMINBOT_ID = ""
 ```
 
 #### 2. Запустить PostgreSQL и Redis (Docker)
