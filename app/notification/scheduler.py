@@ -89,15 +89,13 @@ class NotificationScheduler:
             async with self.session_factory() as session:
                 notifications = await self._get_pending_notifications(session)
 
-                if not notifications:
-                    logger.debug("Нет уведомлений для отправки")
-                    return
-
                 for notification in notifications:
                     try:
                         await self._process_single_notification(notification, session)
                     except Exception as e:  # noqa: BLE001
-                        logger.error(f"Ошибка обработки уведомления {notification.id}: {e}")
+                        logger.error(
+                            f"Ошибка обработки уведомления {notification.id}: {e}",
+                        )
                         await self._mark_as_failed(notification, session, str(e))
 
                 await session.commit()
@@ -105,7 +103,10 @@ class NotificationScheduler:
         except Exception as e:  # noqa: BLE001
             logger.error(f"Ошибка в задаче обработки уведомлений: {e}")
 
-    async def _get_pending_notifications(self, session: AsyncSession) -> list[Notification]:
+    async def _get_pending_notifications(
+        self,
+        session: AsyncSession,
+    ) -> list[Notification]:
         """Получает уведомления, готовые к отправке."""
         now = datetime.now(ZoneInfo("UTC"))
         stmt = (
@@ -125,9 +126,9 @@ class NotificationScheduler:
         return result.all()
 
     async def _process_single_notification(
-        self, 
-        notification: Notification, 
-        session: AsyncSession
+        self,
+        notification: Notification,
+        session: AsyncSession,
     ):
         """Обрабатывает одно уведомление."""
         # Обновляем статус на "в обработке"
@@ -145,14 +146,16 @@ class NotificationScheduler:
             # Отправляем сообщение
             await self._send_telegram_message(
                 user_id=notification.user_id,
-                message=message
+                message=message,
             )
-            
+
             # Обновляем статус
             notification.status = NotificationStatus.SENT
             notification.message = message
-            logger.info(f"Уведомление {notification.id} отправлено пользователю {notification.user_id}")
-            
+            logger.info(
+                f"Уведомление {notification.id} отправлено пользователю {notification.user_id}",
+            )
+
         except Exception as e:
             logger.error(f"Ошибка отправки уведомления {notification.id}: {e}")
             await self._mark_as_failed(notification, session, str(e))
@@ -162,13 +165,13 @@ class NotificationScheduler:
         await self.bot.send_message(
             chat_id=user_id,
             text=message,
-            parse_mode="HTML"
+            parse_mode="HTML",
         )
 
     async def _mark_as_failed(
-        self, 
-        notification: Notification, 
-        error: str
+        self,
+        notification: Notification,
+        error: str,
     ):
         """Помечает уведомление как неудачное."""
         notification.status = NotificationStatus.FAILED
