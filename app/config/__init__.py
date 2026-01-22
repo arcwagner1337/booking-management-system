@@ -1,5 +1,7 @@
 from os import environ as env
+from pathlib import Path
 
+from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 
 from .bot import BotConfig

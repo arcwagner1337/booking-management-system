@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 import uuid as uuid_lib
 
 import sqlalchemy as sa
@@ -9,6 +10,9 @@ from app.infrastructure.database.models.shared import (
     BaseWithDt,
     CreatedMixin,
 )
+
+if TYPE_CHECKING:
+    from app.infrastructure.database.models.notification import Notification
 
 
 class Resource(Base, CreatedMixin):
@@ -42,4 +46,10 @@ class Booking(BaseWithDt):
     )
     end_time: so.Mapped[sa.DateTime] = so.mapped_column(
         sa.DateTime(timezone=True),
+    )
+
+    notifications: so.Mapped[list["Notification"]] = so.relationship(
+        "Notification",
+        back_populates="booking",
+        cascade="all, delete-orphan",
     )
