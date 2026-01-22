@@ -26,7 +26,6 @@ export const MiniCalendar = () => {
           {selectedDate}
         </span>
       </div>
-
       {/* Дни недели */}
       <div
         style={{

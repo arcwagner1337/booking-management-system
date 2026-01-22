@@ -18,7 +18,7 @@ export const Calendar = () => {
   };
 
   const selectedDayNumber = getSelectedDayNumber();
-  console.log(bookings);
+  // console.log(bookings);
   return (
     <div style={{ padding: "16px" }}>
       {/* Заголовок */}
@@ -49,7 +49,6 @@ export const Calendar = () => {
             marginBottom: "20px",
           }}
         >
-
           <Button
             variant="primary"
             size="lg"
@@ -57,7 +56,9 @@ export const Calendar = () => {
             shape="text"
             onClick={() => { }}
             label="←"
-          />     <h2 style={{ fontSize: "18px", fontWeight: "600" }}>Январь 2024</h2>   <Button
+          />
+          <h2 style={{ fontSize: "18px", fontWeight: "600" }}>Январь 2024</h2>
+          <Button
             variant="primary"
             size="lg"
             width="responsive"
@@ -65,35 +66,7 @@ export const Calendar = () => {
             onClick={() => { }}
             label="→"
           />
-
-          {/* <button
-            style={{
-              backgroundColor: "transparent",
-              border: "none",
-              color: "#3b82f6",
-              fontSize: "20px",
-              cursor: "pointer",
-            }}
-          >
-            ←
-
-
-            
-          </button>
-          <h2 style={{ fontSize: "18px", fontWeight: "600" }}>Январь 2024</h2>
-          <button
-            style={{
-              backgroundColor: "transparent",
-              border: "none",
-              color: "#3b82f6",
-              fontSize: "20px",
-              cursor: "pointer",
-            }}
-          >
-            →
-          </button> */}
         </div>
-
         {/* Дни недели */}
         <div
           style={{
@@ -110,7 +83,6 @@ export const Calendar = () => {
             </div>
           ))}
         </div>
-
         {/* Числа месяца с бронированиями */}
         <div
           style={{
@@ -124,113 +96,45 @@ export const Calendar = () => {
             const dayString = day ? `${day} янв` : "";
             const hasBooking =
               dayString &&
-              bookings.some(
-                (booking) =>
-                  booking.date === dayString ||
-                  booking.date?.includes(day || ""),
-              );
-
+              bookings.some((booking) => booking.date === dayString);
             if (!day) return null;
-
             const isSelected = day === selectedDayNumber;
-
             return (
-
-
               <Button
                 key={index}
                 disabled={isSelected}
                 label={day}
                 size="md"
-                onClick={() => {
-                  if (day) {
-                    setSelectedDate(`${day} янв`);
-                  }
-                }
-                }
-                className="relative"
-
+                onClick={() => { if (day) { setSelectedDate(`${day} янв`); } }}
+                className={`relative ${hasBooking ? "btn-active" : ""}`}
               >
-
-              {hasBooking && (
-                   <div
-                     style={{
-                      zIndex: 100,
-                       position: "absolute",
-                       bottom: "4px",
-                       left: "50%",
-                       transform: "translateX(-50%)",
-                       width: "4px",
-                       height: "4px",
-                       backgroundColor: "#000000",
-                       borderRadius: "50%",
-                     }}
-                   ></div>
-                 )}
-
+                {hasBooking && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: "4px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      width: "4px",
+                      height: "4px",
+                      backgroundColor: "#000000",
+                      borderRadius: "50%",
+                    }}
+                  ></div>
+                )}
               </Button>
-
-
-
-              // <div
-              //   key={index}
-              //   style={{
-              //     padding: "12px 8px",
-              //     borderRadius: "8px",
-              //     backgroundColor: isSelected
-              //       ? "#3b82f6"
-              //       : hasBooking
-              //         ? "#374151"
-              //         : "transparent",
-              //     color: isSelected
-              //       ? "#ffffff"
-              //       : day
-              //         ? "#ffffff"
-              //         : "transparent",
-              //     fontWeight: isSelected ? "600" : "400",
-              //     cursor: day ? "pointer" : "default",
-              //     position: "relative",
-              //   }}
-              //   onClick={() => {
-              //     if (day) {
-              //       setSelectedDate(`${day} янв`);
-              //     }
-              //   }}
-              // >
-              //   {day}
-              //   {hasBooking && (
-              //     <div
-              //       style={{
-              //         position: "absolute",
-              //         bottom: "4px",
-              //         left: "50%",
-              //         transform: "translateX(-50%)",
-              //         width: "4px",
-              //         height: "4px",
-              //         backgroundColor: "#10b981",
-              //         borderRadius: "50%",
-              //       }}
-              //     ></div>
-              //   )}
-              // </div>
             );
           })}
         </div>
       </div>
-
       {/* Предстоящие бронирования на выбранную дату */}
       <div>
-        <h2
-          style={{ fontSize: "16px", fontWeight: "600", marginBottom: "16px" }}
-        >
+        <h2 style={{ fontSize: "16px", fontWeight: "600", marginBottom: "16px" }}>
           Бронирования на {selectedDate}
         </h2>
-
         {bookings
           .filter(
-            (booking) =>
-              booking.date === selectedDate ||
-              (selectedDate === "1 янв" && booking.active), /////дилемма 15го числа
+            (booking, index: number) => booking.date === selectedDate || (selectedDate === booking.date && bookings[index].active)
           )
           .map((booking) => (
             <div
@@ -299,7 +203,6 @@ export const Calendar = () => {
                     </div>
                   )}
                 </div>
-
                 <div style={{ textAlign: "right" }}>
                   <div
                     style={{
@@ -311,7 +214,7 @@ export const Calendar = () => {
                     {booking.price.toLocaleString("ru-RU")} ₽
                   </div>
                   <Button
-                    label={"подробнее"}
+                    label={"Подробнее"}
                     onClick={() => {
                       setSelectedResource(booking);
                       setActiveTab("Ресурсы");

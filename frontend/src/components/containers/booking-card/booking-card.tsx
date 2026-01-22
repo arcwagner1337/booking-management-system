@@ -65,8 +65,7 @@ export const BookingCard = ({ data }: PropsWithChildren<CardProps>): React.React
           <div className="flex flex-col gap-2">
             <Button
               label="Открыть"
-              // onClick={}
-              onClick={() => { handleResourceClick(data?.id); }}
+              onClick={() => { handleResourceClick(data); }}
               size="sm"
               variant="primary"
               width="responsive"
