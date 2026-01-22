@@ -60,7 +60,7 @@ export const renderProfileScreen = () => {
             Loft Noir
           </div>
           <div className="text-sm text-base-content/60">
-            15 янв • 19:00–23:00
+            {/* 15 янв • 19:00–23:00 */}
           </div>
         </div>
         <div className="flex gap-3 justify-center flex-row ">

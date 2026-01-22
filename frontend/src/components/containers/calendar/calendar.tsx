@@ -18,7 +18,7 @@ export const Calendar = () => {
   };
 
   const selectedDayNumber = getSelectedDayNumber();
-
+  console.log(bookings);
   return (
     <div style={{ padding: "16px" }}>
       {/* Заголовок */}
@@ -49,7 +49,24 @@ export const Calendar = () => {
             marginBottom: "20px",
           }}
         >
-          <button
+
+          <Button
+            variant="primary"
+            size="lg"
+            width="responsive"
+            shape="text"
+            onClick={() => { }}
+            label="←"
+          />     <h2 style={{ fontSize: "18px", fontWeight: "600" }}>Январь 2024</h2>   <Button
+            variant="primary"
+            size="lg"
+            width="responsive"
+            shape="text"
+            onClick={() => { }}
+            label="→"
+          />
+
+          {/* <button
             style={{
               backgroundColor: "transparent",
               border: "none",
@@ -59,6 +76,9 @@ export const Calendar = () => {
             }}
           >
             ←
+
+
+            
           </button>
           <h2 style={{ fontSize: "18px", fontWeight: "600" }}>Январь 2024</h2>
           <button
@@ -71,7 +91,7 @@ export const Calendar = () => {
             }}
           >
             →
-          </button>
+          </button> */}
         </div>
 
         {/* Дни недели */}
@@ -115,47 +135,84 @@ export const Calendar = () => {
             const isSelected = day === selectedDayNumber;
 
             return (
-              <div
+
+
+              <Button
                 key={index}
-                style={{
-                  padding: "12px 8px",
-                  borderRadius: "8px",
-                  backgroundColor: isSelected
-                    ? "#3b82f6"
-                    : hasBooking
-                      ? "#374151"
-                      : "transparent",
-                  color: isSelected
-                    ? "#ffffff"
-                    : day
-                      ? "#ffffff"
-                      : "transparent",
-                  fontWeight: isSelected ? "600" : "400",
-                  cursor: day ? "pointer" : "default",
-                  position: "relative",
-                }}
+                disabled={isSelected}
+                label={day}
+                size="md"
                 onClick={() => {
                   if (day) {
                     setSelectedDate(`${day} янв`);
                   }
-                }}
+                }
+                }
+                className="relative"
+
               >
-                {day}
-                {hasBooking && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      bottom: "4px",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      width: "4px",
-                      height: "4px",
-                      backgroundColor: "#10b981",
-                      borderRadius: "50%",
-                    }}
-                  ></div>
-                )}
-              </div>
+
+              {hasBooking && (
+                   <div
+                     style={{
+                      zIndex: 100,
+                       position: "absolute",
+                       bottom: "4px",
+                       left: "50%",
+                       transform: "translateX(-50%)",
+                       width: "4px",
+                       height: "4px",
+                       backgroundColor: "#000000",
+                       borderRadius: "50%",
+                     }}
+                   ></div>
+                 )}
+
+              </Button>
+
+
+
+              // <div
+              //   key={index}
+              //   style={{
+              //     padding: "12px 8px",
+              //     borderRadius: "8px",
+              //     backgroundColor: isSelected
+              //       ? "#3b82f6"
+              //       : hasBooking
+              //         ? "#374151"
+              //         : "transparent",
+              //     color: isSelected
+              //       ? "#ffffff"
+              //       : day
+              //         ? "#ffffff"
+              //         : "transparent",
+              //     fontWeight: isSelected ? "600" : "400",
+              //     cursor: day ? "pointer" : "default",
+              //     position: "relative",
+              //   }}
+              //   onClick={() => {
+              //     if (day) {
+              //       setSelectedDate(`${day} янв`);
+              //     }
+              //   }}
+              // >
+              //   {day}
+              //   {hasBooking && (
+              //     <div
+              //       style={{
+              //         position: "absolute",
+              //         bottom: "4px",
+              //         left: "50%",
+              //         transform: "translateX(-50%)",
+              //         width: "4px",
+              //         height: "4px",
+              //         backgroundColor: "#10b981",
+              //         borderRadius: "50%",
+              //       }}
+              //     ></div>
+              //   )}
+              // </div>
             );
           })}
         </div>
@@ -173,7 +230,7 @@ export const Calendar = () => {
           .filter(
             (booking) =>
               booking.date === selectedDate ||
-              (selectedDate === "15 янв" && booking.active),
+              (selectedDate === "1 янв" && booking.active), /////дилемма 15го числа
           )
           .map((booking) => (
             <div

@@ -66,7 +66,7 @@ export const BookingCard = ({ data }: PropsWithChildren<CardProps>): React.React
             <Button
               label="Открыть"
               // onClick={}
-              onClick={() => { handleResourceClick(data); }}
+              onClick={() => { handleResourceClick(data?.id); }}
               size="sm"
               variant="primary"
               width="responsive"

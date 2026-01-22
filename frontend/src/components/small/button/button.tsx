@@ -25,6 +25,8 @@ const Button = ({
   disabled = false,
   isLoading = false,
   shape = "default",
+  className = "",
+  ...props
 }: PropsWithChildren<ButtonProps>): React.ReactElement => {
   const baseStyles =
     "font-semibold transition-all duration-200 focus:outline-none";
@@ -56,14 +58,16 @@ const Button = ({
     lg: "btn-lg",
     xl: "btn-xl",
   };
+  const combinedClasses = `btn ${baseStyles} ${variants[variant]} ${sizes[size]} ${shapes[shape]}${isLoading ? "opacity-70 cursor-not-allowed" : ""
+    } ${widths[width]} ${className} `.trim();
   return (
     <button
       onClick={onClick}
       disabled={disabled || isLoading}
-      className={`btn ${baseStyles} ${variants[variant]} ${sizes[size]} ${shapes[shape]}${isLoading ? "opacity-70 cursor-not-allowed" : ""
-        } ${widths[width]}`}
+      className={combinedClasses} {...props}
     >
-      {isLoading ? "Loading..." : children || label}
+      {/* {isLoading ? "Loading..." : children || label} */}
+      {label} {children}
     </button>
   );
 };

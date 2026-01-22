@@ -93,7 +93,17 @@ export const ResourceDetails = () => {
           marginBottom: "24px",
         }}
       >
-        <button
+        <Button
+          variant="primary"
+          size="lg"
+          width="responsive"
+          shape="text"
+          onClick={handleBackClick}
+          label="←"
+        />
+
+
+        {/* <button
           onClick={handleBackClick}
           style={{
             backgroundColor: "transparent",
@@ -104,7 +114,7 @@ export const ResourceDetails = () => {
           }}
         >
           ←
-        </button>
+        </button> */}
         <div>
           <h1
             style={{
@@ -128,6 +138,18 @@ export const ResourceDetails = () => {
             <span>{selectedResource.capacity}</span>
           </div>
         </div>
+
+                    <Button
+          variant="primary"
+          size="lg"
+          width="responsive"
+          shape="text"
+          onClick={()=>{}}
+          label="↗"
+          className="ml-auto"
+        />
+
+{/* 
         <button
           style={{
             marginLeft: "auto",
@@ -139,7 +161,7 @@ export const ResourceDetails = () => {
           }}
         >
           ↗
-        </button>
+        </button> */}
       </div>
       {BlockMiniCalendar()}
       {/* Календарь */}

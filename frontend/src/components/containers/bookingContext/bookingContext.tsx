@@ -34,7 +34,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
 
   const [activeTab, setActiveTab] = useState<'Ресурсы' | 'Календарь' | 'Профиль'>('Ресурсы');
   const [selectedFilter, setSelectedFilter] = useState<FilterType>('Все');
-  const [selectedDate, setSelectedDate] = useState<string>('15 янв');
+  const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
   const [selectedResource, setSelectedResource] = useState<BookingItem | null>(null);
 
@@ -51,7 +51,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       rating: 4.8,
       timeLeft: '4ч',
       price: 2900,
-      date: '15 янв',
+      date: '',
       time: '19:00–23:00',
       active: true
     },
@@ -63,7 +63,10 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       location: 'Центр',
       rating: 4.7,
       timeLeft: '8ч',
-      price: 1200
+      price: 1200,
+      date: '1 янв',
+      time: '19:00–23:00',
+      active: true
     },
     {
       id: '3',
@@ -73,7 +76,10 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       location: 'Набережная',
       rating: 4.9,
       timeLeft: '6ч',
-      price: 5400
+      price: 5400,
+      date: '',
+      time: '',
+      active: true
     },
     {
       id: '4',
@@ -83,7 +89,10 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       location: 'Набережная',
       rating: 4.9,
       timeLeft: '2ч',
-      price: 5600
+      price: 5600,
+      date: '',
+      time: '',
+      active: true
     }
   ];
 
@@ -98,8 +107,9 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   ];
 
   const calendarDays = [
-    '', '', '14', '15', '16', '17', '18',
-    '19', '20', '21', '22', '23', '24', '25'
+    '', '', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11',
+    '12', '13', '14', '15', '16', '17', '18',
+    '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
   ];
 
   const handleResourceClick = (resource: BookingItem) => {
