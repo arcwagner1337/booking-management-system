@@ -3,6 +3,8 @@ import logging
 from fastapi import FastAPI
 from prometheus_fastapi_instrumentator import Instrumentator
 
+from app.notification.scheduler import NotificationScheduler
+
 from .api import routes
 from .bot import bot_manager
 from .domain.services import user_service
