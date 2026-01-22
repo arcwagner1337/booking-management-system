@@ -139,7 +139,7 @@ services:
     ports:
       - "9093:9093"
     volumes:
-      - ./monitoring/alertmanager/alerts.yaml:/etc/alertmanager/alerts.yaml
+      - ./monitoring/alertmanager/alertmanager.yaml:/etc/alertmanager/alertmanager.yaml
       - alertmanager-data:/alertmanager
     networks:
       - bms-monitoring
