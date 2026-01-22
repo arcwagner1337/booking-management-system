@@ -10,3 +10,19 @@ route:
 
 receivers:
 - name: "default"
+
+apiVersion: 1
+contactPoints:
+    - orgId: 1
+      name: TG
+      receivers:
+        - uid: afawp5xu1o9ogd
+          type: telegram
+          settings:
+            bottoken: 8545943204:AAE8vtNzce291R8PlxRQrh_D1SD7Sk7y-dA
+            chatid: "-1003447182512"
+            disable_notification: false
+            disable_web_page_preview: false
+            parse_mode: None
+            protect_content: false
+          disableResolveMessage: false
