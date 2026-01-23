@@ -2,6 +2,7 @@ import asyncio
 from datetime import datetime, timedelta
 import logging
 from typing import Any
+import uuid
 from zoneinfo import ZoneInfo
 
 from aiogram import Bot
@@ -84,23 +85,29 @@ class NotificationScheduler:
 
     async def _process_notifications_job(self):
         """Основная задача обработки уведомлений."""
-        async with self.session_factory() as session:
-            notifications = await self._get_pending_notifications(session)
+        try:
+            async with self.session_factory() as session:
+                notifications = await self._get_pending_notifications(session)
 
-            if not notifications:
-                logger.debug("Нет уведомлений для отправки")
-                return
+                if not notifications:
+                    logger.debug("Нет уведомлений для отправки")
+                    return
 
-            logger.info(f"Найдено {len(notifications)} уведомлений для обработки")
+                logger.info(f"Найдено {len(notifications)} уведомлений для обработки")
 
-            for notification in notifications:
-                try:
-                    await self._process_single_notification(notification, session)
-                except Exception as e:
-                    logger.error(f"Ошибка обработки уведомления {notification.id}: {e}")
-                    await self._mark_as_failed(notification, session, str(e))
+                for notification in notifications:
+                    try:
+                        await self._process_single_notification(notification, session)
+                    except Exception as e:  # noqa: BLE001
+                        logger.error(
+                            f"Ошибка обработки уведомления {notification.id}: {e}",
+                        )
+                        await self._mark_as_failed(notification, session, str(e))
 
-            await session.commit()
+                await session.commit()
+
+        except Exception as e:
+            logger.error(f"Ошибка в задаче обработки уведомлений: {e}", exc_info=True)
 
     async def _get_pending_notifications(
         self,
@@ -211,19 +218,27 @@ class NotificationScheduler:
 
     async def _get_bot_for_customer(
         self,
-        customer_id: str,
+        customer_id_str: str,
         session: AsyncSession,
     ) -> Bot | None:
         """Получает бота для кастомера из БД с кэшированием."""
         # Проверяем кэш
-        if customer_id in self._bot_cache:
-            return self._bot_cache[customer_id]
+        if customer_id_str in self._bot_cache:
+            return self._bot_cache[customer_id_str]
 
         try:
+            # Преобразуем строку в UUID
+            try:
+                customer_id_uuid = uuid.UUID(customer_id_str)
+            except ValueError:
+                logger.error(f"Неверный формат UUID для customer_id: {customer_id_str}")
+                return None
+
+            # Ищем бота для этого кастомера
             stmt = (
                 sa.select(BotConfig.token)
                 .where(
-                    BotConfig.owner_id == customer_id,
+                    BotConfig.owner_id == customer_id_uuid,
                     BotConfig.token.is_not(None),
                 )
                 .limit(1)
@@ -232,7 +247,7 @@ class NotificationScheduler:
             bot_token = await session.scalar(stmt)
 
             if not bot_token:
-                logger.error(f"Токен бота не найден для customer {customer_id}")
+                logger.error(f"Токен бота не найден для customer {customer_id_str}")
                 return None
 
             # Создаем бота
@@ -242,32 +257,30 @@ class NotificationScheduler:
             try:
                 await bot.get_me()
             except Exception as e:
-                logger.error(f"Бот недоступен для customer {customer_id}: {e}")
+                logger.error(f"Бот недоступен для customer {customer_id_str}: {e}")
                 return None
 
             # Сохраняем в кэш
-            self._bot_cache[customer_id] = bot
-            logger.debug(f"Бот для customer {customer_id} закэширован")
+            self._bot_cache[customer_id_str] = bot
+            logger.debug(f"Бот для customer {customer_id_str} закэширован")
 
             return bot
 
         except Exception as e:
-            logger.error(f"Ошибка получения бота для customer {customer_id}: {e}")
+            logger.error(f"Ошибка получения бота для customer {customer_id_str}: {e}")
             return None
 
     async def _send_telegram_message(self, bot: Bot, user_id: int, message: str):
         """Отправляет сообщение через Telegram."""
-        # Получаем tlg_id пользователя
         try:
+            # user_id это UUID, нужно найти User по этому UUID
             async with self.session_factory() as session:
                 stmt = sa.select(User.tlg_id).where(User.id == user_id)
                 tlg_id = await session.scalar(stmt)
-
                 if not tlg_id:
                     raise ValueError(
                         f"Telegram ID не найден для пользователя {user_id}",
                     )
-
                 await bot.send_message(
                     chat_id=tlg_id,
                     text=message,
