@@ -1,6 +1,6 @@
-import Card from "../../small/card/card.tsx";
-import Button from "../../small/button/button.tsx";
-import { useBookingContext } from "../bookingContext/bookingContext";
+import Card from '../../small/card/card.tsx';
+import Button from '../../small/button/button.tsx';
+import { useBookingContext } from '../bookingContext/bookingContext';
 // import { type ButtonVariant } from '../../small/button/button.tsx'
 // import { useState } from 'react';
 
@@ -16,9 +16,11 @@ export const BlockMiniCalendar = () => {
     <Card title="Календарь" extra={selectedDate}>
       {/* Дни недели */}
       <div className="grid grid-cols-7 gap-2 mb-2">
-        {["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"].map((day) => (
-          <div key={day}
-            className="text-center text-xs text-base-content/50 uppercase font-bold">
+        {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((day) => (
+          <div
+            key={day}
+            className="text-center text-xs text-base-content/50 uppercase font-bold"
+          >
             {day}
           </div>
         ))}
@@ -26,29 +28,37 @@ export const BlockMiniCalendar = () => {
       {/* Сетка чисел */}
       <div className="grid grid-cols-7 gap-2">
         {calendarDays.map((day) => {
-          const dayString = day ? `${day} янв` : "";
-          const hasBooking = dayString && bookings.some((booking) => booking.date === dayString);
+          const dayString = day ? `${day} янв` : '';
+          const hasBooking =
+            dayString && bookings.some((booking) => booking.date === dayString);
           if (!day) return null;
           const isSelected = day === selectedDayNumber;
           return (
             <Button
-              label={day?.toString() || ""}
-              onClick={() => { if (day) { setSelectedDate(`${day} янв`); } }}
+              label={day?.toString() || ''}
+              onClick={() => {
+                if (day) {
+                  setSelectedDate(`${day} янв`);
+                }
+              }}
               size="md"
-              variant={isSelected ? "primary" : hasBooking ? "secondary" : "tertiary"}
+              variant={
+                isSelected ? 'primary' : hasBooking ? 'secondary' : 'tertiary'
+              }
               shape="rounded"
-              className="relative">
+              className="relative"
+            >
               {hasBooking && (
                 <div
                   style={{
-                    position: "absolute",
-                    bottom: "4px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    width: "4px",
-                    height: "4px",
-                    backgroundColor: "black",
-                    borderRadius: "50%",
+                    position: 'absolute',
+                    bottom: '4px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '4px',
+                    height: '4px',
+                    backgroundColor: 'black',
+                    borderRadius: '50%',
                   }}
                 ></div>
               )}

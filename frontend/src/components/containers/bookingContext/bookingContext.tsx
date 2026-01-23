@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
-import { type FilterType, type BookingItem, type TimeSlot } from '../../../views/main-page/main-page.tsx'
-
+import {
+  type FilterType,
+  type TimeSlot,
+} from '../../../views/main-page/main-page.tsx';
 
 interface BookingContextType {
   activeTab: 'Ресурсы' | 'Календарь' | 'Профиль';
@@ -23,21 +25,42 @@ interface BookingContextType {
   handleResourceClick: (resource: BookingItem) => void;
   handleBackClick: () => void;
   handleConfirmBooking: () => void;
-
 }
-
+export interface BookingItem {
+  price?: number;
+  id?: string;
+  title?: string;
+  type?: string;
+  capacity?: string;
+  location?: string;
+  rating?: string | number;
+  timeLeft?: string;
+  time?: string;
+  date?: string;
+  active?: boolean;
+}
 //  контекст
 const BookingContext = createContext<BookingContextType | undefined>(undefined);
 
 //провайдер
 export const BookingProvider = ({ children }: { children: ReactNode }) => {
-
-  const [activeTab, setActiveTab] = useState<'Ресурсы' | 'Календарь' | 'Профиль'>('Ресурсы');
+  const [activeTab, setActiveTab] = useState<
+    'Ресурсы' | 'Календарь' | 'Профиль'
+  >('Ресурсы');
   const [selectedFilter, setSelectedFilter] = useState<FilterType>('Все');
-  const [selectedDate, setSelectedDate] = useState<string>("1 янв");
+  const [selectedDate, setSelectedDate] = useState<string>('1 янв');
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
-  const [selectedResource, setSelectedResource] = useState<BookingItem | null>(null);
-  const filters: FilterType[] = ['Все', 'Площадки', 'Работа', 'Здоровье', 'Авто', 'Жильё'];
+  const [selectedResource, setSelectedResource] = useState<BookingItem | null>(
+    null
+  );
+  const filters: FilterType[] = [
+    'Все',
+    'Площадки',
+    'Работа',
+    'Здоровье',
+    'Авто',
+    'Жильё',
+  ];
   const bookings: BookingItem[] = [
     {
       id: '0',
@@ -50,7 +73,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       price: 2900,
       date: '15 янв',
       time: '19:10–23:10',
-      active: true
+      active: true,
     },
     {
       id: '1',
@@ -63,7 +86,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       price: 2900,
       date: '26 янв',
       time: '19:15–23:15',
-      active: true
+      active: true,
     },
     {
       id: '2',
@@ -76,7 +99,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       price: 1200,
       date: '30 янв',
       time: '19:27–23:47',
-      active: true
+      active: true,
     },
     {
       id: '3',
@@ -89,7 +112,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       price: 5400,
       date: '8 янв',
       time: '18:00–23:00',
-      active: true
+      active: true,
     },
     {
       id: '4',
@@ -102,7 +125,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       price: 5600,
       date: '9 янв',
       time: '19:05–23:05',
-      active: true
+      active: true,
     },
     {
       id: '5',
@@ -115,8 +138,8 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       price: 5600,
       date: '',
       time: '19:00–23:00',
-      active: true
-    }
+      active: true,
+    },
   ];
 
   const timeSlots: TimeSlot[] = [
@@ -126,15 +149,41 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     { time: '19:30', available: true },
     { time: '20:00', available: true },
     { time: '20:30', available: true },
-    { time: '21:00', available: true }
+    { time: '21:00', available: true },
   ];
 
   const calendarDays = [
-    '1', '2', '3', '4', '5', '6', '7',
-    '8', '9', '10', '11', '12', '13', '14',
-    '15', '16', '17', '18', '19', '20', '21',
-    '22', '23', '24', '25', '26', '27', '28',
-    '29', '30', '31',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '20',
+    '21',
+    '22',
+    '23',
+    '24',
+    '25',
+    '26',
+    '27',
+    '28',
+    '29',
+    '30',
+    '31',
   ];
 
   const handleResourceClick = (resource: BookingItem) => {
@@ -146,20 +195,27 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const handleConfirmBooking = () => {
-    alert("Забронировано успешно!")
+    alert('Забронировано успешно!');
     if (selectedTimeSlot && selectedResource) {
-      alert(`Бронирование подтверждено: ${selectedResource.title} на ${selectedTimeSlot}`);
+      alert(
+        `Бронирование подтверждено: ${selectedResource.title} на ${selectedTimeSlot}`
+      );
       setSelectedResource(null);
       setSelectedTimeSlot(null);
     }
   };
 
   const value: BookingContextType = {
-    activeTab, setActiveTab,
-    selectedFilter, setSelectedFilter,
-    selectedDate, setSelectedDate,
-    selectedTimeSlot, setSelectedTimeSlot,
-    selectedResource, setSelectedResource,
+    activeTab,
+    setActiveTab,
+    selectedFilter,
+    setSelectedFilter,
+    selectedDate,
+    setSelectedDate,
+    selectedTimeSlot,
+    setSelectedTimeSlot,
+    selectedResource,
+    setSelectedResource,
 
     filters,
     bookings,
@@ -171,15 +227,10 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     handleConfirmBooking,
   };
 
-
-
   return (
-    <BookingContext.Provider value={value}>
-      {children}
-    </BookingContext.Provider>
+    <BookingContext.Provider value={value}>{children}</BookingContext.Provider>
   );
 };
-
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useBookingContext = () => {

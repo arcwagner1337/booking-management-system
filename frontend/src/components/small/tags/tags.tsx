@@ -1,6 +1,6 @@
-type TagVariant = "primary" | "secondary" | "success" | "danger";
+type TagVariant = 'primary' | 'secondary' | 'success' | 'danger';
 
-type TagSize = "xs" | "sm" | "md";
+type TagSize = 'xs' | 'sm' | 'md';
 
 interface TagButtonProps {
   label: string;
@@ -15,27 +15,27 @@ const TagButton = ({
   label,
   active = false,
   onClick = () => {},
-  variant = "primary",
-  size = "xs",
+  variant = 'primary',
+  size = 'xs',
   disabled = false,
 }: TagButtonProps): React.ReactElement => {
   const baseStyles =
-    "inline-flex items-center rounded-full font-medium transition-all duration-200 select-none";
+    'inline-flex items-center rounded-full font-medium transition-all duration-200 select-none';
 
   const variants: Record<TagVariant, string> = {
-    primary: "tag-primary",
-    secondary: "tag-secondary",
-    success: "tag-success",
-    danger: "tag-danger",
+    primary: 'tag-primary',
+    secondary: 'tag-secondary',
+    success: 'tag-success',
+    danger: 'tag-danger',
   };
 
   const sizes: Record<TagSize, string> = {
-    xs: "tag-xs",
-    sm: "tag-sm",
-    md: "tag-md",
+    xs: 'tag-xs',
+    sm: 'tag-sm',
+    md: 'tag-md',
   };
 
-  const activeStyles = active ? "opacity-100" : "opacity-60 hover:opacity-90";
+  const activeStyles = active ? 'opacity-100' : 'opacity-60 hover:opacity-90';
 
   return (
     <button

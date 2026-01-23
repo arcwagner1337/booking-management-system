@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-type InputVariant = "default" | "success" | "error";
+type InputVariant = 'default' | 'success' | 'error';
 
-type InputSize = "xs" | "sm" | "md" | "lg" | "xl";
+type InputSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 interface InputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
@@ -19,31 +19,31 @@ const Input = ({
   label,
   id,
   placeholder,
-  variant = "default",
-  size = "md",
+  variant = 'default',
+  size = 'md',
   disabled = false,
   isFloating = false,
   span,
 }: InputProps): React.ReactElement => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const handleChange = (event: {
     target: { value: React.SetStateAction<string> };
   }) => {
     setText(event.target.value);
   };
   const baseStyles =
-    "input font-medium transition-all duration-200 focus:outline-none";
+    'input font-medium transition-all duration-200 focus:outline-none';
   const variants: Record<InputVariant, string> = {
-    default: "",
-    success: "is-valid",
-    error: "is-invalid",
+    default: '',
+    success: 'is-valid',
+    error: 'is-invalid',
   };
   const sizes: Record<InputSize, string> = {
-    xs: "input-xs",
-    sm: "input-sm",
-    md: "", //default
-    lg: "input-lg",
-    xl: "input-xl",
+    xs: 'input-xs',
+    sm: 'input-sm',
+    md: '', //default
+    lg: 'input-lg',
+    xl: 'input-xl',
   };
   if (isFloating) {
     return (

@@ -4,41 +4,37 @@
 
 // import type React from 'react';
 // import { timeSlots, handleBackClick, calendarDays, filters, bookings, handleResourceClick, handleConfirmBooking } from '../../../views/main-page/main-page.tsx'
-import { useBookingContext } from "../bookingContext/bookingContext.tsx";
+import { useBookingContext } from '../bookingContext/bookingContext.tsx';
 // import {  } from "../../../views/main-page/main-page.tsx"
 // import { MiniCalendar } from '../calendar/miniCalendar.tsx'
 // import { Calendar } from '../calendar/calendar.tsx';
-import Button from "../../small/button/button.tsx";
-import { BlockMiniCalendar } from "../calendar/blockMiniCalendar.tsx";
-import { BookingCard } from "../booking-card/booking-card.tsx";
+import Button from '../../small/button/button.tsx';
+import { BlockMiniCalendar } from '../calendar/blockMiniCalendar.tsx';
+import { BookingCard } from '../booking-card/booking-card.tsx';
 
 export const ResourcesScreen = () => {
-  const {
-    setSelectedFilter,
-    selectedFilter,
-    bookings,
-    filters,
-  } = useBookingContext();
+  const { setSelectedFilter, selectedFilter, bookings, filters } =
+    useBookingContext();
   return (
-    <div style={{ padding: "16px" }}>
+    <div style={{ padding: '16px' }}>
       {/* Заголовок */}
-      <div style={{ marginBottom: "24px" }}>
+      <div style={{ marginBottom: '24px' }}>
         <h1
-          style={{ fontSize: "28px", fontWeight: "700", marginBottom: "8px" }}
+          style={{ fontSize: '28px', fontWeight: '700', marginBottom: '8px' }}
         >
           NightBook
         </h1>
-        <p style={{ color: "#6b7280", fontSize: "14px" }}>Ресурсы</p>
+        <p style={{ color: '#6b7280', fontSize: '14px' }}>Ресурсы</p>
       </div>
 
       {/* Фильтры */}
-      <div style={{ marginBottom: "24px" }}>
+      <div style={{ marginBottom: '24px' }}>
         <h2
           style={{
-            fontSize: "14px",
-            fontWeight: "600",
-            marginBottom: "12px",
-            color: "#9ca3af",
+            fontSize: '14px',
+            fontWeight: '600',
+            marginBottom: '12px',
+            color: '#9ca3af',
           }}
         >
           Фильтры
@@ -63,7 +59,7 @@ export const ResourcesScreen = () => {
           Список (X бронирований)
         </div>
         {bookings.map((booking) => (
-          <BookingCard key={booking?.id} data={booking} />
+          <BookingCard key={booking!.id} data={booking!} />
         ))}
       </div>
     </div>
@@ -83,14 +79,14 @@ export const ResourceDetails = () => {
   if (!selectedResource) return null;
 
   return (
-    <div style={{ padding: "16px", maxWidth: "500px", margin: "0 auto" }}>
+    <div style={{ padding: '16px', maxWidth: '500px', margin: '0 auto' }}>
       {/* Заголовок с кнопкой назад */}
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "12px",
-          marginBottom: "24px",
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          marginBottom: '24px',
         }}
       >
         <Button
@@ -101,7 +97,6 @@ export const ResourceDetails = () => {
           onClick={handleBackClick}
           label="←"
         />
-
 
         {/* <button
           onClick={handleBackClick}
@@ -118,19 +113,19 @@ export const ResourceDetails = () => {
         <div>
           <h1
             style={{
-              fontSize: "24px",
-              fontWeight: "700",
-              marginBottom: "4px",
+              fontSize: '24px',
+              fontWeight: '700',
+              marginBottom: '4px',
             }}
           >
             {selectedResource.title}
           </h1>
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              color: "#9ca3af",
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              color: '#9ca3af',
             }}
           >
             <span>{selectedResource.type}</span>
@@ -139,17 +134,17 @@ export const ResourceDetails = () => {
           </div>
         </div>
 
-                    <Button
+        <Button
           variant="primary"
           size="lg"
           width="responsive"
           shape="text"
-          onClick={()=>{}}
+          onClick={() => {}}
           label="↗"
           className="ml-auto"
         />
 
-{/* 
+        {/* 
         <button
           style={{
             marginLeft: "auto",
@@ -167,21 +162,21 @@ export const ResourceDetails = () => {
       {/* Календарь */}
 
       {/* Слоты времени */}
-      <div style={{ marginBottom: "32px" }}>
+      <div style={{ marginBottom: '32px' }}>
         <h2
           style={{
-            fontSize: "16px",
-            fontWeight: "600",
-            marginBottom: "30px",
+            fontSize: '16px',
+            fontWeight: '600',
+            marginBottom: '30px',
           }}
         >
           {/* Слоты на {selectedDate} */}
         </h2>
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(5, 1fr)",
-            gap: "12px",
+            display: 'grid',
+            gridTemplateColumns: 'repeat(5, 1fr)',
+            gap: '12px',
           }}
         >
           {timeSlots.map((slot) => (
@@ -189,7 +184,7 @@ export const ResourceDetails = () => {
               label={slot.time}
               onClick={() => setSelectedTimeSlot(slot.time)}
               size="md"
-              variant={selectedTimeSlot === slot.time ? "primary" : "secondary"}
+              variant={selectedTimeSlot === slot.time ? 'primary' : 'secondary'}
               shape="default"
             />
           ))}
@@ -199,31 +194,31 @@ export const ResourceDetails = () => {
       {/* Итого */}
       <div
         style={{
-          backgroundColor: "#1f2937",
-          borderRadius: "16px",
-          padding: "20px",
-          marginBottom: "24px",
+          backgroundColor: '#1f2937',
+          borderRadius: '16px',
+          padding: '20px',
+          marginBottom: '24px',
         }}
       >
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: "8px",
+            display: 'flex',
+            justifyContent: 'space-between',
+            marginBottom: '8px',
           }}
         >
-          <span style={{ color: "#9ca3af" }}>Итого</span>
-          <span style={{ fontSize: "24px", fontWeight: "700" }}>
-            {selectedResource.price.toLocaleString("ru-RU")} ₽
+          <span style={{ color: '#9ca3af' }}>Итого</span>
+          <span style={{ fontSize: '24px', fontWeight: '700' }}>
+            {(selectedResource.price ?? 0).toLocaleString('ru-RU')} ₽
           </span>
         </div>
-        <div style={{ color: "#6b7280", fontSize: "14px" }}>
-          Слот: {selectedTimeSlot || "—"}
+        <div style={{ color: '#6b7280', fontSize: '14px' }}>
+          Слот: {selectedTimeSlot || '—'}
         </div>
       </div>
       {/* Кнопка подтверждения */}
       <Button
-        label={"Подтвердить"}
+        label={'Подтвердить'}
         onClick={handleConfirmBooking}
         disabled={!selectedTimeSlot}
         size="xl"

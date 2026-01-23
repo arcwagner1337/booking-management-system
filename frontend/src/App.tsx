@@ -1,8 +1,8 @@
 // import Button from "./components/small/button/button";
 // import Input from "./components/small/input/input";
 // import TagButton from "./components/small/tags/tags";
-import { MainPage } from "./views/main-page/main-page.tsx";
-import { BookingProvider } from "./components/containers/bookingContext/bookingContext.tsx";
+import { MainPage } from './views/main-page/main-page.tsx';
+import { BookingProvider } from './components/containers/bookingContext/bookingContext.tsx';
 function App() {
   window.Telegram?.WebApp?.ready();
   // Закоментить строки ниже для тестов визуальной части в браузере
@@ -17,7 +17,7 @@ function App() {
   // const buttonColor = theme?.button_color || "#3b82f6";
   // const linkColor = theme?.link_color || "#06b6d4";
   // const hintColor = theme?.hint_color || "#6b7280";
-  
+
   // if (!user) {
   //   return (
   //     <div

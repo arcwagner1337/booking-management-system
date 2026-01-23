@@ -1,88 +1,80 @@
-import { type PropsWithChildren } from "react";
-import Button from "../../small/button/button";
-import { useBookingContext } from "../bookingContext/bookingContext.tsx";
+import { type PropsWithChildren } from 'react';
+import Button from '../../small/button/button';
+import { useBookingContext } from '../bookingContext/bookingContext.tsx';
 
-
-interface BookingItem {
-    id?: string | number;
-    title: string;
-    type: string;
-    capacity: string;
-    location: string;
-    rating: string;
-    timeLeft: string;
-    price: string;
+import type { BookingItem } from '../bookingContext/bookingContext.tsx';
+export interface CalendarCardProps {
+  bookings?: BookingItem[];
+  selectedDate?: string;
 }
-interface CardProps {
-    data?: BookingItem;
-    key?: string | number;
-    // openClick?: () => void;
-    // bookClick?: () => void;
-}
-export const BookingCard = ({ data }: PropsWithChildren<CardProps>): React.ReactElement => {
-    const {
-        handleConfirmBooking,
-        handleResourceClick = (item?: BookingItem) => {
-            if (!item) {
-                return;
-            }
-        },
-    } = useBookingContext();
-    // const handleResourceClick 
+export const BookingCardCalendar = ({
+  bookings,
+  selectedDate,
+}: PropsWithChildren<CalendarCardProps>): React.ReactElement => {
+  const { setSelectedResource, setActiveTab } = useBookingContext();
+  // карточка бронирования на странице с календарем
+  if (bookings !== undefined) {
     return (
-        <>
-        В разработке...
-        </>
-        // <div
-        //     className="bg-base-100 p-5 mb-4 rounded-2xl hover:bg-base-300 duration-200"
-        // >
-        //     <div className="flex justify-between items-start mb-3">
-        //         <div>
-        //             <h3 className="text-lg font-semibold mb-1">
-        //                 {data?.title}
-        //             </h3>
-        //             <div className="flex items-center gap-2 mb-2">
-        //                 <span className="bg-accent rounded-2xl text-base-content pt-0.5 pb-0.5 pr-2 pl-2 text-sm font-medium">
-        //                     {data?.type}
-        //                 </span>
-        //                 <span className="text-base-content text-sm">•</span>
-        //                 <span className="text-base-content text-sm">{data?.capacity}</span>
-        //             </div>
-        //             <div className="flex items-center gap-2">
-        //                 <span className="text-base-content text-sm">
-        //                     📌 {data?.location}
-        //                 </span>
-        //                 <span className="text-amber-400">★ {data?.rating}</span>
-        //                 {data?.timeLeft && (
-        //                     <span className="text-base-content text-sm">
-        //                         🔽 {data?.timeLeft}
-        //                     </span>
-        //                 )}
-        //             </div>
-        //         </div>
-        //         <div className="text-right">
-        //             <div
-        //                 className="text-xl font-bold mb-2">
-        //                 {data?.price.toLocaleString()} ₽
-        //             </div>
-        //             <div className="flex flex-col gap-2">
-        //                 <Button
-        //                     label="Открыть"
-        //                     onClick={() => { handleResourceClick(data); }}
-        //                     size="sm"
-        //                     variant="primary"
-        //                     width="responsive"
-        //                 />
-        //                 <Button
-        //                     label="Бронь"
-        //                     onClick={() => { handleConfirmBooking() }}
-        //                     variant="info"
-        //                     width="responsive"
-        //                     size="sm"
-        //                 />
-        //             </div>
-        //         </div>
-        //     </div>
-        // </div>
-    )
-}
+      <div>
+        <h2
+          style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}
+        >
+          Бронирования на {selectedDate}
+        </h2>
+        {bookings
+          .filter(
+            (booking: BookingItem) =>
+              booking.date === selectedDate && booking.active
+          )
+          .map((booking: BookingItem | null) => (
+            <div
+              key={booking?.id}
+              className="bg-base-200 rounded-2xl p-5 mb-4 hover:bg-base-100 duration-200"
+            >
+              <div className="flex justify-between items-start mb-3">
+                <div>
+                  <h3 className="text-lg font-semibold mb-1 text-accent-content">
+                    {booking?.title}
+                  </h3>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="bg-accent text-accent-content pt-0.5 pb-0.5 pr-2 pl-2 rounded-xl text-xs font-medium">
+                      {booking?.type}
+                    </span>
+                    <span className="text-accent-content text-sm">•</span>
+                    <span className="text-accent-content text-sm">
+                      {booking?.capacity}
+                    </span>
+                  </div>
+                  {booking?.time && (
+                    <div className="text-info text-sm font-medium">
+                      ⏰ {booking?.time}
+                    </div>
+                  )}{' '}
+                  {/* ⏰ */}
+                </div>
+                <div className="text-right">
+                  <div className="text-xl text-accent-content font-bold mb-2">
+                    {' '}
+                    {(booking?.price ?? 0).toLocaleString()} ₽{' '}
+                  </div>
+                  <Button
+                    label={'Подробнее'}
+                    onClick={() => {
+                      if (booking !== null) {
+                        setSelectedResource(booking!);
+                        setActiveTab('Ресурсы');
+                      }
+                    }}
+                    variant="info"
+                    size="md"
+                  ></Button>
+                </div>
+              </div>
+            </div>
+          ))}
+      </div>
+    );
+  } else {
+    return <>data lost...</>;
+  }
+};

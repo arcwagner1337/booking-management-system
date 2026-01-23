@@ -3,7 +3,7 @@ declare global {
     Telegram?: {
       WebApp?: {
         ready(): void;
-        colorScheme?: "light" | "dark";
+        colorScheme?: 'light' | 'dark';
         themeParams?: {
           bg_color?: string;
           text_color?: string;

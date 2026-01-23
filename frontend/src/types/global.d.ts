@@ -1,5 +1,5 @@
 // global.d.ts
-import { IStaticMethods } from "flyonui/flyonui";
+import { IStaticMethods } from 'flyonui/flyonui';
 
 declare global {
   interface Window {

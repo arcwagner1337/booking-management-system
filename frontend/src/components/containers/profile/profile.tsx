@@ -1,6 +1,8 @@
-import Button from "../../small/button/button";
+import Button from '../../small/button/button';
+import { ActiveBookingCard } from '../booking-card/booking-card-active';
 
 export const renderProfileScreen = () => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   window.Telegram?.WebApp?.ready();
   const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
   return (
@@ -8,7 +10,7 @@ export const renderProfileScreen = () => {
       {/* Заголовок */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Профиль</h1>
-        <p className="text-sm" style={{ color: "#6b7280", fontSize: "14px" }}>
+        <p className="text-sm" style={{ color: '#6b7280', fontSize: '14px' }}>
           Личный кабинет
         </p>
       </div>
@@ -18,11 +20,11 @@ export const renderProfileScreen = () => {
         <div className="rounded-2xl p-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center font-semibold">
-              {user?.username || "404"}
+              {user?.username || '404'}
             </div>
             <div>
               <div className="text-base font-semibold mb-1">
-                {user?.username || "anonymous"}
+                {user?.username || 'anonymous'}
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <span className="w-2 h-2 rounded-full" />
@@ -54,40 +56,14 @@ export const renderProfileScreen = () => {
         </div>
       </div>
       {/* Активное бронирование */}
-      <div className="mb-4 rounded-2xl p-5 bg-base-200">
-        <div className="mb-3">
-          <div className="text-lg font-semibold mb-1 text-base-content">
-            Loft Noir
-          </div>
-          <div className="text-sm text-base-content/60">
-            {/* 15 янв • 19:00–23:00 */}
-          </div>
-        </div>
-        <div className="flex gap-3 justify-center flex-row ">
-          <div className="w-full">
-            <Button
-              onClick={() => {}}
-              label="Открыть"
-              variant="primary"
-              size="md"
-              width="full"
-            ></Button>
-          </div>
-          <div className="w-full">
-            <Button
-              onClick={() => {}}
-              label="Отменить"
-              variant="info"
-              size="md"
-              width="full"
-            ></Button>
-          </div>
-        </div>
-      </div>
+      <ActiveBookingCard />
+      <ActiveBookingCard />
+      <ActiveBookingCard />
       {/* Кнопка выхода */}
       <div className="m-1">
         <Button
-          label={"Выйти"}
+          label={'Выйти'}
+          shape="outline"
           variant="error"
           size="lg"
           width="full"
