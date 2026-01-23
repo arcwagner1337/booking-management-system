@@ -215,9 +215,9 @@ alertmanager - http://localhost:9093
 ### Проверка работоспобности
 
 1. Заходим в Prometheus
-2. Переходим в Status -> Target health
-3. Вы должны увидеть bms-backend и prometheus в state = UP
-4. Если у вас bms-backend в state = DOWN, то необходимо остановить все профили, запустить профиль prod и ~10 секунд запусить проофиль monitoring
+2. Переходим в Alerts
+3. Вы должны увидеть: ServiceDown, High5xxErrorRate, High4xxErrorRate, SlowAPIResponse, TrafficDrop
+4. Чтобы проверить нужно выключить bms-backend в Docker, зайти обратно в Prometheus
 
 ### Просмотр dashboard
 
@@ -226,6 +226,19 @@ alertmanager - http://localhost:9093
 3. В меню слева нажимаем на Dashboards
 4. Вы увидите папку BMS в которую нужно провалиться
 5. После чего вы увидите dashboard под названием Backend, тыкаем по нему и дашборд покажется
+
+### Проверка работоспособности и алертов
+
+Заходим в Prometheus → Status → Targets.  
+
+Все сервисы, включая bms-backend, должны быть UP (зелёный).
+
+Проверка алертов:  
+
+Останавливаем бэкенд:
+
+```bash
+docker compose --profile prod stop bms-backend
 
 ### Как остановть?
 1. Останавливаем bms-db, bms-redis, bms-backend
