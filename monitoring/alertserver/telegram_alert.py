@@ -39,7 +39,7 @@ def _format_alert(alert: Alert) -> str:
         emoji = "✅"
         description = alert.annotations.get(
             "resolved_description",
-            f"Сервис {name} вернулся в норму ✅",  # дефолтное сообщение
+            f"Сервис {name} вернулся в норму ✅",
         )
 
     lines = [
