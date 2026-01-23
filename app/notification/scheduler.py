@@ -83,28 +83,33 @@ class NotificationScheduler:
         logger.info("Планировщик уведомлений остановлен")
 
     async def _process_notifications_job(self):
-        """Основная задача обработки уведомлений."""
-        try:
-            async with self.session_factory() as session:
-                notifications = await self._get_pending_notifications(session)
+    """Основная задача обработки уведомлений."""
+    # ВОССТАНАВЛИВАЕМ logger если он был перезаписан
+    global logger
+    if not isinstance(logger, logging.Logger):
+        logger = logging.getLogger(__name__)
+    
+    try:
+        async with self.session_factory() as session:
+            notifications = await self._get_pending_notifications(session)
 
-                if not notifications:
-                    logger.debug("Нет уведомлений для отправки")
-                    return
+            if not notifications:
+                logger.debug("Нет уведомлений для отправки")
+                return
 
-                logger.info(f"Найдено {len(notifications)} уведомлений для обработки")
+            logger.info(f"Найдено {len(notifications)} уведомлений для обработки")
 
-                for notification in notifications:
-                    try:
-                        await self._process_single_notification(notification, session)
-                    except Exception as e:  # noqa: BLE001
-                        logger.error(f"Ошибка обработки уведомления {notification.id}: {e}")
-                        await self._mark_as_failed(notification, session, str(e))
+            for notification in notifications:
+                try:
+                    await self._process_single_notification(notification, session)
+                except Exception as e:  # noqa: BLE001
+                    logger.error(f"Ошибка обработки уведомления {notification.id}: {e}")
+                    await self._mark_as_failed(notification, session, str(e))
 
-                await session.commit()
+            await session.commit()
 
-        except Exception as e:  # noqa: BLE001
-            logger.error(f"Ошибка в задаче обработки уведомлений: {e}")
+    except Exception as e:  # noqa: BLE001
+        logger.error(f"Ошибка в задаче обработки уведомлений: {e}")
 
     async def _get_pending_notifications(self, session: AsyncSession) -> list[Notification]:
         """Получает уведомления, готовые к отправке."""
