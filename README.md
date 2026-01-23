@@ -183,17 +183,7 @@ pre-commit run --all-files
 ### Как запустить?
 1. Добавляем в файл .env
    ``` bash
-   EXCEPT_LOG=true
-
-   POSTGRES_USER=bms_user
-   POSTGRES_PASSWORD=bms_pwd
-   POSTGRES_DB=bms_db
-   POSTGRES_HOST=localhost
-   POSTGRES_PORT=6432
-
-   USE_REDIS_STORAGE=true
-   CREATE_TEST_USER=true
-   TG_BOT_ALERT_TOKEN= "<Ваш токен для админ бота (взять в botfather)>"
+   TG_BOT_ALERT_TOKEN= "<Ваш токен для алёрт бота (взять в botfather)>"
    TG_ALERT_CHAT_ID= "<Ваш айди канала для уведомлений>"
    ```
 2 Устанавливаем loki-docker-driver
