@@ -26,3 +26,10 @@ scrape_configs:
         labels:
           service: "backend"
           component: "api"
+
+  - job_name: "bms-db"
+    static_configs:
+      - targets: ["bms-postgres-exporter:9187"]
+        labels:
+          service: "database"
+          component: "db"
