@@ -48,10 +48,14 @@ class Booking(BaseWithDt):
         sa.DateTime(timezone=True),
     )
 
-    notifications: so.Query["Notification"] = so.relationship(
-        "Notification",
-        back_populates="booking",
-        lazy="dynamic",
-        cascade="all, delete-orphan",
-        viewonly=True,
+    notifications: so.Mapped[list["Notification"]] = so.relationship(
+    "Notification",
+    back_populates="booking",
+    lazy="select",  # Используем select вместо dynamic
+    cascade="all, delete-orphan",
+    )
+    resource_obj: so.Mapped["Resource"] = so.relationship(
+    "Resource",
+    backref="bookings",
+    lazy="select",
     )

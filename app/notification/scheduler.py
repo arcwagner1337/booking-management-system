@@ -88,9 +88,10 @@ class NotificationScheduler:
         try:
             async with self.session_factory() as session:
                 notifications = await self._get_pending_notifications(session)
+                logger.info("Запуск задачи обработки уведомлений")
 
                 if not notifications:
-                    logger.debug("Нет уведомлений для отправки")
+                    logger.info("Нет уведомлений для отправки")
                     return
 
                 logger.info(f"Найдено {len(notifications)} уведомлений для обработки")
@@ -99,7 +100,7 @@ class NotificationScheduler:
                     try:
                         await self._process_single_notification(notification, session)
                     except Exception as e:  # noqa: BLE001
-                        logger.error(
+                        logger.info(
                             f"Ошибка обработки уведомления {notification.id}: {e}",
                         )
                         await self._mark_as_failed(notification, session, str(e))
@@ -176,7 +177,7 @@ class NotificationScheduler:
 
         # Формируем сообщение
         message = NotificationFactory.create_message(notification.type, booking)
-
+        logger.info("bebe")
         try:
             # Отправляем сообщение
             await self._send_telegram_message(
