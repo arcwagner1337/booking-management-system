@@ -1,10 +1,17 @@
 import Button from '../../small/button/button';
 import { ActiveBookingCard } from '../booking-card/booking-card-active';
+import { useBookingContext } from '../bookingContext/bookingContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
-export const renderProfileScreen = () => {
+export const RenderProfileScreen = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   window.Telegram?.WebApp?.ready();
   const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
+
+  const { bookings, handleCancelBooking } = useBookingContext();
+  const activeBookings = bookings.filter(b => b.active);
+
+
   return (
     <div className="p-4">
       {/* Заголовок */}
@@ -38,7 +45,7 @@ export const renderProfileScreen = () => {
       <div className="mb-8">
         <div className="flex gap-3 mb-4">
           <Button
-            onClick={() => {}}
+            onClick={() => { }}
             label="Активные"
             variant="primary"
             width="responsive"
@@ -46,7 +53,7 @@ export const renderProfileScreen = () => {
             shape="rounded"
           ></Button>
           <Button
-            onClick={() => {}}
+            onClick={() => { }}
             label="История"
             variant="secondary"
             width="responsive"
@@ -56,9 +63,43 @@ export const renderProfileScreen = () => {
         </div>
       </div>
       {/* Активное бронирование */}
+
+      {/* Список активных карточек */}
+      <div className="flex flex-col gap-4">
+
+        <AnimatePresence>
+          {activeBookings.map((booking) => (
+            <motion.div
+              key={booking.id}
+              initial={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0, marginBottom: 0, overflow: 'hidden' }}
+              transition={{ duration: 0.3 }}
+            >
+              <ActiveBookingCard
+                data={booking}
+                onCancel={() => handleCancelBooking(booking.id)}
+              />
+            </motion.div>
+          ))}
+        </AnimatePresence>
+
+        {/* {activeBookings.length >= 1 ? (
+          
+          activeBookings.map((booking) => (
+            <ActiveBookingCard
+              key={booking.id}
+              data={booking}
+              onCancel={() => handleCancelBooking(booking.id!)}
+            />
+          ))
+        ) : (
+          <p className="text-center text-gray-500">У вас пока нет бронирований</p>
+        )} */}
+      </div>
+      {/* 
       <ActiveBookingCard />
       <ActiveBookingCard />
-      <ActiveBookingCard />
+      <ActiveBookingCard /> */}
       {/* Кнопка выхода */}
       <div className="m-1">
         <Button
@@ -67,7 +108,7 @@ export const renderProfileScreen = () => {
           variant="error"
           size="lg"
           width="full"
-          onClick={() => {}}
+          onClick={() => { }}
         ></Button>
       </div>
     </div>

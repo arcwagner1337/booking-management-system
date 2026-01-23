@@ -61,7 +61,7 @@ export const BookingCard = ({
               variant="primary"
               width="responsive"
             />
-            <Button
+            {/* <Button
               label="Бронь"
               onClick={() => {
                 handleConfirmBooking();
@@ -69,7 +69,7 @@ export const BookingCard = ({
               variant="info"
               width="responsive"
               size="sm"
-            />
+            /> */}
           </div>
         </div>
       </div>
