@@ -182,19 +182,23 @@ pre-commit run --all-files
 
 ### Как запустить?
 1. Добавляем в файл .env
+   
    ``` bash
    TG_BOT_ALERT_TOKEN= "<Ваш токен для алёрт бота (взять в botfather)>"
    TG_ALERT_CHAT_ID= "<Ваш айди канала для уведомлений>"
    ```
-2 Устанавливаем loki-docker-driver
+2. Устанавливаем loki-docker-driver
+   
    ``` bash
    docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
    ```
-3 Устанавливаем и запускаем bms-db, bms-redis, bms-backend
+3. Устанавливаем и запускаем bms-db, bms-redis, bms-backend
+   
    ``` bash 
    docker compose --profile prod up -d
    ```
 4. Устанавливаем и запускаем bms-loki, bms-prometheus, bms-grafana, alertmanager, alertserver
+   
    ``` bash
    docker compose --profile monitoring up -d
    ```
@@ -225,10 +229,12 @@ alertmanager - http://localhost:9093
 
 ### Как остановть?
 1. Останавливаем bms-db, bms-redis, bms-backend
+   
    ``` bash
    docker compose --profile prod stop
    ```
 2. Останавливаем bms-loki, bms-prometheus, bms-grafana, alertmanager, alertserver
+   
    ``` bash 
    docker compose --profile monitoring stop
    ```
