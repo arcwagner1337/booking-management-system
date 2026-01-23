@@ -30,7 +30,6 @@ class NotificationType:
     BOOKING_1H = "booking_1h"  # 1 hour before
     BOOKING_START = "booking_start"  # Booking start
     BOOKING_END = "booking_end"  # Booking end
-    BOOKING_CANCEL = "booking_cancel"  # Booking cancel
 
 
 class Notification(BaseWithDt):
