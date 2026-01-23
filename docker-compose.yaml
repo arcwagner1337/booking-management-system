@@ -125,9 +125,9 @@ services:
       - GF_SERVER_ROOT_URL=${GRAFANA_ROOT_URL:-http://localhost:3000}
       - GF_INSTALL_PLUGINS=
     volumes:
-    - ./monitoring/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-    - ./monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-    - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - grafana-data:/var/lib/grafana
     depends_on:
       - prometheus
       - loki
