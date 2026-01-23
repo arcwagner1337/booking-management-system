@@ -5,8 +5,6 @@ from zoneinfo import ZoneInfo
 
 from pydantic import BaseModel, Field, computed_field
 
-from app.config import config
-
 MSK_ZONE = ZoneInfo("Europe/Moscow")
 
 
@@ -114,6 +112,7 @@ def log(  # noqa: PLR0913
     if exception is not None:
         with contextlib.suppress(Exception):
             error = get_error_source(exception)
+
     model = JsonLogSchema.model_validate(
         {
             "datetime_msk": datetime.datetime.now(tz=MSK_ZONE),
@@ -133,6 +132,5 @@ def log(  # noqa: PLR0913
             "bot_username": bot_username,
         },
     )
+
     logging.info(model.model_dump_json(exclude_defaults=True, exclude_none=True))
-    if config.server.EXCEPT_LOG and exception is not None:
-        logging.exception(msg="Error", stack_info=True, stacklevel=1)
