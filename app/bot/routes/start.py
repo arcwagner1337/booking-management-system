@@ -1,13 +1,17 @@
 from aiogram import Router
 from aiogram.types import Message
+from aiogram.filters import command
+from app.bot.handler import handler
 
 from app.bot.filters.chat_type import OnlyPrivateChatFilter
 from app.bot.keyboards.main_menu import get_main_menu
 
+
 def get_start_router() -> Router:
     router: Router = Router()
 
-    @router.message(OnlyPrivateChatFilter())
+    @router.message(OnlyPrivateChatFilter(), command.Command("start"))
+    @handler
     async def start_handler(message: Message):
         if message.text == "/start":
             await message.answer(
