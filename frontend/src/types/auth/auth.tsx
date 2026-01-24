@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import Button from '../../small/button/button';
-import Input from '../../small/input/input';
-import { useBookingContext } from '../../../types/bookingContext';
+import Button from '../../components/small/button/button';
+import Input from '../../components/small/input/input';
+import { useBookingContext } from '../bookingContext';
 import { AUTH_CREDENTIALS } from './authConfig';
 import { motion, AnimatePresence } from 'framer-motion';
 //анимка загрузки
@@ -11,9 +11,9 @@ const Spinner = () => (
   </div>
 );
 const formVariants = {
-  hidden: { opacity: 0, x: 50, transition: { duration: 0.3 } },
+  hidden: { opacity: 0, x: 0, transition: { duration: 0.3 } },
   visible: { opacity: 1, x: 0, transition: { duration: 0.3 } },
-  exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
+  exit: { opacity: 0, x: 0, transition: { duration: 0.3 } },
 };
 
 export const AuthContainer = () => {

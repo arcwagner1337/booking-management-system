@@ -14,7 +14,7 @@ import { BottomNav } from '../../components/containers/bottomNav/bottomNav.tsx';
 // import {activeTab, setSelectedResource,  selectedTimeSlot, selectedResource} from '../../App.tsx'
 import { useBookingContext } from '../../types/bookingContext.tsx';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AuthContainer } from '../../components/containers/auth/auth.tsx';
+import { AuthContainer } from '../../types/auth/auth.tsx';
 
 const pageVariants = {
   initial: { opacity: 0, x: 0 },
