@@ -1,6 +1,6 @@
 import Button from '../../small/button/button';
 import { ActiveBookingCard } from '../booking-card/booking-card-active';
-import { useBookingContext } from '../bookingContext/bookingContext';
+import { useBookingContext } from '../../../types/bookingContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AUTH_CREDENTIALS } from '../auth/authConfig';
 
@@ -9,18 +9,30 @@ export const RenderProfileScreen = () => {
   window.Telegram?.WebApp?.ready();
   const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
 
-  const { bookings, handleCancelBooking, setIsAuthenticated } = useBookingContext();
-  const activeBookings = bookings.filter(b => b.active);
-
+  const { bookings, handleCancelBooking, setIsAuthenticated } =
+    useBookingContext();
+  const activeBookings = bookings.filter((b) => b.active);
 
   return (
     <div className="p-4">
       {/* Заголовок */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Профиль</h1>
-        <p className="text-sm" style={{ color: '#6b7280', fontSize: '14px' }}>
-          Личный кабинет
-        </p>
+      <div className="flex justify-between mb-8">
+        <div className="mb-2 mt-2">
+          <h1 className="text-3xl font-bold mb-2">Профиль</h1>
+          <p className="text-sm" style={{ color: '#6b7280', fontSize: '14px' }}>
+            Личный кабинет
+          </p>
+        </div>
+        <div className="mb-2 mt-2">
+          <Button
+            label={'Выйти'}
+            shape="outline"
+            variant="error"
+            size="lg"
+            width="full"
+            onClick={() => setIsAuthenticated(false)}
+          ></Button>
+        </div>
       </div>
       {/* Настройки */}
       <div className="mb-8">
@@ -36,7 +48,7 @@ export const RenderProfileScreen = () => {
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <span className="w-2 h-2 rounded-full" />
-                Уведомления включены
+                Уведомления включены  {user?.photo_url || "penis"}
               </div>
             </div>
           </div>
@@ -67,13 +79,17 @@ export const RenderProfileScreen = () => {
 
       {/* Список активных карточек */}
       <div className="flex flex-col gap-4">
-
         <AnimatePresence>
           {activeBookings.map((booking) => (
             <motion.div
               key={booking.id}
               initial={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0, marginBottom: 0, overflow: 'hidden' }}
+              exit={{
+                opacity: 0,
+                height: 0,
+                marginBottom: 0,
+                overflow: 'hidden',
+              }}
               transition={{ duration: 0.3 }}
             >
               <ActiveBookingCard
@@ -102,16 +118,6 @@ export const RenderProfileScreen = () => {
       <ActiveBookingCard />
       <ActiveBookingCard /> */}
       {/* Кнопка выхода */}
-      <div className="m-1">
-        <Button
-          label={'Выйти'}
-          shape="outline"
-          variant="error"
-          size="lg"
-          width="full"
-          onClick={() => setIsAuthenticated(false)}
-        ></Button>
-      </div>
     </div>
   );
 };

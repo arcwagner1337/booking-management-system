@@ -1,6 +1,6 @@
 // import { activeTab, setActiveTab } from '../../../App.tsx'
 import Button from '../../small/button/button.tsx';
-import { useBookingContext } from '../bookingContext/bookingContext.tsx';
+import { useBookingContext } from '../../../types/bookingContext.tsx';
 
 export const BottomNav = () => {
   const { activeTab, setActiveTab } = useBookingContext();

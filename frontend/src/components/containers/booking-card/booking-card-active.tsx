@@ -8,14 +8,14 @@ export interface ActiveBookingProps {
 
   data: any; // Позже замени на BookingItem
   onCancel: () => void;
-
 }
-export const ActiveBookingCard = ({ data, onCancel
+export const ActiveBookingCard = ({
+  data,
+  onCancel,
   // bookings,
 }: PropsWithChildren<ActiveBookingProps>): React.ReactElement => {
   // console.log(bookings);
   return (
-
     //     <div className="p-4 bg-secondary rounded-2xl mb-4">
     //   <div className="flex justify-between items-start mb-2">
     //     <div>
@@ -27,7 +27,7 @@ export const ActiveBookingCard = ({ data, onCancel
     //       <div className="text-xs text-gray-500">{data.date}</div>
     //     </div>
     //   </div>
-      
+
     //   <div className="flex items-center gap-2 mb-4 text-sm text-gray-300">
     //     <span>🕒 {data.time}</span>
     //     <span>•</span>
@@ -40,7 +40,7 @@ export const ActiveBookingCard = ({ data, onCancel
     //     shape="rounded"
     //     size="sm"
     //     width="full"
-    //     onClick={onCancel} 
+    //     onClick={onCancel}
     //   />
     // </div>
 
@@ -49,18 +49,19 @@ export const ActiveBookingCard = ({ data, onCancel
         <div className="text-lg font-semibold mb-1 text-base-content">
           {data.title}
         </div>
-        <div className="text-sm text-base-content/60">{data.date} • {data.time}</div>
+        <div className="text-sm text-base-content/60">
+          {data.date} • {data.time}
+        </div>
       </div>
       <div className="flex gap-3 justify-center flex-row ">
         <div className="w-full">
           <Button
-            onClick={() => { }}
+            onClick={() => {}}
             label="Открыть"
             variant="primary"
             size="md"
             width="full"
           ></Button>
-          
         </div>
         <div className="w-full">
           <Button

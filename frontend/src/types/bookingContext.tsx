@@ -2,7 +2,7 @@ import { createContext, useContext, useState, type ReactNode } from 'react';
 import {
   type FilterType,
   type TimeSlot,
-} from '../../../views/main-page/main-page.tsx';
+} from '../views/main-page/main-page.tsx';
 
 interface BookingContextType {
   activeTab: 'Ресурсы' | 'Календарь' | 'Профиль';
@@ -36,12 +36,7 @@ interface BookingContextType {
   setPass: React.Dispatch<React.SetStateAction<string>>;
   setIsLoading: (value: React.SetStateAction<boolean>) => void;
   error: boolean;
-  setError: React.Dispatch<React.SetStateAction<boolean>>
-
-
-
-
-
+  setError: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export interface BookingItem {
   price?: number;
@@ -56,9 +51,8 @@ export interface BookingItem {
   date?: string;
   active?: boolean;
 }
-//  контекст
+// контекст
 const BookingContext = createContext<BookingContextType | undefined>(undefined);
-
 //провайдер
 export const BookingProvider = ({ children }: { children: ReactNode }) => {
   const [activeTab, setActiveTab] = useState<
@@ -76,7 +70,6 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   const [pass, setPass] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-
 
   const filters: FilterType[] = [
     'Все',
@@ -166,8 +159,6 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
       active: false,
     },
   ]);
-
-
   const timeSlots: TimeSlot[] = [
     { time: '18:00', available: true },
     { time: '18:30', available: true },
@@ -177,7 +168,6 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     { time: '20:30', available: true },
     { time: '21:00', available: true },
   ];
-
   const calendarDays = Array.from({ length: 31 }, (_, i) => String(i + 1));
 
   // const calendarDays = [
@@ -222,27 +212,24 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     setSelectedResource(null);
   };
 
-  /// чтоб вернуть обратно кнопку брони раскоменти и переименуй(обязательно) 
+  /// чтоб вернуть обратно кнопку брони раскоменти и переименуй(обязательно)
   // закоменченый handleConfirmBooking ниже и вызови его в самой кнопке
   const handleConfirmBooking = () => {
     if (selectedTimeSlot && selectedResource) {
-
-
       setBookings((prevBookings) =>
         prevBookings.map((item) =>
           item.id === selectedResource.id
             ? {
-              ...item,
-              active: true,
-              date: selectedDate,
-              time: selectedTimeSlot
-            }
+                ...item,
+                active: true,
+                date: selectedDate,
+                time: selectedTimeSlot,
+              }
             : item
         )
       );
 
       alert(`Бронирование подтверждено: ${selectedResource.title}`);
-
 
       setSelectedResource(null);
       setSelectedTimeSlot(null);
@@ -252,14 +239,10 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   const handleCancelBooking = (id: string) => {
     setBookings((prev) =>
       prev.map((b) =>
-        b.id === id
-          ? { ...b, active: false, date: '', time: '' }
-          : b
+        b.id === id ? { ...b, active: false, date: '', time: '' } : b
       )
     );
   };
-
-
 
   // const handleConfirmBooking = () => {
   //   alert('Забронировано успешно!');
@@ -304,14 +287,13 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     isLoading,
     setIsLoading,
     error,
-    setError
+    setError,
   };
 
   return (
     <BookingContext.Provider value={value}>{children}</BookingContext.Provider>
   );
 };
-
 // eslint-disable-next-line react-refresh/only-export-components
 export const useBookingContext = () => {
   const context = useContext(BookingContext);

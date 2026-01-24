@@ -12,12 +12,9 @@ import { BottomNav } from '../../components/containers/bottomNav/bottomNav.tsx';
 //import {BottomNav} from '../../components/containers/bottomNav/bottomNav.tsx'
 // import {type  FilterType,  type BookingItem , type TimeSlot} from '../../App.tsx'
 // import {activeTab, setSelectedResource,  selectedTimeSlot, selectedResource} from '../../App.tsx'
-import { useBookingContext } from '../../components/containers/bookingContext/bookingContext.tsx';
+import { useBookingContext } from '../../types/bookingContext.tsx';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AuthContainer } from '../../components/containers/auth/auth.tsx'
-
-
-
+import { AuthContainer } from '../../components/containers/auth/auth.tsx';
 
 const pageVariants = {
   initial: { opacity: 0, x: 0 },
@@ -54,7 +51,7 @@ export type FilterType =
 
 export function MainPage() {
   const { isAuthenticated } = useBookingContext();
-  console.log("Status Auth:", isAuthenticated);
+  console.log('Status Auth:', isAuthenticated);
 
   //Основной стиль приложени
   const appStyle: React.CSSProperties = {
@@ -65,7 +62,6 @@ export function MainPage() {
       '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   };
   const { activeTab, selectedResource } = useBookingContext();
-
 
   if (!isAuthenticated) {
     return (
@@ -78,13 +74,11 @@ export function MainPage() {
     );
   }
 
-
   return (
     <div style={appStyle}>
       {/* Контент в зависимости от выбранного таба */}
       <div style={{ paddingBottom: '80px' }}>
         <AnimatePresence mode="wait">
-
           <motion.div
             key={selectedResource ? 'details' : activeTab} // Ключ для анимки, без него не ворк
             initial="initial"
@@ -103,7 +97,6 @@ export function MainPage() {
               <RenderProfileScreen />
             )}
           </motion.div>
-
 
           {/* {selectedResource
             ? ResourceDetails()

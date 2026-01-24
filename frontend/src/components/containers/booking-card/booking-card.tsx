@@ -1,7 +1,7 @@
 import { type PropsWithChildren } from 'react';
 import Button from '../../small/button/button';
-import { useBookingContext } from '../bookingContext/bookingContext.tsx';
-import type { BookingItem } from '../bookingContext/bookingContext.tsx';
+import { useBookingContext } from '../../../types/bookingContext.tsx';
+import type { BookingItem } from '../../../types/bookingContext.tsx';
 
 interface CardProps {
   data?: BookingItem;
@@ -12,7 +12,6 @@ export const BookingCard = ({
   data,
 }: PropsWithChildren<CardProps>): React.ReactElement => {
   const {
-
     handleResourceClick = (item?: BookingItem) => {
       if (!item) {
         return;
