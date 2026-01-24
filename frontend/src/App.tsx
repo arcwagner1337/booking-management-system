@@ -2,7 +2,7 @@
 // import Input from "./components/small/input/input";
 // import TagButton from "./components/small/tags/tags";
 import { MainPage } from './views/main-page/main-page.tsx';
-import { BookingProvider } from './components/containers/bookingContext/bookingContext.tsx';
+import { BookingProvider } from './types/bookingContext.tsx';
 function App() {
   window.Telegram?.WebApp?.ready();
   // Закоментить строки ниже для тестов визуальной части в браузере

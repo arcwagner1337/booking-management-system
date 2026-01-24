@@ -1,6 +1,6 @@
 import Card from '../../small/card/card.tsx';
 import Button from '../../small/button/button.tsx';
-import { useBookingContext } from '../bookingContext/bookingContext';
+import { useBookingContext } from '../../../types/bookingContext.tsx';
 // import { type ButtonVariant } from '../../small/button/button.tsx'
 // import { useState } from 'react';
 

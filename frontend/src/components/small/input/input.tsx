@@ -29,7 +29,8 @@ const Input = ({
   onChange,
   value,
   // type = 'text',
-  className = '', ...props
+  className = '',
+  ...props
 }: InputProps): React.ReactElement => {
   // const [text, setText] = useState('');
   // const handleChange = (event: {
@@ -50,7 +51,6 @@ const Input = ({
     }
   };
 
-
   const baseStyles =
     'input font-medium transition-all duration-200 focus:outline-none';
   const variants: Record<InputVariant, string> = {
@@ -70,7 +70,6 @@ const Input = ({
 
   const floatingInputClasses = `${combinedClasses} bg-base-100 p-3 rounded-xl border border-white/5 focus:outline-accent`;
 
-
   if (isFloating) {
     return (
       <>
@@ -84,7 +83,6 @@ const Input = ({
             onChange={handleChange}
             {...props}
             className={floatingInputClasses}
-
           />
           <label className="input-floating-label" htmlFor={`${id}`}>
             {label}
