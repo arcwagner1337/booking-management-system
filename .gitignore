@@ -205,6 +205,6 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
-frontend/.firebaserc
+# Firebase
 frontend/.firebaserc
 frontend/.firebase/hosting.ZGlzdA.cache
