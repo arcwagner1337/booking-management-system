@@ -167,6 +167,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     { time: '20:00', available: true },
     { time: '20:30', available: true },
     { time: '21:00', available: true },
+    { time: '21:30', available: true },
   ];
   const calendarDays = Array.from({ length: 31 }, (_, i) => String(i + 1));
 

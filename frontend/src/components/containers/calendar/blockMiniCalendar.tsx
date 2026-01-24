@@ -45,6 +45,7 @@ export const BlockMiniCalendar = () => {
               variant={
                 isSelected ? 'primary' : hasBooking ? 'secondary' : 'tertiary'
               }
+              
               shape="rounded"
               className="relative"
             >
