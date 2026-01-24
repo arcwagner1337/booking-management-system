@@ -1,6 +1,7 @@
-#firebase
+# Firebase
 .firebaserc
-*.firebaserc
+.firebase/hosting.ZGlzdA.cache
+firebase.json
 # Logs
 logs
 *.log
@@ -15,7 +16,7 @@ node_modules
 dist
 dist-ssr
 *.local
-
+.firebase
 
 # Editor directories and files
 .vscode/*
