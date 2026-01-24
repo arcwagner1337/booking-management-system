@@ -2,6 +2,7 @@ import Button from '../../small/button/button';
 import { ActiveBookingCard } from '../booking-card/booking-card-active';
 import { useBookingContext } from '../bookingContext/bookingContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { AUTH_CREDENTIALS } from '../auth/authConfig';
 
 export const RenderProfileScreen = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -31,7 +32,7 @@ export const RenderProfileScreen = () => {
             </div>
             <div>
               <div className="text-base font-semibold mb-1">
-                {user?.username || 'anonymous'}
+                {user?.username || AUTH_CREDENTIALS.login}
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <span className="w-2 h-2 rounded-full" />

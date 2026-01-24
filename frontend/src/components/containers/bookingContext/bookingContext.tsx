@@ -27,6 +27,21 @@ interface BookingContextType {
   handleCancelBooking: (id: string) => void;
   handleBackClick: () => void;
   handleConfirmBooking: () => void;
+  isAuthenticated: boolean;
+  setIsAuthenticated: (val: boolean) => void;
+  login: string;
+  pass: string;
+  isLoading: boolean;
+  setLogin: React.Dispatch<React.SetStateAction<string>>;
+  setPass: React.Dispatch<React.SetStateAction<string>>;
+  setIsLoading: (value: React.SetStateAction<boolean>) => void;
+  error: boolean;
+  setError: React.Dispatch<React.SetStateAction<boolean>>
+
+
+
+
+
 }
 export interface BookingItem {
   price?: number;
@@ -55,8 +70,14 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   const [selectedResource, setSelectedResource] = useState<BookingItem | null>(
     null
   );
-  
-  
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const [login, setLogin] = useState('');
+  const [pass, setPass] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+
   const filters: FilterType[] = [
     'Все',
     'Площадка',
@@ -157,7 +178,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     { time: '21:00', available: true },
   ];
 
-const calendarDays = Array.from({ length: 31 }, (_, i) => String(i + 1));
+  const calendarDays = Array.from({ length: 31 }, (_, i) => String(i + 1));
 
   // const calendarDays = [
   //   '1',
@@ -201,42 +222,42 @@ const calendarDays = Array.from({ length: 31 }, (_, i) => String(i + 1));
     setSelectedResource(null);
   };
 
-/// чтоб вернуть обратно кнопку брони раскоменти и переименуй(обязательно) 
-// закоменченый handleConfirmBooking ниже и вызови его в самой кнопке
-  const handleConfirmBooking = () => { 
+  /// чтоб вернуть обратно кнопку брони раскоменти и переименуй(обязательно) 
+  // закоменченый handleConfirmBooking ниже и вызови его в самой кнопке
+  const handleConfirmBooking = () => {
     if (selectedTimeSlot && selectedResource) {
-      
-      
-      setBookings((prevBookings) => 
-        prevBookings.map((item) => 
-          item.id === selectedResource.id 
-            ? { 
-                ...item, 
-                active: true, 
-                date: selectedDate, 
-                time: selectedTimeSlot 
-              } 
+
+
+      setBookings((prevBookings) =>
+        prevBookings.map((item) =>
+          item.id === selectedResource.id
+            ? {
+              ...item,
+              active: true,
+              date: selectedDate,
+              time: selectedTimeSlot
+            }
             : item
         )
       );
 
       alert(`Бронирование подтверждено: ${selectedResource.title}`);
-      
-      
+
+
       setSelectedResource(null);
       setSelectedTimeSlot(null);
     }
-  };  
+  };
 
-const handleCancelBooking = (id: string) => {
-  setBookings((prev) =>
-    prev.map((b) =>
-      b.id === id 
-        ? { ...b, active: false, date: '', time: '' } 
-        : b
-    )
-  );
-};
+  const handleCancelBooking = (id: string) => {
+    setBookings((prev) =>
+      prev.map((b) =>
+        b.id === id
+          ? { ...b, active: false, date: '', time: '' }
+          : b
+      )
+    );
+  };
 
 
 
@@ -273,7 +294,17 @@ const handleCancelBooking = (id: string) => {
     handleResourceClick,
     handleBackClick,
     handleConfirmBooking,
-    handleCancelBooking
+    handleCancelBooking,
+    isAuthenticated,
+    setIsAuthenticated,
+    login,
+    setLogin,
+    pass,
+    setPass,
+    isLoading,
+    setIsLoading,
+    error,
+    setError
   };
 
   return (

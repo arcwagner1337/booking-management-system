@@ -107,12 +107,13 @@ export const Calendar = () => {
                                 disabled={isSelected}
                                 label={day}
                                 size="md"
-                                width="responsive"
+                                width="auto"
                                 onClick={() => {
                                     if (day) {
                                         setSelectedDate(`${day} янв`);
                                     }
                                 }}
+                                shape='rounded'
                                 className={`relative ${hasBooking ? 'btn-active' : ''}`}
                             >
                                 {hasBooking && (

@@ -4,7 +4,8 @@ type InputVariant = 'default' | 'success' | 'error';
 
 type InputSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 interface InputProps {
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+  onChange?: ((e: React.ChangeEvent<HTMLInputElement>) => void) | undefined;
   placeholder?: string;
   variant?: InputVariant;
   size?: InputSize;
@@ -14,6 +15,7 @@ interface InputProps {
   id?: string;
   isFloating?: boolean;
   span?: string;
+  className?: string;
 }
 const Input = ({
   label,
@@ -24,13 +26,31 @@ const Input = ({
   disabled = false,
   isFloating = false,
   span,
+  onChange,
+  value,
+  // type = 'text',
+  className = '', ...props
 }: InputProps): React.ReactElement => {
-  const [text, setText] = useState('');
-  const handleChange = (event: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
-    setText(event.target.value);
+  // const [text, setText] = useState('');
+  // const handleChange = (event: {
+  //   target: { value: React.SetStateAction<string> };
+  // }) => {
+  //   setText(event.target.value);
+  // };
+
+  const [internalValue, setInternalValue] = useState('');
+  const controlledValue = value !== undefined ? value : internalValue;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Обновляем внутренний стейт
+    setInternalValue(e.target.value);
+    // Вызываем внешний onChange, если он был передан
+    if (onChange) {
+      onChange(e);
+    }
   };
+
+
   const baseStyles =
     'input font-medium transition-all duration-200 focus:outline-none';
   const variants: Record<InputVariant, string> = {
@@ -45,17 +65,26 @@ const Input = ({
     lg: 'input-lg',
     xl: 'input-xl',
   };
+
+  const combinedClasses = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
+
+  const floatingInputClasses = `${combinedClasses} bg-base-100 p-3 rounded-xl border border-white/5 focus:outline-accent`;
+
+
   if (isFloating) {
     return (
       <>
         <div className="input-floating max-w-sm">
           <input
             id={id}
-            value={text}
-            className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
+            value={controlledValue}
+            // className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
             placeholder={`${placeholder}`}
             disabled={disabled}
             onChange={handleChange}
+            {...props}
+            className={floatingInputClasses}
+
           />
           <label className="input-floating-label" htmlFor={`${id}`}>
             {label}
@@ -73,12 +102,14 @@ const Input = ({
         </label>
         <input
           id={id}
-          value={text}
+          value={controlledValue}
           type="text"
-          className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
+          // className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
+          className={combinedClasses}
           placeholder={`${placeholder}`}
           disabled={disabled}
           onChange={handleChange}
+          {...props}
         />
         <span className="helper-text">{span}</span>
       </div>

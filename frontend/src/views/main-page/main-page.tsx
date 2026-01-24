@@ -14,6 +14,10 @@ import { BottomNav } from '../../components/containers/bottomNav/bottomNav.tsx';
 // import {activeTab, setSelectedResource,  selectedTimeSlot, selectedResource} from '../../App.tsx'
 import { useBookingContext } from '../../components/containers/bookingContext/bookingContext.tsx';
 import { motion, AnimatePresence } from 'framer-motion';
+import { AuthContainer } from '../../components/containers/auth/auth.tsx';
+
+
+
 
 const pageVariants = {
   initial: { opacity: 0, x: 10 },
@@ -49,7 +53,10 @@ export type FilterType =
   | 'Жильё';
 
 export function MainPage() {
-  // Основной стиль приложения
+   //Основной стиль приложени
+const {isAuthenticated } = useBookingContext();
+console.log("Status Auth:", isAuthenticated);
+
   const appStyle: React.CSSProperties = {
     backgroundColor: '#0a0a0a',
     color: '#ffffff',
@@ -58,13 +65,27 @@ export function MainPage() {
       '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
   };
   const { activeTab, selectedResource } = useBookingContext();
+
+
+  if (!isAuthenticated) {
+    return (
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black">
+         {/* Добавим временный бордер, чтобы увидеть границы */}
+         <div className="border-2 border-red-500 p-4">
+            <AuthContainer />
+         </div>
+      </div>
+    );
+  }
+
+
   return (
     <div style={appStyle}>
       {/* Контент в зависимости от выбранного таба */}
       <div style={{ paddingBottom: '80px' }}>
         <AnimatePresence mode="wait">
 
-           <motion.div
+          <motion.div
             key={selectedResource ? 'details' : activeTab} // Ключ заставляет анимацию срабатывать при смене
             initial="initial"
             animate="animate"
@@ -80,7 +101,7 @@ export function MainPage() {
               <Calendar />
             ) : (
               /* Вызываем как компонент, а не функцию */
-              <RenderProfileScreen /> 
+              <RenderProfileScreen />
             )}
           </motion.div>
 
@@ -95,7 +116,7 @@ export function MainPage() {
         </AnimatePresence>
       </div>
       {/* Нижняя навигация */}
-      {!selectedResource && BottomNav()}
+      {!selectedResource && <BottomNav/>}
     </div>
   );
 }
