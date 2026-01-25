@@ -6,24 +6,24 @@ import { useBookingContext } from '../../../types/bookingContext.tsx';
 
 export const BlockMiniCalendar = () => {
   const { setSelectedDate, calendarDays, selectedDate, bookings,
-    viewDate, setViewDate, getDaysInMonth } =
+  } =
     useBookingContext();
 
-  const monthNames = [
-    'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-    'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-  ];
-  const currentMonth = viewDate.getMonth();
-  const currentYear = viewDate.getFullYear();
+  // const monthNames = [
+  //   'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+  //   'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+  // ];
+  // const currentMonth = viewDate.getMonth();
+  // const currentYear = viewDate.getFullYear();
 
-  const handlePrevMonth = () => {
-    setViewDate(new Date(currentYear, currentMonth - 1, 1));
-  };
+  // const handlePrevMonth = () => {
+  //   setViewDate(new Date(currentYear, currentMonth - 1, 1));
+  // };
 
-  const handleNextMonth = () => {
-    setViewDate(new Date(currentYear, currentMonth + 1, 1));
-  };
-  const days = getDaysInMonth(currentYear, currentMonth);
+  // const handleNextMonth = () => {
+  //   setViewDate(new Date(currentYear, currentMonth + 1, 1));
+  // };
+  // const days = getDaysInMonth(currentYear, currentMonth);
 
 
   const selectedDayNumber = selectedDate.match(/\d+/)?.[0];
