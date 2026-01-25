@@ -6,24 +6,22 @@ import { useBookingContext } from '../../../types/bookingContext.tsx';
 
 export const BlockMiniCalendar = () => {
   const { setSelectedDate, calendarDays, selectedDate, bookings,
-  } =
+    viewDate, setViewDate, getDaysInMonth } =
     useBookingContext();
 
-  // const monthNames = [
-  //   'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-  //   'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-  // ];
-  // const currentMonth = viewDate.getMonth();
-  // const currentYear = viewDate.getFullYear();
-
-  // const handlePrevMonth = () => {
-  //   setViewDate(new Date(currentYear, currentMonth - 1, 1));
-  // };
-
-  // const handleNextMonth = () => {
-  //   setViewDate(new Date(currentYear, currentMonth + 1, 1));
-  // };
-  // const days = getDaysInMonth(currentYear, currentMonth);
+  const monthNames = [
+    'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+    'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+  ];
+  const currentMonth = viewDate.getMonth();
+  const currentYear = viewDate.getFullYear()
+  const handlePrevMonth = () => {
+    setViewDate(new Date(currentYear, currentMonth - 1, 1));
+  }
+  const handleNextMonth = () => {
+    setViewDate(new Date(currentYear, currentMonth + 1, 1));
+  };
+  const days = getDaysInMonth(currentYear, currentMonth);
 
 
   const selectedDayNumber = selectedDate.match(/\d+/)?.[0];
@@ -31,7 +29,28 @@ export const BlockMiniCalendar = () => {
   // const [activeButtonId, setActiveButtonId] = useState<number | null>(null);
 
   return (
-    <Card title="Календарь" extra={selectedDate}>
+    // <Card title="Календарь" extra={selectedDate}>
+    <Card>
+      <div className="flex justify-between items-center mb-5">
+        <Button
+          variant="primary"
+          size="lg"
+          width="responsive"
+          shape="text"
+          onClick={handlePrevMonth}
+          label="←"
+        />
+        <h2 className="text-lg font-semibold">{monthNames[currentMonth]} {currentYear}</h2>
+        <Button
+          variant="primary"
+          size="lg"
+          width="responsive"
+          shape="text"
+          onClick={handleNextMonth}
+          label="→"
+        />
+      </div>
+
       {/* Дни недели */}
       <div className="grid grid-cols-7 gap-2 mb-2">
         {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((day) => (
@@ -45,12 +64,19 @@ export const BlockMiniCalendar = () => {
       </div>
       {/* Сетка чисел */}
       <div className="grid grid-cols-7 gap-2">
-        {calendarDays.map((day) => {
+
+        {days.map((day, index) => {
+          if (!day) return <div key={`empty-${index}`} />; // Пустая ячейка для отступа
+
+          const dayString = `${day} ${monthNames[currentMonth].slice(0, 3).toLowerCase()}`;
+          const isSelected = day.toString() === selectedDayNumber;
+          const hasBooking = bookings.some(b => b.date === dayString);
+          {/* {calendarDays.map((day) => {
           const dayString = day ? `${day} янв` : '';
           const hasBooking =
             dayString && bookings.some((booking) => booking.date === dayString);
           if (!day) return null;
-          const isSelected = day === selectedDayNumber;
+          const isSelected = day === selectedDayNumber; */}
           return (
             <Button
               label={day?.toString() || ''}

@@ -198,7 +198,8 @@ export const ResourceDetails = () => {
         >
           {/* Слоты на {selectedDate} */}
         </h2>
-        <div className='flex flex-row gap-3 flex-wrap justify-around'>
+        {/* <div className='flex flex-row gap-3 flex-wrap justify-around'> */}
+        <div className="grid grid-cols-4 gap-2 mb-2">
           {timeSlots.map((slot) => (
             <div className="">
               <Button
