@@ -165,7 +165,7 @@ export const ResourceDetails = () => {
           size="lg"
           width="responsive"
           shape="text"
-          onClick={() => { }}
+          onClick={() => {}}
           label="↗"
           className="ml-auto"
         />
@@ -198,16 +198,19 @@ export const ResourceDetails = () => {
         >
           {/* Слоты на {selectedDate} */}
         </h2>
-        <div className='flex flex-row gap-3 flex-wrap justify-around'>
+        <div className="flex flex-row gap-3 flex-wrap justify-around">
           {timeSlots.map((slot) => (
             <div className="">
               <Button
                 label={slot.time}
                 onClick={() => setSelectedTimeSlot(slot.time)}
                 size="md"
-                variant={selectedTimeSlot === slot.time ? 'primary' : 'secondary'}
+                variant={
+                  selectedTimeSlot === slot.time ? 'primary' : 'secondary'
+                }
                 shape="default"
-              /></div>
+              />
+            </div>
           ))}
         </div>
       </div>
