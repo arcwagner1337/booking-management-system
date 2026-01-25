@@ -65,7 +65,7 @@ export function MainPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black">
+      <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black">
         {/*  временный бордер*/}
         <div className="border-2 border-red-500 p-4">
           <AuthContainer />
