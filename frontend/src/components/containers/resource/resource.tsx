@@ -74,9 +74,7 @@ export const ResourceDetails = () => {
     timeSlots,
     handleConfirmBooking,
   } = useBookingContext();
-
   if (!selectedResource) return null;
-
   return (
     <div className="p-4 max-w-125 mt-0 mb-0  ml-auto mr-auto">
       {/* Заголовок с кнопкой назад */}
@@ -97,18 +95,19 @@ export const ResourceDetails = () => {
             <span>{selectedResource.capacity}</span>
           </div>
         </div>
-
+        {/* 
+        // А нужна ли тут эта кнопка вообще
         <Button
           variant="primary"
           size="lg"
           width="responsive"
           shape="text"
-          onClick={() => {}}
+          onClick={() => { }}
           label="↗"
           className="ml-auto"
-        />
+        /> */}
       </div>
-      {BlockMiniCalendar()}
+      <BlockMiniCalendar />
       {/* Календарь */}
 
       {/* Слоты времени */}
@@ -131,10 +130,10 @@ export const ResourceDetails = () => {
       </div>
 
       {/* Итого */}
-      <div className="rounded-2xl p-5 mb-6 text-accent">
+      <div className="rounded-2xl p-5 mb-6 text-neutral">
         <div className="flex justify-between mb-2">
-          <span className="text-base-300">Итого</span>
-          <span className="font-bold text-2xl ">
+          <span className="text-neutral">Итого</span>
+          <span className="font-bold text-2xl text-neutral">
             {(selectedResource.price ?? 0).toLocaleString('ru-RU')} ₽
           </span>
         </div>

@@ -1,7 +1,3 @@
-// import reactLogo from './assets/react.svg'
-// import reactLogo from '../../assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
 import {
   ResourceDetails,
   ResourcesScreen,
@@ -9,9 +5,6 @@ import {
 import { Calendar } from '../../components/containers/calendar/calendar.tsx';
 import { RenderProfileScreen } from '../../components/containers/profile/profile.tsx';
 import { BottomNav } from '../../components/containers/bottomNav/bottomNav.tsx';
-//import {BottomNav} from '../../components/containers/bottomNav/bottomNav.tsx'
-// import {type  FilterType,  type BookingItem , type TimeSlot} from '../../App.tsx'
-// import {activeTab, setSelectedResource,  selectedTimeSlot, selectedResource} from '../../App.tsx'
 import { useBookingContext } from '../../types/bookingContext.tsx';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AuthContainer } from '../../types/auth/auth.tsx';

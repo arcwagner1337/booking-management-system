@@ -26,13 +26,11 @@ const Card = ({
   };
   const cardClasses = `card shadow-sm border ${variantClasses[variant]} ${shape} ${className}`;
   return (
-    <div className={cardClasses}>
+    <div className={`${cardClasses}  mb-6`}>
       <div className="card-body p-5">
         {(title || extra) && (
-          <div className="flex justify-between items-center mb-4">
-            {title && (
-              <h2 className="card-title text-base font-semibold">{title}</h2>
-            )}
+          <div className="flex justify-between items-center mb-4 text-neutral">
+            {title && <h2 className="card-title  font-semibold">{title}</h2>}
             {extra && <div className="text-primary font-medium">{extra}</div>}
           </div>
         )}

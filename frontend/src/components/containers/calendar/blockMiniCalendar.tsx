@@ -52,7 +52,7 @@ export const BlockMiniCalendar = () => {
           onClick={handlePrevMonth}
           label="←"
         />
-        <h2 className="text-lg font-semibold">
+        <h2 className="text-lg text-neutral font-semibold">
           {monthNames[currentMonth]} {currentYear}
         </h2>
         <Button
