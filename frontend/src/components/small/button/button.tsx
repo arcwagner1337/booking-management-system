@@ -78,7 +78,6 @@ const Button = ({
       className={combinedClasses}
       {...props}
     >
-      {/* {isLoading ? "Loading..." : children || label} */}
       {label} {children}
     </button>
   );

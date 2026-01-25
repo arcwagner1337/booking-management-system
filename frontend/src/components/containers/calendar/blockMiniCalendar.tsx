@@ -1,8 +1,6 @@
 import Card from '../../small/card/card.tsx';
 import Button from '../../small/button/button.tsx';
 import { useBookingContext } from '../../../types/bookingContext.tsx';
-// import { type ButtonVariant } from '../../small/button/button.tsx'
-// import { useState } from 'react';
 
 export const BlockMiniCalendar = () => {
   const {
@@ -86,14 +84,6 @@ export const BlockMiniCalendar = () => {
           const dayString = `${day} ${monthNames[currentMonth].slice(0, 3).toLowerCase()}`;
           const isSelected = day.toString() === selectedDayNumber;
           const hasBooking = bookings.some((b) => b.date === dayString);
-          {
-            /* {calendarDays.map((day) => {
-          const dayString = day ? `${day} янв` : '';
-          const hasBooking =
-            dayString && bookings.some((booking) => booking.date === dayString);
-          if (!day) return null;
-          const isSelected = day === selectedDayNumber; */
-          }
           return (
             <Button
               label={day?.toString() || ''}

@@ -24,9 +24,7 @@ const Card = ({
     secondary: 'bg-secondary text-secondary-content', // Вторичный цвет
     accent: 'bg-accent text-accent-content', // Акцентный цвет
   };
-
   const cardClasses = `card shadow-sm border ${variantClasses[variant]} ${shape} ${className}`;
-
   return (
     <div className={cardClasses}>
       <div className="card-body p-5">

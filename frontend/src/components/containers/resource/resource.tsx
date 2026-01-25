@@ -1,17 +1,7 @@
-// import {selectedResource,  selectedDate,
-//      setSelectedDate,setSelectedTimeSlot, selectedTimeSlot,
-//       setSelectedFilter, selectedFilter } from  '../../../views/main-page/main-page.tsx'
-
-// import type React from 'react';
-// import { timeSlots, handleBackClick, calendarDays, filters, bookings, handleResourceClick, handleConfirmBooking } from '../../../views/main-page/main-page.tsx'
 import { useBookingContext } from '../../../types/bookingContext.tsx';
-// import {  } from "../../../views/main-page/main-page.tsx"
-// import { MiniCalendar } from '../calendar/miniCalendar.tsx'
-// import { Calendar } from '../calendar/calendar.tsx';
 import Button from '../../small/button/button.tsx';
 import { BlockMiniCalendar } from '../calendar/blockMiniCalendar.tsx';
 import { BookingCard } from '../booking-card/booking-card.tsx';
-
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const ResourcesScreen = () => {
@@ -70,11 +60,6 @@ export const ResourcesScreen = () => {
             ))}
           </AnimatePresence>
         </div>
-
-        {/* 
-                {filteredBookings.map((booking) => (
-                    <BookingCard key={booking!.id} data={booking!} />
-                ))} */}
       </div>
     </div>
   );
@@ -128,10 +113,6 @@ export const ResourceDetails = () => {
 
       {/* Слоты времени */}
       <div className="mb-8">
-        {/* <h2 className='text-lg font-semibold mb-8'>
-           Слоты на {selectedDate} 
-        </h2>*/}
-        {/* <div className='flex flex-row gap-3 flex-wrap justify-around'> */}
         <div className="grid grid-cols-4 gap-2 mb-2">
           {timeSlots.map((slot) => (
             <div className="">

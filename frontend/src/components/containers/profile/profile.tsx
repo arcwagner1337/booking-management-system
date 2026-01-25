@@ -6,7 +6,6 @@ import { AUTH_CREDENTIALS } from '../../../types/auth/authConfig.tsx';
 import { useState } from 'react';
 
 export const RenderProfileScreen = () => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   window.Telegram?.WebApp?.ready();
   const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
 
@@ -94,8 +93,6 @@ export const RenderProfileScreen = () => {
           ></Button>
         </div>
       </div>
-      {/* Активное бронирование */}
-
       {/* Список активных карточек */}
       <div className="flex flex-col gap-4">
         <AnimatePresence>
@@ -118,25 +115,7 @@ export const RenderProfileScreen = () => {
             </motion.div>
           ))}
         </AnimatePresence>
-
-        {/* {activeBookings.length >= 1 ? (
-          
-          activeBookings.map((booking) => (
-            <ActiveBookingCard
-              key={booking.id}
-              data={booking}
-              onCancel={() => handleCancelBooking(booking.id!)}
-            />
-          ))
-        ) : (
-          <p className="text-center text-gray-500">У вас пока нет бронирований</p>
-        )} */}
       </div>
-      {/* 
-      <ActiveBookingCard />
-      <ActiveBookingCard />
-      <ActiveBookingCard /> */}
-      {/* Кнопка выхода */}
     </div>
   );
 };

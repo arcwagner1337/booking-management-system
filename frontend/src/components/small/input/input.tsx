@@ -32,16 +32,8 @@ const Input = ({
   className = '',
   ...props
 }: InputProps): React.ReactElement => {
-  // const [text, setText] = useState('');
-  // const handleChange = (event: {
-  //   target: { value: React.SetStateAction<string> };
-  // }) => {
-  //   setText(event.target.value);
-  // };
-
   const [internalValue, setInternalValue] = useState('');
   const controlledValue = value !== undefined ? value : internalValue;
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Обновляем внутренний стейт
     setInternalValue(e.target.value);
@@ -77,7 +69,6 @@ const Input = ({
           <input
             id={id}
             value={controlledValue}
-            // className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
             placeholder={`${placeholder}`}
             disabled={disabled}
             onChange={handleChange}
@@ -102,7 +93,6 @@ const Input = ({
           id={id}
           value={controlledValue}
           type="text"
-          // className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
           className={combinedClasses}
           placeholder={`${placeholder}`}
           disabled={disabled}

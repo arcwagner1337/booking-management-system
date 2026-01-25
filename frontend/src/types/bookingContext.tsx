@@ -182,7 +182,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     const date = new Date(year, month, 1);
     const days = [];
 
-    let firstDayOfWeek = date.getDay();
+    const firstDayOfWeek = date.getDay();
 
     const offset = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
 
@@ -196,40 +196,6 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     }
     return days;
   };
-
-  // const calendarDays = [
-  //   '1',
-  //   '2',
-  //   '3',
-  //   '4',
-  //   '5',
-  //   '6',
-  //   '7',
-  //   '8',
-  //   '9',
-  //   '10',
-  //   '11',
-  //   '12',
-  //   '13',
-  //   '14',
-  //   '15',
-  //   '16',
-  //   '17',
-  //   '18',
-  //   '19',
-  //   '20',
-  //   '21',
-  //   '22',
-  //   '23',
-  //   '24',
-  //   '25',
-  //   '26',
-  //   '27',
-  //   '28',
-  //   '29',
-  //   '30',
-  //   '31',
-  // ];
 
   const handleResourceClick = (resource: BookingItem) => {
     setSelectedResource(resource);

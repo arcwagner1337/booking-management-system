@@ -60,15 +60,6 @@ export const BookingCard = ({
               variant="primary"
               width="responsive"
             />
-            {/* <Button
-              label="Бронь"
-              onClick={() => {
-                handleConfirmBooking();
-              }}
-              variant="info"
-              width="responsive"
-              size="sm"
-            /> */}
           </div>
         </div>
       </div>

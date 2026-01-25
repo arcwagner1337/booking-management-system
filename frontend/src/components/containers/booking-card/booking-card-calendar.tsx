@@ -91,78 +91,76 @@ export const BookingCardCalendar = ({
       </div>
 
       //////////переделаю потом
-      // <div>
-      //   <h2 className='text-[16px] font-semibold mb-4'>
-      //     Бронирования на {selectedDate}
-      //   </h2>
+      /*
+        <div>
+        <h2 className='text-[16px] font-semibold mb-4'>
+          Бронирования на {selectedDate}
+        </h2>
+      <AnimatePresence mode="popLayout">
+        {filteredBookings.map((booking) => (
+      
+          <motion.div
+            key={booking.id}
+            layout
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.2 }}
+            className="bg-base-200 rounded-2xl p-5 mb-4 hover:bg-base-100 duration-200"
+          >
+      <div className="flex justify-between items-start mb-3">
+        <div>
+          <h3 className="text-lg font-semibold mb-1 text-accent-content">
+            {booking.title}
+          </h3>
 
-      // <AnimatePresence mode="popLayout">
-      //   {filteredBookings.map((booking) => (
-      //
-      //     <motion.div
-      //       key={booking.id}
-      //       layout
-      //       initial={{ opacity: 0, y: 20 }}
-      //       animate={{ opacity: 1, y: 0 }}
-      //       exit={{ opacity: 0, scale: 0.9 }}
-      //       transition={{ duration: 0.2 }}
-      //       className="bg-base-200 rounded-2xl p-5 mb-4 hover:bg-base-100 duration-200"
-      //     >
-      // <div className="flex justify-between items-start mb-3">
-      //   <div>
-      //     <h3 className="text-lg font-semibold mb-1 text-accent-content">
-      //       {booking.title}
-      //     </h3>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="bg-accent text-accent-content pt-0.5 pb-0.5 pr-2 pl-2 rounded-xl text-xs font-medium">
+              {booking?.type}
+            </span>
+            <span className="text-accent-content text-sm">•</span>
+            <span className="text-accent-content text-sm">
+              {booking?.capacity}
+            </span>
+          </div>
+                  {booking?.time && (
+                    <div className="text-info text-sm font-medium">
+                      ⏰ {booking?.time}
+                    </div>
+                  )}
 
-      //     <div className="flex items-center gap-2 mb-2">
-      //       <span className="bg-accent text-accent-content pt-0.5 pb-0.5 pr-2 pl-2 rounded-xl text-xs font-medium">
-      //         {booking?.type}
-      //       </span>
-      //       <span className="text-accent-content text-sm">•</span>
-      //       <span className="text-accent-content text-sm">
-      //         {booking?.capacity}
-      //       </span>
-      //     </div>
-      //             {booking?.time && (
-      //               <div className="text-info text-sm font-medium">
-      //                 ⏰ {booking?.time}
-      //               </div>
-      //             )}{' '}
-      //             {/* ⏰ */}
+                </div>
+                <div className="text-right">
+                  <div className="text-xl text-accent-content font-bold mb-2">
+                    {(booking.price ?? 0).toLocaleString()} ₽
+                  </div>
+                  <Button
+                    label={'Подробнее'}
+                    onClick={() => {
+                      if (booking !== null) {
+                        setSelectedResource(booking!);
+                        setActiveTab('Ресурсы');
+                      }
+                    }}
+                    variant="info"
+                    size="md"
+                  />
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
 
-      //           </div>
-      //           <div className="text-right">
-      //             <div className="text-xl text-accent-content font-bold mb-2">
-      //               {(booking.price ?? 0).toLocaleString()} ₽
-      //             </div>
-      //             <Button
-      //               label={'Подробнее'}
-      //               onClick={() => {
-      //                 if (booking !== null) {
-      //                   setSelectedResource(booking!);
-      //                   setActiveTab('Ресурсы');
-      //                 }
-      //               }}
-      //               variant="info"
-      //               size="md"
-      //             />
-      //           </div>
-      //         </div>
-      //       </motion.div>
-      //     ))}
-      //   </AnimatePresence>
-
-      //   {filteredBookings.length === 0 && (
-      //     <motion.p
-      //       initial={{ opacity: 0 }}
-      //       animate={{ opacity: 1 }}
-      //       className="text-gray-500 italic"
-      //     >
-      //       На этот день бронирований нет.
-      //     </motion.p>
-      //   )}
-      // </div>
-
+        {filteredBookings.length === 0 && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-gray-500 italic"
+          >
+            На этот день бронирований нет.
+          </motion.p>
+        )}
+      </div >  */
       //////////переделаю потом
     );
   } else {

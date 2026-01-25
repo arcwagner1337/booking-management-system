@@ -79,8 +79,6 @@ export const Calendar = () => {
         </div>
         {/* Дни недели */}
         <div className="grid grid-cols-7 gap-2 mb-4 text-center">
-          {' '}
-          {/*grid-cols-[repeat(7,1fr)] */}
           {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((day) => (
             <div key={day} className="text-sm text-accent-content w-auto">
               {day}
@@ -89,25 +87,14 @@ export const Calendar = () => {
         </div>
         {/* Числа месяца с бронированиями */}
         <div className="grid grid-cols-7 gap-2 text-center">
-          {/* {calendarDays.map((day, index) => {
-                        const dayString = day ? `${day} янв` : '';
-                        const hasBooking =
-                            dayString &&
-                            bookings.some((booking) => booking.date === dayString);
-                        if (!day) return null;
-                        const isSelected = day === selectedDayNumber; */}
-
           {days.map((day, index) => {
             if (!day) return <div key={`empty-${index}`} />; // Пустая ячейка для отступа
-
             const dayString = `${day} ${monthNames[currentMonth].slice(0, 3).toLowerCase()}`;
             const isSelected = day.toString() === selectedDayNumber;
             const hasBooking = bookings.some((b) => b.date === dayString);
-
             return (
               <Button
                 key={index}
-                // disabled={isSelected}
                 label={day.toString()}
                 size="md"
                 width="auto"
@@ -129,7 +116,6 @@ export const Calendar = () => {
         </div>
       </div>
       {/* Предстоящие бронирования на выбранную дату */}
-
       <AnimatePresence mode="wait">
         <motion.div
           key={selectedDate}
@@ -144,12 +130,6 @@ export const Calendar = () => {
           />
         </motion.div>
       </AnimatePresence>
-
-      {/* <BookingCardCalendar
-        key={selectedDate}
-        bookings={bookings}
-        selectedDate={selectedDate}
-      ></BookingCardCalendar> */}
     </div>
   );
 };
