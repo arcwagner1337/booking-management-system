@@ -5,110 +5,79 @@ import { BookingCardCalendar } from '../booking-card/booking-card-calendar.tsx';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const Calendar = () => {
-    const {
-        selectedDate,
-        setSelectedDate,
-        bookings,
-        viewDate, setViewDate, getDaysInMonth
-    } = useBookingContext();
+  const {
+    selectedDate,
+    setSelectedDate,
+    bookings,
+    viewDate, setViewDate, getDaysInMonth
+  } = useBookingContext();
 
-    const monthNames = [
-        'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-        'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-    ];
-    const currentMonth = viewDate.getMonth();
-    const currentYear = viewDate.getFullYear();
+  const monthNames = [
+    'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+    'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+  ];
+  const currentMonth = viewDate.getMonth();
+  const currentYear = viewDate.getFullYear();
 
-    const handlePrevMonth = () => {
-        setViewDate(new Date(currentYear, currentMonth - 1, 1));
-    };
+  const handlePrevMonth = () => {
+    setViewDate(new Date(currentYear, currentMonth - 1, 1));
+  };
 
-    const handleNextMonth = () => {
-        setViewDate(new Date(currentYear, currentMonth + 1, 1));
-    };
-    const days = getDaysInMonth(currentYear, currentMonth);
+  const handleNextMonth = () => {
+    setViewDate(new Date(currentYear, currentMonth + 1, 1));
+  };
+  const days = getDaysInMonth(currentYear, currentMonth);
 
-    const getSelectedDayNumber = () => {
-        const match = selectedDate.match(/\d+/);
-        return match ? match[0] : null;
-    };
+  const getSelectedDayNumber = () => {
+    const match = selectedDate.match(/\d+/);
+    return match ? match[0] : null;
+  };
 
-    const selectedDayNumber = getSelectedDayNumber();
-    // console.log(bookings);
-    return (
-        <div style={{ padding: '16px' }}>
-            {/* Заголовок */}
-            <div style={{ marginBottom: '24px' }}>
-                <h1
-                    style={{ fontSize: '28px', fontWeight: '700', marginBottom: '8px' }}
-                >
-                    Календарь
-                </h1>
-                <p style={{ color: '#6b7280', fontSize: '14px' }}>
-                    Расписание бронирований
-                </p>
+  const selectedDayNumber = getSelectedDayNumber();
+  // console.log(bookings);
+  return (
+    <div className="p-4">
+      {/* Заголовок */}
+      <div className='mb-6'>
+        <h1 className='text-3xl font-semibold mb-2'>
+          Календарь
+        </h1>
+        <p className="text-accent-content text-sm">
+          Расписание бронирований
+        </p>
+      </div>
+      {/* Текущий месяц */}
+      <div className="bg-accent rounded-2xl p-5 mb-6">
+        <div className="flex justify-between items-center mb-5">
+          <Button
+            variant="primary"
+            size="lg"
+            width="responsive"
+            shape="text"
+            onClick={handlePrevMonth}
+            label="←"
+          />
+          <h2 className="text-lg font-semibold">{monthNames[currentMonth]} {currentYear}</h2>
+          <Button
+            variant="primary"
+            size="lg"
+            width="responsive"
+            shape="text"
+            onClick={handleNextMonth}
+            label="→"
+          />
+        </div>
+        {/* Дни недели */}
+        <div className="grid grid-cols-7 gap-2 mb-4 text-center"> {/*grid-cols-[repeat(7,1fr)] */}
+          {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((day) => (
+            <div key={day} className='text-sm text-accent-content w-auto'>
+              {day}
             </div>
-            {/* Текущий месяц */}
-            <div
-                style={{
-                    backgroundColor: '#1f2937',
-                    borderRadius: '16px',
-                    padding: '20px',
-                    marginBottom: '24px',
-                }}
-            >
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        marginBottom: '20px',
-                    }}
-                >
-                    <Button
-                        variant="primary"
-                        size="lg"
-                        width="responsive"
-                        shape="text"
-                        onClick={handlePrevMonth}
-                        label="←"
-                    />
-                    <h2 style={{ fontSize: '18px', fontWeight: '600' }}>{monthNames[currentMonth]} {currentYear}</h2>
-                    <Button
-                        variant="primary"
-                        size="lg"
-                        width="responsive"
-                        shape="text"
-                        onClick={handleNextMonth}
-                        label="→"
-                    />
-                </div>
-                {/* Дни недели */}
-                <div
-                    style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(7, 1fr)',
-                        gap: '2px',
-                        marginBottom: '16px',
-                        textAlign: 'center',
-                    }}
-                >
-                    {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((day) => (
-                        <div key={day} style={{ color: '#6b7280', fontSize: '14px' }}>
-                            {day}
-                        </div>
-                    ))}
-                </div>
-                {/* Числа месяца с бронированиями */}
-                <div
-                    style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(7, 1fr)',
-                        gap: '8px',
-                        textAlign: 'center',
-                    }}
-                >
-                    {/* {calendarDays.map((day, index) => {
+          ))}
+        </div>
+        {/* Числа месяца с бронированиями */}
+        <div className="grid grid-cols-7 gap-2 text-center">
+          {/* {calendarDays.map((day, index) => {
                         const dayString = day ? `${day} янв` : '';
                         const hasBooking =
                             dayString &&
@@ -116,72 +85,61 @@ export const Calendar = () => {
                         if (!day) return null;
                         const isSelected = day === selectedDayNumber; */}
 
-                    {days.map((day, index) => {
-                        if (!day) return <div key={`empty-${index}`} />; // Пустая ячейка для отступа
+          {days.map((day, index) => {
+            if (!day) return <div key={`empty-${index}`} />; // Пустая ячейка для отступа
 
-                        const dayString = `${day} ${monthNames[currentMonth].slice(0, 3).toLowerCase()}`;
-                        const isSelected = day.toString() === selectedDayNumber;
-                        const hasBooking = bookings.some(b => b.date === dayString);
+            const dayString = `${day} ${monthNames[currentMonth].slice(0, 3).toLowerCase()}`;
+            const isSelected = day.toString() === selectedDayNumber;
+            const hasBooking = bookings.some(b => b.date === dayString);
 
-                        return (
-                            <Button
-                                key={index}
-                                // disabled={isSelected}
-                                label={day.toString()}
-                                size="md"
-                                width="auto"
-                                onClick={() => {
-                                    if (day && !isSelected) {
-                                        setSelectedDate(dayString);
-                                    }
-                                }}
-                                shape="default"
-                                className={`relative ${isSelected
-                                    ? ''
-                                    : '!bg-[#1f2937] !border-none !shadow-none hover:!bg-[#374151]'
-                                    } ${hasBooking ? 'btn-active' : ''}`}
-                            >
-                                {hasBooking && (
-                                    <div
-                                        style={{
-                                            position: 'absolute',
-                                            bottom: '4px',
-                                            left: '50%',
-                                            transform: 'translateX(-50%)',
-                                            width: '4px',
-                                            height: '4px',
-                                            backgroundColor: '#00000',
-                                            borderRadius: '50%',
-                                        }}
-                                    ></div>
-                                )}
-                            </Button>
-                        );
-                    })}
-                </div>
-            </div>
-            {/* Предстоящие бронирования на выбранную дату */}
+            return (
+              <Button
+                key={index}
+                // disabled={isSelected}
+                label={day.toString()}
+                size="md"
+                width="auto"
+                onClick={() => {
+                  if (day && !isSelected) {
+                    setSelectedDate(dayString);
+                  }
+                }}
+                shape="default"
+                className={`relative ${isSelected
+                  ? ''
+                  : 'bg-[#1f2937]! border-none! shadow-none! hover:bg-[#374151]!'
+                  } ${hasBooking ? 'btn-active' : ''}`}
+              >
+                {hasBooking && (
+                  <div className="absolute bottom-1 left-[50%] transform -translate-x-1/2 w-1 h-1 bg-accent-content rounded-full"></div>
+                )}
+              </Button>
+            );
+          })}
+        </div>
+      </div>
+      {/* Предстоящие бронирования на выбранную дату */}
 
-            <AnimatePresence mode="wait">
-                <motion.div
-                    key={selectedDate}
-                    initial={{ opacity: 0, y: 0 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 0 }}
-                    transition={{ duration: 0.2 }}
-                >
-                    <BookingCardCalendar
-                        bookings={bookings}
-                        selectedDate={selectedDate}
-                    />
-                </motion.div>
-            </AnimatePresence>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={selectedDate}
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <BookingCardCalendar
+            bookings={bookings}
+            selectedDate={selectedDate}
+          />
+        </motion.div>
+      </AnimatePresence>
 
-            {/* <BookingCardCalendar
+      {/* <BookingCardCalendar
         key={selectedDate}
         bookings={bookings}
         selectedDate={selectedDate}
       ></BookingCardCalendar> */}
-        </div>
-    );
+    </div>
+  );
 };

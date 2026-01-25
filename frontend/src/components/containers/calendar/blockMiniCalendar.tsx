@@ -61,29 +61,14 @@ export const BlockMiniCalendar = () => {
               }}
               size="md"
               width='auto'
-              // variant={
-              //   isSelected ? 'primary' : hasBooking ? 'secondary' : 'tertiary'
-              // }
-
               shape="default"
               className={`relative ${isSelected
                 ? ''
-                : '!bg-base-100 !border-none !shadow-none hover:!bg-[#374151]'
+                : 'bg-base-100! border-none! shadow-none! hover:bg-[#374151]!'
                 } ${hasBooking ? 'btn-active' : ''}`}
             >
               {hasBooking && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: '4px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    width: '4px',
-                    height: '4px',
-                    backgroundColor: 'black',
-                    borderRadius: '50%',
-                  }}
-                ></div>
+                <div className="absolute bottom-1 left-[50%] transform -translate-x-1/2 w-1 h-1 bg-accent-content rounded-full"></div>
               )}
             </Button>
           );
