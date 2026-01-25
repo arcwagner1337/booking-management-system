@@ -8,7 +8,6 @@
     valorant,
     vscode;
 }
-
 /* @plugin "@iconify/tailwind4"; */
 @source "./node_modules/flyonui/flyonui.js";
 @import 'flyonui/variants.css';

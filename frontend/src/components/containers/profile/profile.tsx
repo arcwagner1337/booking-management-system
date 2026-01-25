@@ -13,9 +13,9 @@ export const RenderProfileScreen = () => {
   const { bookings, handleCancelBooking, setIsAuthenticated } =
     useBookingContext();
   const activeBookings = bookings.filter((b) => b.active);
-  const [isChecked, setIsChecked] = useState(true)
+  const [isChecked, setIsChecked] = useState(true);
   const handleChange = () => {
-    setIsChecked(prev => !prev);
+    setIsChecked((prev) => !prev);
   };
   return (
     <div className="p-4">
@@ -61,9 +61,15 @@ export const RenderProfileScreen = () => {
                 {user?.username || AUTH_CREDENTIALS.login}
               </div>
               <div className="flex items-center text-sm">
-                <input type="checkbox" className="checkbox checkbox-primary mr-2" onChange={handleChange} checked={isChecked} />
-                <span className="text-base">{isChecked ? "Уведомления включены" : "Уведомления выключены"}</span>
-
+                <input
+                  type="checkbox"
+                  className="checkbox checkbox-primary mr-2"
+                  onChange={handleChange}
+                  checked={isChecked}
+                />
+                <span className="text-base">
+                  {isChecked ? 'Уведомления включены' : 'Уведомления выключены'}
+                </span>
               </div>
             </div>
           </div>
@@ -73,7 +79,7 @@ export const RenderProfileScreen = () => {
       <div className="mb-8">
         <div className="flex gap-3 mb-4">
           <Button
-            onClick={() => { }}
+            onClick={() => {}}
             label="Активные"
             variant="primary"
             width="responsive"
@@ -81,7 +87,7 @@ export const RenderProfileScreen = () => {
             shape="rounded"
           ></Button>
           <Button
-            onClick={() => { }}
+            onClick={() => {}}
             label="История"
             variant="secondary"
             width="responsive"

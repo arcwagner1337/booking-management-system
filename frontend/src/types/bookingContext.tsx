@@ -39,10 +39,9 @@ interface BookingContextType {
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   // currentMonth: number;
   // setCurrentMonth: React.Dispatch<React.SetStateAction<number>>
-  getDaysInMonth: (year: number, month: number) => (number | null)[]
-  viewDate: Date
-  setViewDate: React.Dispatch<React.SetStateAction<Date>>
-
+  getDaysInMonth: (year: number, month: number) => (number | null)[];
+  viewDate: Date;
+  setViewDate: React.Dispatch<React.SetStateAction<Date>>;
 }
 export interface BookingItem {
   price?: number;
@@ -72,7 +71,7 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
   );
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   // const [currentMonth, setCurrentMonth] = useState(0);
-  const [viewDate, setViewDate] = useState(new Date(2026, 0, 1)); 
+  const [viewDate, setViewDate] = useState(new Date(2026, 0, 1));
 
   const [login, setLogin] = useState('');
   const [pass, setPass] = useState('');
@@ -183,9 +182,8 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     const date = new Date(year, month, 1);
     const days = [];
 
-    
     let firstDayOfWeek = date.getDay();
-    
+
     const offset = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
 
     for (let i = 0; i < offset; i++) {
@@ -198,7 +196,6 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     }
     return days;
   };
-
 
   // const calendarDays = [
   //   '1',
@@ -250,11 +247,11 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
         prevBookings.map((item) =>
           item.id === selectedResource.id
             ? {
-              ...item,
-              active: true,
-              date: selectedDate,
-              time: selectedTimeSlot,
-            }
+                ...item,
+                active: true,
+                date: selectedDate,
+                time: selectedTimeSlot,
+              }
             : item
         )
       );
@@ -321,7 +318,8 @@ export const BookingProvider = ({ children }: { children: ReactNode }) => {
     // currentMonth,
     // setCurrentMonth,
     getDaysInMonth,
-    viewDate, setViewDate
+    viewDate,
+    setViewDate,
   };
 
   return (

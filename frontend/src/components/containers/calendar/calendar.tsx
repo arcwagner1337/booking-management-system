@@ -9,12 +9,24 @@ export const Calendar = () => {
     selectedDate,
     setSelectedDate,
     bookings,
-    viewDate, setViewDate, getDaysInMonth
+    viewDate,
+    setViewDate,
+    getDaysInMonth,
   } = useBookingContext();
 
   const monthNames = [
-    'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-    'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+    'Январь',
+    'Февраль',
+    'Март',
+    'Апрель',
+    'Май',
+    'Июнь',
+    'Июль',
+    'Август',
+    'Сентябрь',
+    'Октябрь',
+    'Ноябрь',
+    'Декабрь',
   ];
   const currentMonth = viewDate.getMonth();
   const currentYear = viewDate.getFullYear();
@@ -38,13 +50,9 @@ export const Calendar = () => {
   return (
     <div className="p-4">
       {/* Заголовок */}
-      <div className='mb-6'>
-        <h1 className='text-3xl font-semibold mb-2'>
-          Календарь
-        </h1>
-        <p className="text-accent-content text-sm">
-          Расписание бронирований
-        </p>
+      <div className="mb-6">
+        <h1 className="text-3xl font-semibold mb-2">Календарь</h1>
+        <p className="text-accent-content text-sm">Расписание бронирований</p>
       </div>
       {/* Текущий месяц */}
       <div className="bg-base-100 rounded-2xl p-5 mb-6">
@@ -57,7 +65,9 @@ export const Calendar = () => {
             onClick={handlePrevMonth}
             label="←"
           />
-          <h2 className="text-lg font-semibold">{monthNames[currentMonth]} {currentYear}</h2>
+          <h2 className="text-lg font-semibold">
+            {monthNames[currentMonth]} {currentYear}
+          </h2>
           <Button
             variant="primary"
             size="lg"
@@ -68,9 +78,11 @@ export const Calendar = () => {
           />
         </div>
         {/* Дни недели */}
-        <div className="grid grid-cols-7 gap-2 mb-4 text-center"> {/*grid-cols-[repeat(7,1fr)] */}
+        <div className="grid grid-cols-7 gap-2 mb-4 text-center">
+          {' '}
+          {/*grid-cols-[repeat(7,1fr)] */}
           {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((day) => (
-            <div key={day} className='text-sm text-accent-content w-auto'>
+            <div key={day} className="text-sm text-accent-content w-auto">
               {day}
             </div>
           ))}
@@ -90,7 +102,7 @@ export const Calendar = () => {
 
             const dayString = `${day} ${monthNames[currentMonth].slice(0, 3).toLowerCase()}`;
             const isSelected = day.toString() === selectedDayNumber;
-            const hasBooking = bookings.some(b => b.date === dayString);
+            const hasBooking = bookings.some((b) => b.date === dayString);
 
             return (
               <Button
@@ -99,16 +111,14 @@ export const Calendar = () => {
                 label={day.toString()}
                 size="md"
                 width="auto"
+                variant="primary"
                 onClick={() => {
                   if (day && !isSelected) {
                     setSelectedDate(dayString);
                   }
                 }}
                 shape="default"
-                className={`relative ${isSelected
-                  ? ''
-                  : 'bg-[#1f2937]! border-none! shadow-none! hover:bg-[#374151]!'
-                  } ${hasBooking ? 'btn-active' : ''}`}
+                className={`relative${hasBooking ? 'btn-active' : ''} ${isSelected ? '' : 'bg-base-100! border-none! shadow-none! hover:bg-[#374151]!'}`} //
               >
                 {hasBooking && (
                   <div className="absolute bottom-1 left-[50%] transform -translate-x-1/2 w-1 h-1 bg-accent-content rounded-full"></div>

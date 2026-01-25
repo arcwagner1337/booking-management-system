@@ -5,7 +5,7 @@ import { useBookingContext } from '../../../types/bookingContext.tsx';
 // import { useState } from 'react';
 
 export const BlockMiniCalendar = () => {
-  const { setSelectedDate, calendarDays, selectedDate, bookings,
+  const { setSelectedDate, selectedDate, bookings,
     viewDate, setViewDate, getDaysInMonth } =
     useBookingContext();
 
