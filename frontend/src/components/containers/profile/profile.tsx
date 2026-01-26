@@ -37,7 +37,6 @@ export const RenderProfileScreen = () => {
       </div>
       {/* Настройки */}
       <div className="mb-8">
-        <h2 className="text-base font-semibold mb-4">Настройки</h2>
         <div className="bg-base-200 rounded-2xl p-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-16 h-16 bg-accent rounded-full flex items-center justify-center font-semibold">
@@ -70,27 +69,6 @@ export const RenderProfileScreen = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      {/* Активные бронирования */}
-      <div className="mb-8">
-        <div className="flex gap-3 mb-4">
-          <Button
-            onClick={() => {}}
-            label="Активные"
-            variant="primary"
-            width="responsive"
-            size="md"
-            shape="rounded"
-          ></Button>
-          <Button
-            onClick={() => {}}
-            label="История"
-            variant="secondary"
-            width="responsive"
-            size="md"
-            shape="rounded"
-          ></Button>
         </div>
       </div>
       {/* Список активных карточек */}
