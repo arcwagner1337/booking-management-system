@@ -32,11 +32,17 @@ export const Calendar = () => {
   const currentYear = viewDate.getFullYear();
 
   const handlePrevMonth = () => {
-    setViewDate(new Date(currentYear, currentMonth - 1, 1));
+    const newDate = new Date(currentYear, currentMonth - 1, 1);
+    setViewDate(newDate);
+    
+    setSelectedDate(`1 ${monthNames[newDate.getMonth()].slice(0, 3).toLowerCase()}`);
   };
 
   const handleNextMonth = () => {
-    setViewDate(new Date(currentYear, currentMonth + 1, 1));
+    // setViewDate(new Date(currentYear, currentMonth + 1, 1));
+    const newDate = new Date(currentYear, currentMonth + 1, 1);
+    setViewDate(newDate);
+    setSelectedDate(`1 ${monthNames[newDate.getMonth()].slice(0, 3).toLowerCase()}`);
   };
   const days = getDaysInMonth(currentYear, currentMonth);
 
@@ -127,7 +133,9 @@ export const Calendar = () => {
           <BookingCardCalendar
             bookings={bookings}
             selectedDate={selectedDate}
+
           />
+
         </motion.div>
       </AnimatePresence>
     </div>
