@@ -8,4 +8,6 @@ from .models import (
     Feedback,
     Resource,
     User,
+    UserBot,
+    notification,
 )

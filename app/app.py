@@ -3,9 +3,15 @@ import logging
 from fastapi import FastAPI
 from prometheus_fastapi_instrumentator import Instrumentator
 
+from app.depends import provider
+from app.notification.scheduler import NotificationScheduler
+
 from .api import routes
 from .bot import bot_manager
 from .domain.services import user_service
+from .domain.services.feedback.evaluation_notification_service import (
+    evaluation_notification_service,
+)
 from .middlewares import LoggingMiddleware
 
 logging.basicConfig(
@@ -27,9 +33,17 @@ def get_application() -> FastAPI:
     openapi_url = None
     redoc_url = None
 
+    scheduler = NotificationScheduler(provider.session_factory)
+
     if config.server.SWAGGER_ENABLE:
         swagger_url = "/docs"
         openapi_url = "/openapi.json"
+
+    async def startup_tasks():
+        await scheduler.start()
+
+    async def shutdown_tasks():
+        await scheduler.stop()
 
     application = FastAPI(
         title=config.server.SERVER_NAME,
@@ -44,15 +58,23 @@ def get_application() -> FastAPI:
         on_startup=[
             bot_manager.run_all,
             user_service.create_test_user,
+            scheduler.start,
+            evaluation_notification_service.start,
         ],
         on_shutdown=[
             bot_manager.stop_all,
+            scheduler.stop,
+            evaluation_notification_service.stop,
         ],
     )
 
-    Instrumentator().instrument(application).expose(application)
     application.middleware("http")(LoggingMiddleware())
     for route in routes:
         application.include_router(route, prefix="/api")
+
+    Instrumentator(
+        should_group_status_codes=True,
+        should_ignore_untemplated=False,
+    ).instrument(application).expose(application, include_in_schema=False)
 
     return application
