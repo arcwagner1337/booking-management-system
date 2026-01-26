@@ -118,7 +118,7 @@ class NotificationService:
 
                 return True
 
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001
                 log(
                     level="error",
                     method="_send_notification",
@@ -131,7 +131,7 @@ class NotificationService:
                     await session.commit()
                 return False
 
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             log(
                 level="error",
                 method="_send_notification",
@@ -162,7 +162,7 @@ class NotificationService:
 
             return str(resource.customer_id)
 
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             log(
                 level="error",
                 method="_get_customer_for_notification",
@@ -172,7 +172,7 @@ class NotificationService:
             )
             return None
 
-    async def _get_bot_for_customer(
+    async def _get_bot_for_customer(  # noqa: PLR0911
         self,
         customer_id_str: str,
         session: AsyncSession,
@@ -225,11 +225,10 @@ class NotificationService:
                     level="debug",
                     method="_get_bot_for_customer",
                     path="NotificationService",
-                    text_detail=f"Bot for customer {customer_id_str} obtained from BotManager",
+                    text_detail=f"Bot for customer {customer_id_str} obtained from BotManager",  # noqa: E501
                 )
                 return bot
 
-            # If bot not in manager - try to register via manager (don't create Bot directly)
             if not bot_token:
                 log(
                     level="error",
@@ -248,27 +247,27 @@ class NotificationService:
                         level="debug",
                         method="_get_bot_for_customer",
                         path="NotificationService",
-                        text_detail=f"Bot for customer {customer_id_str} registered via BotManager",
+                        text_detail=f"Customer Bot {customer_id_str} registered",
                     )
                     return bot
                 log(
                     level="error",
                     method="_get_bot_for_customer",
                     path="NotificationService",
-                    text_detail=f"Failed to get bot after start via BotManager for customer {customer_id_str}",
+                    text_detail=f"Failed to get bot {customer_id_str}",
                 )
                 return None
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001
                 log(
                     level="error",
                     method="_get_bot_for_customer",
                     path="NotificationService",
-                    text_detail=f"Error starting bot via BotManager for customer {customer_id_str}: {e}",
+                    text_detail=f"Error starting bot BotManager{customer_id_str}: {e}",
                     exception=e,
                 )
                 return None
 
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             log(
                 level="error",
                 method="_get_bot_for_customer",
@@ -286,8 +285,9 @@ class NotificationService:
                 stmt = sa.select(User.tlg_id).where(User.id == user_id)
                 tlg_id = await session.scalar(stmt)
                 if not tlg_id:
+                    msg = f"Telegram ID not found for user {user_id}"
                     raise ValueError(
-                        f"Telegram ID not found for user {user_id}",
+                        msg,
                     )
                 await bot.send_message(
                     chat_id=tlg_id,
@@ -307,7 +307,6 @@ class NotificationService:
     async def _mark_as_failed(
         self,
         notification: Notification,
-        session: AsyncSession,
         error: str,
     ):
         """Mark notification as failed."""
@@ -320,7 +319,7 @@ class NotificationService:
         for bot in self._bot_cache.values():
             try:
                 await bot.session.close()
-            except Exception as e:
+            except Exception as e:  # noqa: BLE001
                 log(
                     level="error",
                     method="clear_bot_cache",

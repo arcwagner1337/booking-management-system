@@ -62,7 +62,7 @@ class NotificationScheduler:
             text_detail="Scheduler started",
         )
         # First run after 5 seconds
-        asyncio.create_task(self._process_notifications_job())
+        asyncio.create_task(self._process_notifications_job())  # noqa: RUF006
 
     async def stop(self) -> None:
         """Stop the scheduler."""
@@ -82,7 +82,7 @@ class NotificationScheduler:
         )
 
     async def _process_notifications_job(self):
-        """Main task for processing notifications. Gets pending notifications and calls service."""
+        """Main task for processing notifications"""
         try:
             async with self.session_factory() as session:
                 notifications = await self._get_pending_notifications(session)
@@ -118,7 +118,7 @@ class NotificationScheduler:
                                 level="error",
                                 method="_process_notifications_job",
                                 path="NotificationScheduler",
-                                text_detail=f"Failed to send notification {notification.id}",
+                                text_detail=f"Failed to send notification {notification.id}",  # noqa: E501
                             )
                     except Exception as e:  # noqa: BLE001
                         log(
@@ -131,7 +131,7 @@ class NotificationScheduler:
 
                 await session.commit()
 
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             log(
                 level="error",
                 method="_process_notifications_job",
@@ -169,7 +169,6 @@ class NotificationScheduler:
     async def _send_by_type(
         self,
         notification: Notification,
-        session: AsyncSession,
     ) -> bool:
         """Route notification to appropriate service method based on type."""
         notification_type = notification.type
@@ -195,5 +194,5 @@ class NotificationScheduler:
         try:
             await self._process_notifications_job()
             return {"status": "success", "message": "Notification check completed"}
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             return {"status": "error", "message": str(e)}
