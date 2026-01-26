@@ -22,13 +22,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install ruff
-
-      - name: Ruff Lint
-        run: |
-          ruff .
+          pip install pre-commit uv
 
       - name: Pre-commit checks
         run: |
-          pip install pre-commit
           pre-commit run --all-files
