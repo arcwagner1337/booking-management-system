@@ -9,5 +9,5 @@ from .models import (
     Resource,
     User,
     UserBot,
-    notification,
+    Notification,
 )
