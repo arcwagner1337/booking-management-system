@@ -5,7 +5,6 @@ from aiogram.types import CallbackQuery, Message
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.services.user.user import user_service
 from app.infrastructure.database.models import (
     Customer,
     CustomerAdmin,
@@ -24,21 +23,7 @@ class RoleCheckMiddleware(BaseMiddleware):
             await self._deny_access(event, "⛔ Ошибка доступа к базе данных")
             return None
 
-        tg_user = event.from_user
-        if not tg_user:
-            await self._deny_access(event, "⛔ Пользователь не найден")
-            return None
-
-        try:
-            user = await user_service.update_user_from_tlg(
-                tlg_user=tg_user,
-                bot_id=event.bot.id,
-                session=session,
-            )
-        except Exception:
-            await self._deny_access(event, "⛔ У вас нет доступа")
-            return None
-
+        user = data.get("user")
         if not user:
             await self._deny_access(event, "⛔ У вас нет доступа")
             return None
@@ -59,7 +44,6 @@ class RoleCheckMiddleware(BaseMiddleware):
             await self._deny_access(event, "⛔ У вас нет доступа")
             return None
 
-        data["user"] = user
         data["role"] = "owner" if owner_customer_ids else "admin"
         data["customer_ids"] = set(owner_customer_ids + admin_customer_ids)
 
