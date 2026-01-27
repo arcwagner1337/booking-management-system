@@ -100,7 +100,7 @@ def get_admin_handlers_router() -> Router:
     async def start_menu(
         message: Message,
         user: User | None = None,
-        role: str | None = None,  # noqa: COM812
+        role: str | None = None,
     ):
         if not user or role not in ("owner", "admin"):
             await message.answer("⛔ У вас нет доступа")  # noqa: RUF001
