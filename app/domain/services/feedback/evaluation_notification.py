@@ -1,9 +1,6 @@
-"""Service for creating evaluation request notifications for completed bookings."""
-
 import asyncio
 import contextlib
 from datetime import datetime, timedelta, timezone
-import logging
 
 import sqlalchemy as sa
 from sqlalchemy import and_
@@ -16,8 +13,7 @@ from app.infrastructure.database.models.notification import (
     NotificationStatus,
     NotificationType,
 )
-
-logger = logging.getLogger(__name__)
+from app.log import log
 
 
 class EvaluationNotificationService:
@@ -56,13 +52,19 @@ class EvaluationNotificationService:
             completed_bookings = result.all()
 
             if not completed_bookings:
-                logger.debug(
-                    "Нет завершенных бронирований для создания запросов на оценку"
+                log(
+                    level="info",
+                    method="create_evaluation_notifications",
+                    path="FeedbackModule",
+                    text_detail="There are no completed bookings to create evaluation requests",
                 )
                 return
 
-            logger.info(
-                f"Проверка {len(completed_bookings)} завершенных бронирований для создания запросов на оценку",  # noqa: E501, G004
+            log(
+                level="info",
+                method="create_evaluation_notifications",
+                path="FeedbackModule",
+                text_detail=f"Checking {len(completed_bookings)} completed bookings to create evaluation requests",
             )
 
             created_count = 0
@@ -70,9 +72,12 @@ class EvaluationNotificationService:
                 try:
                     if await self.create_notification_if_needed(booking, session):
                         created_count += 1
-                except Exception as e:  # noqa: BLE001
-                    logger.error(
-                        f"Ошибка при создании запроса на оценку для бронирования {booking.id}: {e}",  # noqa: E501, G004
+                except Exception as e:
+                    log(
+                        level="error",
+                        method="create_evaluation_notifications",
+                        path="FeedbackModule",
+                        text_detail=f"Error when creating an assessment request for a booking {booking.id}: {e}",
                     )
                     # Rollback on error to allow session to continue
                     with contextlib.suppress(Exception):
@@ -80,15 +85,22 @@ class EvaluationNotificationService:
 
             if created_count > 0:
                 await session.commit()
-                logger.info(f"Создано {created_count} запросов на оценку")  # noqa: G004
+                log(
+                    level="info",
+                    method="create_evaluation_notifications",
+                    path="FeedbackModule",
+                    text_detail=f"{created_count} rating requests have been created",
+                )
             else:
                 # Commit even if no notifications were created to clear any pending state
                 await session.commit()
 
         except Exception as e:
-            logger.error(
-                f"Ошибка в сервисе создания запросов на оценку: {e}",  # noqa: G004
-                exc_info=True,
+            log(
+                level="error",
+                method="create_evaluation_notifications",
+                path="FeedbackModule",
+                text_detail=f"Error in the evaluation request creation service: {e}",
             )
             # Rollback on error
             with contextlib.suppress(Exception):
@@ -110,8 +122,11 @@ class EvaluationNotificationService:
         existing_feedback = await session.scalar(feedback_stmt)
 
         if existing_feedback:
-            logger.debug(
-                f"Отзыв уже существует для бронирования {booking.id}, пропускаем",  # noqa: G004
+            log(
+                level="info",
+                method="create_notification_if_needed",
+                path="FeedbackModule",
+                text_detail=f"The review already exists for booking {booking.id}",
             )
             return False
 
@@ -125,8 +140,11 @@ class EvaluationNotificationService:
         existing_notification = await session.scalar(notification_stmt)
 
         if existing_notification:
-            logger.debug(
-                f"Запрос на оценку уже создан для бронирования {booking.id}, пропускаем",  # noqa: G004
+            log(
+                level="info",
+                method="create_notification_if_needed",
+                path="FeedbackModule",
+                text_detail=f"An evaluation request has already been created for booking {booking.id}",
             )
             return False
 
@@ -147,9 +165,11 @@ class EvaluationNotificationService:
         session.add(notification)
         await session.flush()
 
-        logger.info(
-            f"Создан запрос на оценку для бронирования {booking.id}, "  # noqa: G004
-            f"запланирован на {evaluation_scheduled_at}",
+        log(
+            level="info",
+            method="create_notification_if_needed",
+            path="FeedbackModule",
+            text_detail=f"An evaluation request has been created for booking {booking.id}, scheduled for {evaluation_scheduled_at}",
         )
         return True
 
@@ -162,17 +182,24 @@ class EvaluationNotificationService:
         except asyncio.CancelledError:
             raise
         except Exception as e:
-            logger.error(
-                f"Критическая ошибка в сервисе создания запросов на оценку: {e}",
-                exc_info=True,
-            )  # noqa: E501, G004
+            log(
+                level="error",
+                method="service_loop",
+                path="FeedbackModule",
+                text_detail=f"Critical error in the evaluation request creation service: {e}",
+            )
 
     async def start(self) -> None:
         """Start the evaluation notification service."""
         if self._service_task is not None and not self._service_task.done():
             return
         self._service_task = asyncio.create_task(self.service_loop())
-        logger.info("Сервис создания запросов на оценку запущен")
+        log(
+            level="info",
+            method="start",
+            path="FeedbackModule",
+            text_detail="The service for creating evaluation requests has been launched",
+        )
 
     async def stop(self) -> None:
         """Stop the evaluation notification service."""
@@ -183,8 +210,9 @@ class EvaluationNotificationService:
             with contextlib.suppress(asyncio.CancelledError):
                 await self._service_task
         self._service_task = None
-        logger.info("Сервис создания запросов на оценку остановлен")
-
-
-# Global instance
-feedback_service = EvaluationNotificationService()
+        log(
+            level="info",
+            method="stop",
+            path="FeedbackModule",
+            text_detail="The service for creating evaluation requests has been stopped",
+        )

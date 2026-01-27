@@ -9,8 +9,7 @@ from app.schedulers.scheduler import NotificationScheduler
 
 from .api import routes
 from .bot import bot_manager
-from .domain.services import user_service
-from .domain.services.feedback.evaluation_notification import feedback_service
+from .domain.services import feedback_service, user_service
 from .middlewares import LoggingMiddleware
 
 logging.basicConfig(
