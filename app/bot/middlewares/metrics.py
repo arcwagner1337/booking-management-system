@@ -1,9 +1,8 @@
-"""Middleware for collecting bot metrics."""
-
 from collections.abc import Callable
 import time
 
-from aiogram import BaseMiddleware, types
+from aiogram import BaseMiddleware
+from aiogram.types import CallbackQuery, InlineQuery, Message, Update
 
 from app.metrics.business import (
     bot_message_processing_seconds,
@@ -12,66 +11,73 @@ from app.metrics.business import (
 
 
 class MetricsMiddleware(BaseMiddleware):
-    """Middleware to collect bot metrics for Prometheus."""
-
     async def __call__(
         self,
         handler: Callable,
-        event: types.Message | types.CallbackQuery | types.InlineQuery | types.Update,
+        event: Update | Message | CallbackQuery | InlineQuery,
         data: dict,
     ):
-        """Collect metrics for bot messages."""
         start_time = time.time()
         bot_id = str(event.bot.id)
+        handler_name = self._get_handler_name(handler, data)
 
-        # Determine event type and handler name
-        handler_name = getattr(handler, "__name__", "unknown")
+        if handler_name is None:
+            handler_name = "unknown"
+
+        chat_type = self._get_chat_type(event)
+
+        try:
+            return await handler(event, data)
+        finally:
+            processing_time = time.time() - start_time
+
+            bot_messages_total.labels(
+                bot_id=bot_id,
+                chat_type=chat_type,
+                handler=handler_name,
+            ).inc()
+
+            bot_message_processing_seconds.labels(
+                bot_id=bot_id,
+                handler=handler_name,
+            ).observe(processing_time)
+
+    @staticmethod
+    def _get_handler_name(handler: Callable, data: dict) -> str | None:
+        event_handler = data.get("event_handler")
+
+        if event_handler and hasattr(event_handler, "callback"):
+            return event_handler.callback.__name__
+
+        return getattr(handler, "__name__", None) or handler.__class__.__name__
+
+    @staticmethod
+    def _get_chat_type(event) -> str:
         chat_type = "unknown"
 
-        try:
-            if event.message:
-                chat_type = event.message.chat.type if event.message.chat else "unknown"
-            elif event.callback_query:
-                if event.callback_query.message:
-                    chat_type = (
-                        event.callback_query.message.chat.type
-                        if event.callback_query.message.chat
-                        else "unknown"
-                    )
-            elif event.inline_query:
-                chat_type = "inline"
-        except Exception:  # noqa: BLE001, S110
-            pass
+        if isinstance(event, Message):
+            chat_type = event.chat.type
 
-        try:
-            result = await handler(event, data)
-            processing_time = time.time() - start_time
+        elif isinstance(event, CallbackQuery):
+            if event.message and event.message.chat:
+                chat_type = event.message.chat.type
+            else:
+                chat_type = "callback_without_message"
 
-            # Record metrics
-            bot_messages_total.labels(
-                bot_id=bot_id,
-                chat_type=chat_type,
-                handler=handler_name,
-            ).inc()
+        elif isinstance(event, InlineQuery):
+            chat_type = "inline"
 
-            bot_message_processing_seconds.labels(
-                bot_id=bot_id,
-                handler=handler_name,
-            ).observe(processing_time)
+        elif isinstance(event, Update):
+            for field in (
+                "message",
+                "edited_message",
+                "channel_post",
+                "edited_channel_post",
+            ):
+                msg = getattr(event, field, None)
+                if msg and msg.chat:
+                    return msg.chat.type
 
-            return result
-        except Exception:
-            # Still record metrics even on error
-            processing_time = time.time() - start_time
-            bot_messages_total.labels(
-                bot_id=bot_id,
-                chat_type=chat_type,
-                handler=handler_name,
-            ).inc()
+            return event.event_type
 
-            bot_message_processing_seconds.labels(
-                bot_id=bot_id,
-                handler=handler_name,
-            ).observe(processing_time)
-
-            raise
+        return chat_type

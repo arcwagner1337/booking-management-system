@@ -444,7 +444,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(booking_duration_seconds_bucket[5m])) by (le, customer_id, resource_id))",
+          "expr": "(histogram_quantile(0.95, sum(rate(booking_duration_seconds_bucket[5m])) by (le, customer_id, resource_id)) == histogram_quantile(0.95, sum(rate(booking_duration_seconds_bucket[5m])) by (le, customer_id, resource_id))) or (0 * sum by(customer_id, resource_id) (booking_duration_seconds_count))",
           "legendFormat": "P95 - {{customer_id}}/{{resource_id}}",
           "refId": "A"
         },
@@ -454,7 +454,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.50, sum(rate(booking_duration_seconds_bucket[5m])) by (le, customer_id, resource_id))",
+          "expr": "(histogram_quantile(0.50, sum(rate(booking_duration_seconds_bucket[5m])) by (le, customer_id, resource_id)) == histogram_quantile(0.50, sum(rate(booking_duration_seconds_bucket[5m])) by (le, customer_id, resource_id))) or (0 * sum by(customer_id, resource_id) (booking_duration_seconds_count))",
           "legendFormat": "P50 - {{customer_id}}/{{resource_id}}",
           "refId": "B"
         }
@@ -572,9 +572,9 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(bot_message_processing_seconds_bucket[5m])) by (le, bot_id, handler))",
+          "expr": "(histogram_quantile(0.95, sum(rate(bot_message_processing_seconds_bucket[5m])) by (le, bot_id, handler)) == histogram_quantile(0.95, sum(rate(bot_message_processing_seconds_bucket[5m])) by (le, bot_id, handler))) or (0 * sum by(bot_id, handler) (bot_message_processing_seconds_count))",
           "instant": true,
-          "legendFormat": "",
+          "legendFormat": "{{bot_id}} - {{handler}}",
           "range": true,
           "refId": "A"
         }
@@ -755,7 +755,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, sum(rate(bot_message_processing_seconds_bucket[5m])) by (le, bot_id, handler))",
+          "expr": "(histogram_quantile(0.95, sum(rate(bot_message_processing_seconds_bucket[5m])) by (le, bot_id, handler)) == histogram_quantile(0.95, sum(rate(bot_message_processing_seconds_bucket[5m])) by (le, bot_id, handler))) or (0 * sum by(bot_id, handler) (bot_message_processing_seconds_count))",
           "legendFormat": "P95 - Bot {{bot_id}} - {{handler}}",
           "refId": "A"
         },
@@ -765,7 +765,7 @@
             "uid": "Prometheus"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.50, sum(rate(bot_message_processing_seconds_bucket[5m])) by (le, bot_id, handler))",
+          "expr": "(histogram_quantile(0.50, sum(rate(bot_message_processing_seconds_bucket[5m])) by (le, bot_id, handler)) == histogram_quantile(0.50, sum(rate(bot_message_processing_seconds_bucket[5m])) by (le, bot_id, handler))) or (0 * sum by(bot_id, handler) (bot_message_processing_seconds_count))",
           "legendFormat": "P50 - Bot {{bot_id}} - {{handler}}",
           "refId": "B"
         }
