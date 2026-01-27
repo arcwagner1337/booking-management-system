@@ -4,7 +4,8 @@ from fastapi import FastAPI
 from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.depends import provider
-from app.notification.scheduler import NotificationScheduler
+from app.domain.services.notification.service import NotificationService
+from app.schedulers.scheduler import NotificationScheduler
 
 from .api import routes
 from .bot import bot_manager
@@ -20,7 +21,13 @@ logging.basicConfig(
     ],
 )
 
-for logger_name in ["aiogram", "aiogram.event", "aiogram.dispatcher", "httpx"]:
+for logger_name in [
+    "aiogram",
+    "aiogram.event",
+    "aiogram.dispatcher",
+    "httpx",
+    "apscheduler",
+]:
     logging.getLogger(logger_name).setLevel(logging.WARNING)
 
 
@@ -31,17 +38,12 @@ def get_application() -> FastAPI:
     openapi_url = None
     redoc_url = None
 
-    scheduler = NotificationScheduler(provider.session_factory)
+    notification_service = NotificationService(provider.session_factory)
+    scheduler = NotificationScheduler(provider.session_factory, notification_service)
 
     if config.server.SWAGGER_ENABLE:
         swagger_url = "/docs"
         openapi_url = "/openapi.json"
-
-    async def startup_tasks():
-        await scheduler.start()
-
-    async def shutdown_tasks():
-        await scheduler.stop()
 
     application = FastAPI(
         title=config.server.SERVER_NAME,
