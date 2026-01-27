@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from uuid import UUID
 
+from pydantic import BaseModel
 import sqlalchemy as sa
 
 from app.depends import AsyncSession, provider
@@ -13,7 +14,7 @@ from app.infrastructure.database.models.users import Customer, CustomerAdmin, Us
 
 
 @dataclass(frozen=True)
-class FreeSlotsParams:
+class FreeSlotsParams(BaseModel):
     start: datetime
     end: datetime
     slot_seconds: int

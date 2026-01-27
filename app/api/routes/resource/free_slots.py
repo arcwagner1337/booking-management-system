@@ -5,7 +5,7 @@ GET /api/resources/{resource_id}/free_slots - list free slots for resource
 from __future__ import annotations
 
 from datetime import datetime  # noqa: TC003
-from typing import TYPE_CHECKING, Annotated
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
@@ -13,11 +13,9 @@ from app.api.security import security
 from app.depends import AsyncSession, provider
 from app.domain.services.resource import resource_service
 from app.domain.services.resource.resource import FreeSlotsParams
+from app.infrastructure.database.models.users import User  # noqa: TC001
 
 from .schema import FreeSlotResponse
-
-if TYPE_CHECKING:
-    from app.infrastructure.database.models.users import User
 
 router = APIRouter()
 
