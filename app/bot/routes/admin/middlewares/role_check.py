@@ -3,7 +3,7 @@ from collections.abc import Callable
 from aiogram import BaseMiddleware
 from aiogram.types import CallbackQuery, Message
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession  # noqa: TC002
 
 from app.infrastructure.database.models import (
     Customer,
@@ -25,7 +25,7 @@ class RoleCheckMiddleware(BaseMiddleware):
 
         user = data.get("user")
         if not user:
-            await self._deny_access(event, "⛔ У вас нет доступа")
+            await self._deny_access(event, "⛔ У вас нет доступа")  # noqa: RUF001
             return None
 
         owner_result = await session.execute(
@@ -41,7 +41,7 @@ class RoleCheckMiddleware(BaseMiddleware):
         admin_customer_ids = [row[0] for row in admin_result.all()]
 
         if not owner_customer_ids and not admin_customer_ids:
-            await self._deny_access(event, "⛔ У вас нет доступа")
+            await self._deny_access(event, "⛔ У вас нет доступа")  # noqa: RUF001
             return None
 
         data["role"] = "owner" if owner_customer_ids else "admin"
@@ -59,5 +59,5 @@ class RoleCheckMiddleware(BaseMiddleware):
                 await event.answer(message, show_alert=True)
             elif isinstance(event, Message):
                 await event.answer(message)
-        except Exception:
+        except Exception:  # noqa: BLE001, S110
             pass
