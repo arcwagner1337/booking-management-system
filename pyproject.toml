@@ -16,7 +16,7 @@ dependencies = [
     "sqlalchemy>=2.0.45",
     "tzdata>=2025.3",
     "uvicorn>=0.40.0",
-    "apscheduler",
+    "apscheduler>=3.11.2",
 ]
 
 [dependency-groups]
