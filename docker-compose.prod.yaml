@@ -1,7 +1,7 @@
 x-logging: &default-logging
   driver: loki
   options:
-    loki-url: "${LOKI_URL}" 
+    loki-url: "${LOKI_URL}"
     loki-batch-size: "400"
     loki-batch-wait: "1s"
     loki-external-labels: "job=bms-backend,service=bms"
@@ -12,14 +12,14 @@ x-env: &env
 
 services:
   backend:
-    <<: [*env]
+    <<: [ *env ]
     container_name: bms-backend
-    entrypoint: sh -c "alembic upgrade head || true && uvicorn main:app --host 0.0.0.0 --port=80 --log-level=critical"
+    entrypoint: sh -c "alembic upgrade head || true && uvicorn main:app --host 0.0.0.0 --port=8000 --log-level=critical"
     build:
       dockerfile: Dockerfile
     restart: always
-    expose:
-      - "80"
+    ports:
+      - "8000:8000"
     networks:
       - proxy
     environment:
@@ -30,7 +30,7 @@ services:
     logging: *default-logging
 
   db:
-    <<: [*env]
+    <<: [ *env ]
     image: postgres:18.1-alpine
     container_name: bms-db
     restart: always
@@ -58,7 +58,7 @@ services:
     logging: *default-logging
 
   frontend:
-    <<: [*env]
+    <<: [ *env ]
     container_name: bms-frontend
     build:
       context: .
