@@ -1,10 +1,13 @@
 from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from aiogram import BaseMiddleware
 from aiogram.types import CallbackQuery, InlineQuery, Message, Update
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.services import user_service
+
+if TYPE_CHECKING:
+    from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class UserMiddleware(BaseMiddleware):

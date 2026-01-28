@@ -2,7 +2,6 @@ from collections.abc import Callable
 
 from aiogram import BaseMiddleware
 from aiogram.types import CallbackQuery, InlineQuery, Message, Update
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.depends import provider
 
@@ -25,4 +24,3 @@ class DatabaseMiddleware(BaseMiddleware):
             except Exception:
                 await session.rollback()
                 raise
-            
