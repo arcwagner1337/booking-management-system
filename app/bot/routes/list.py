@@ -1,22 +1,18 @@
 # ruff: noqa: RUF001, PLR0915
 """Handlers for viewing and managing bookings."""
 
-from typing import TYPE_CHECKING
 
 from aiogram import Router, types
+from aiogram.fsm.context import FSMContext
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from app.bot.handler import handler
 from app.bot.keyboards.main_menu import get_main_menu
 from app.domain.services.bookings import booking_service
 from app.infrastructure.database import Resource
+from app.infrastructure.database.models.users import User
 
 from .helpers import format_dt, get_customer_id, get_status_emoji, main_back_inline
-
-if TYPE_CHECKING:
-    from aiogram.fsm.context import FSMContext
-
-    from app.infrastructure.database.models.users import User
 
 
 def get_list_router() -> Router:
@@ -57,8 +53,8 @@ def get_list_router() -> Router:
             rows.append(
                 [
                     InlineKeyboardButton(
-                        text=title, callback_data=f"booking:show:{b.id}"
-                    )
+                        text=title, callback_data=f"booking:show:{b.id}",
+                    ),
                 ],
             )
         rows.append(
@@ -160,8 +156,8 @@ def get_list_router() -> Router:
             rows.append(
                 [
                     InlineKeyboardButton(
-                        text=title, callback_data=f"booking:show:{b.id}"
-                    )
+                        text=title, callback_data=f"booking:show:{b.id}",
+                    ),
                 ],
             )
         rows.append(

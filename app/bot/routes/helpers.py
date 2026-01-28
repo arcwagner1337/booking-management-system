@@ -2,15 +2,11 @@
 """Helper functions for booking routes."""
 
 from datetime import datetime, timezone
-from typing import TYPE_CHECKING
 from uuid import UUID
 
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from app.infrastructure.database import BotConfig, Resource
-
-if TYPE_CHECKING:
-    pass
 
 # Constants for date/time parsing
 MIN_DATE_PARTS = 2

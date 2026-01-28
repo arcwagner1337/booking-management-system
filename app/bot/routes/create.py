@@ -1,9 +1,9 @@
 # ruff: noqa: RUF001, PLR0915
 """Handlers for creating bookings."""
 
-from typing import TYPE_CHECKING
 
 from aiogram import Router, types
+from aiogram.fsm.context import FSMContext
 
 from app.bot.fsm.booking_states import BookingStates
 from app.bot.handler import handler
@@ -11,6 +11,7 @@ from app.bot.keyboards.main_menu import get_main_menu
 from app.domain.services.bookings import BookingParams, booking_service
 from app.domain.services.resource import resource_service
 from app.infrastructure.database import Resource
+from app.infrastructure.database.models.users import User
 
 from .helpers import (
     format_bookings_list,
@@ -21,11 +22,6 @@ from .helpers import (
     parse_period,
     resources_inline,
 )
-
-if TYPE_CHECKING:
-    from aiogram.fsm.context import FSMContext
-
-    from app.infrastructure.database.models.users import User
 
 
 def get_create_router() -> Router:
