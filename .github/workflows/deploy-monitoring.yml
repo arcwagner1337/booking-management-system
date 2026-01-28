@@ -14,12 +14,12 @@ jobs:
       - name: Deploy Monitoring via SSH through Jump Host
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          proxy_host: ${{ secrets.SSH_JUMP_HOST }}
-          proxy_username: ${{ secrets.SSH_JUMP_USER }}
-          proxy_key: ${{ secrets.SSH_JUMP_PRIVATE_KEY }}
+          host: ${{ secrets.SSH_JUMP_HOST }}
+          username: ${{ secrets.SSH_JUMP_USER }}
+          key: ${{ secrets.SSH_JUMP_PRIVATE_KEY }}
+          proxy_host: ${{ secrets.SSH_HOST }}
+          proxy_username: ${{ secrets.SSH_USER }}
+          proxy_key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/volodin_n/booking-management-system/
             git pull
