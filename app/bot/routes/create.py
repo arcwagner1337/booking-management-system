@@ -1,4 +1,4 @@
-# ruff: noqa: RUF001
+# ruff: noqa: RUF001, PLR0915
 """Handlers for creating bookings."""
 
 from typing import TYPE_CHECKING
@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     from app.infrastructure.database.models.users import User
 
 
-def get_create_router() -> Router: # noqa: PLR0915
+def get_create_router() -> Router:
     """Create router for booking creation handlers."""
     router = Router()
 
@@ -171,5 +171,6 @@ def get_create_router() -> Router: # noqa: PLR0915
         )
 
     return router
+
 
 
