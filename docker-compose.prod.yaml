@@ -1,10 +1,11 @@
 x-logging: &default-logging
-  driver: loki
+  driver: "loki"
   options:
     loki-url: "${LOKI_URL}"
-    loki-batch-size: "400"
-    loki-batch-wait: "1s"
-    loki-external-labels: "job=bms-backend,service=bms"
+    loki-batch-size: "100"
+    loki-retries: 2
+    loki-max-backoff: 1000ms
+    loki-timeout: 1s
 
 x-env: &env
   env_file:
@@ -20,8 +21,6 @@ services:
     restart: always
     ports:
       - "8000:8000"
-    networks:
-      - proxy
     environment:
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
@@ -38,8 +37,6 @@ services:
       - postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    networks:
-      - proxy
     environment:
       - LOKI_SERVICE=db
     logging: *default-logging
@@ -51,8 +48,6 @@ services:
     volumes:
       - redis-data:/data
     command: redis-server --appendonly yes
-    networks:
-      - proxy
     environment:
       - LOKI_SERVICE=redis
     logging: *default-logging
@@ -77,8 +72,6 @@ services:
     restart: always
     expose:
       - "4173"
-    networks:
-      - proxy
     environment:
       - NODE_ENV=production
     logging: *default-logging
@@ -94,8 +87,6 @@ services:
     volumes:
       - npm-data:/data
       - npm-letsencrypt:/etc/letsencrypt
-    networks:
-      - proxy
 
 volumes:
   postgres-data:
@@ -106,7 +97,3 @@ volumes:
     name: npm-data
   npm-letsencrypt:
     name: npm-letsencrypt
-
-networks:
-  proxy:
-    external: true

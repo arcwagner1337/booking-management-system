@@ -6,29 +6,25 @@ services:
   loki:
     image: grafana/loki:3.6.3
     container_name: bms-loki
-    restart: unless-stopped
+    restart: always
     user: "0:0"
     ports:
       - "3100:3100"
     volumes:
       - ./loki/loki-config.yaml:/etc/loki/local-config.yaml
       - loki-data:/loki
-    networks:
-      - proxy
     command: -config.file=/etc/loki/local-config.yaml
 
   prometheus:
     image: prom/prometheus:v3.9.1
     container_name: bms-prometheus
-    restart: unless-stopped
+    restart: always
     ports:
       - "9090:9090"
     volumes:
       - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
       - ./prometheus/alerts.yaml:/etc/prometheus/alerts.yaml
       - prometheus-data:/prometheus
-    networks:
-      - proxy
     command:
       - "--config.file=/etc/prometheus/prometheus.yaml"
       - "--storage.tsdb.path=/prometheus"
@@ -40,11 +36,9 @@ services:
   grafana:
     image: grafana/grafana:12.3.1
     container_name: bms-grafana
-    restart: unless-stopped
+    restart: always
     ports:
       - "3000:3000"
-    networks:
-      - proxy
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
@@ -61,14 +55,12 @@ services:
   alertmanager:
     image: prom/alertmanager:v0.30.1
     container_name: bms-alertmanager
-    restart: unless-stopped
+    restart: always
     ports:
       - "9093:9093"
     volumes:
       - ./alertmanager/alertmanager.yaml:/etc/alertmanager/alertmanager.yaml
       - alertmanager-data:/alertmanager
-    networks:
-      - proxy
     depends_on:
       - prometheus
 
@@ -81,8 +73,6 @@ services:
     environment:
       TG_BOT_ALERT_TOKEN: ${TG_BOT_ALERT_TOKEN}
       TG_ALERT_CHAT_ID: ${TG_ALERT_CHAT_ID}
-    networks:
-      - proxy
 
   postgres-exporter:
     image: prometheuscommunity/postgres-exporter:v0.18.1
@@ -91,8 +81,6 @@ services:
       DATA_SOURCE_NAME: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@10.130.0.8:5432/${POSTGRES_DB}?sslmode=disable" # указал внутренний ip машинки прода
     ports:
       - "9187:9187"
-    networks:
-      - proxy
 
 volumes:
   loki-data:
@@ -103,7 +91,3 @@ volumes:
     name: bms-grafana-data
   alertmanager-data:
     name: bms-alertmanager-data
-
-networks:
-  proxy:
-    external: true
