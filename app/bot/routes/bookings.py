@@ -150,7 +150,7 @@ def get_bookings_router() -> Router:  # noqa: PLR0915
     async def pick_resource(
         callback: types.CallbackQuery,
         state: FSMContext,
-        user: User, # noqa: ARG001
+        user: User,  # noqa: ARG001
     ):
         _, _, resource_id_str = callback.data.split(":", 2)
         try:
