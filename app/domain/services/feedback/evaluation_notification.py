@@ -1,4 +1,3 @@
-import asyncio
 import contextlib
 from datetime import datetime, timedelta, timezone
 
@@ -18,10 +17,6 @@ from app.log import log
 
 class EvaluationNotificationService:
     """Service that creates evaluation request notifications for completed bookings."""
-
-    def __init__(self, poll_interval_seconds: int = 300):  # 5 minutes
-        self.poll_interval_seconds = poll_interval_seconds
-        self._service_task: asyncio.Task | None = None
 
     @provider.inject_session
     async def create_evaluation_notifications(
@@ -172,47 +167,3 @@ class EvaluationNotificationService:
             text_detail=f"An evaluation request has been created for booking {booking.id}, scheduled for {evaluation_scheduled_at}",  # noqa: E501
         )
         return True
-
-    async def service_loop(self) -> None:
-        """Background loop that periodically creates evaluation notifications."""
-        try:
-            while True:
-                await self.create_evaluation_notifications()
-                await asyncio.sleep(self.poll_interval_seconds)
-        except asyncio.CancelledError:
-            raise
-        except Exception as e:  # noqa: BLE001
-            log(
-                level="error",
-                method="service_loop",
-                path="FeedbackModule",
-                text_detail=f"Critical error in the evaluation request creation service: {e}",  # noqa: E501
-            )
-
-    async def start(self) -> None:
-        """Start the evaluation notification service."""
-        if self._service_task is not None and not self._service_task.done():
-            return
-        self._service_task = asyncio.create_task(self.service_loop())
-        log(
-            level="info",
-            method="start",
-            path="FeedbackModule",
-            text_detail="The service for creating evaluation requests has been launched",  # noqa: E501
-        )
-
-    async def stop(self) -> None:
-        """Stop the evaluation notification service."""
-        if self._service_task is None:
-            return
-        if not self._service_task.done():
-            self._service_task.cancel()
-            with contextlib.suppress(asyncio.CancelledError):
-                await self._service_task
-        self._service_task = None
-        log(
-            level="info",
-            method="stop",
-            path="FeedbackModule",
-            text_detail="The service for creating evaluation requests has been stopped",
-        )

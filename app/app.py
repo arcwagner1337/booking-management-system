@@ -4,12 +4,13 @@ from fastapi import FastAPI
 from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.depends import provider
+from app.domain.services.feedback import feedback_service
 from app.domain.services.notification.service import NotificationService
 from app.schedulers.scheduler import NotificationScheduler
 
 from .api import routes
 from .bot import bot_manager
-from .domain.services import feedback_service, user_service
+from .domain.services import user_service
 from .middlewares import LoggingMiddleware
 
 logging.basicConfig(
@@ -38,7 +39,11 @@ def get_application() -> FastAPI:
     redoc_url = None
 
     notification_service = NotificationService(provider.session_factory)
-    scheduler = NotificationScheduler(provider.session_factory, notification_service)
+    scheduler = NotificationScheduler(
+        provider.session_factory,
+        notification_service,
+        feedback_service,
+    )
 
     if config.server.SWAGGER_ENABLE:
         swagger_url = "/docs"
@@ -58,12 +63,10 @@ def get_application() -> FastAPI:
             bot_manager.run_all,
             user_service.create_test_user,
             scheduler.start,
-            feedback_service.start,
         ],
         on_shutdown=[
             bot_manager.stop_all,
             scheduler.stop,
-            feedback_service.stop,
         ],
     )
 
