@@ -1,23 +1,30 @@
+# ruff: noqa: RUF001
 from __future__ import annotations
 
+import contextlib
 from datetime import datetime, timezone
-from uuid import UUID
+from typing import TYPE_CHECKING
 
 from aiogram import Router, types
-from aiogram.fsm.context import FSMContext
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import sqlalchemy as sa
 
 from app.bot.fsm.booking_states import BookingStates
 from app.bot.handler import handler
 from app.bot.keyboards.main_menu import get_main_menu
-from app.domain.services.bookings import BookingParams, booking_service
 from app.depends import provider
+from app.domain.services.bookings import BookingParams, booking_service
 from app.infrastructure.database import BotConfig, Resource
-from app.infrastructure.database.models.users import User
+
+if TYPE_CHECKING:
+    from uuid import UUID
+
+    from aiogram.fsm.context import FSMContext
+
+    from app.infrastructure.database.models.users import User
 
 
-def get_bookings_router() -> Router:
+def get_bookings_router() -> Router:  # noqa: PLR0915
     router: Router = Router()
 
     def _main_back_inline() -> InlineKeyboardMarkup:
@@ -57,7 +64,9 @@ def get_bookings_router() -> Router:
                     ),
                 ],
             )
-        rows.append([InlineKeyboardButton(text="⬅️ В главное меню", callback_data="nav:main")])
+        rows.append(
+            [InlineKeyboardButton(text="⬅️ В главное меню", callback_data="nav:main")],
+        )
         return InlineKeyboardMarkup(inline_keyboard=rows)
 
     def _format_dt(dt: datetime) -> str:
@@ -79,8 +88,10 @@ def get_bookings_router() -> Router:
             return None
 
         # Split by space into date + time part(s)
+        min_date_part = 2
+
         parts = raw.split(" ")
-        if len(parts) < 2:
+        if len(parts) < min_date_part:
             return None
         date_part = parts[0]
         time_part = " ".join(parts[1:])
@@ -90,7 +101,7 @@ def get_bookings_router() -> Router:
         date_obj = None
         for fmt in date_formats:
             try:
-                date_obj = datetime.strptime(date_part, fmt).date()
+                date_obj = datetime.strptime(date_part, fmt).date()  # noqa: DTZ007
                 break
             except ValueError:
                 continue
@@ -102,13 +113,14 @@ def get_bookings_router() -> Router:
             t1s, t2s = [s.strip() for s in time_part.split("-", 1)]
         else:
             t_parts = time_part.split(" ")
-            if len(t_parts) != 2:
+            time_range_part = 2
+            if len(t_parts) != time_range_part:
                 return None
             t1s, t2s = t_parts
 
         try:
-            t1 = datetime.strptime(t1s, "%H:%M").time()
-            t2 = datetime.strptime(t2s, "%H:%M").time()
+            t1 = datetime.strptime(t1s, "%H:%M").time()  # noqa: DTZ007
+            t2 = datetime.strptime(t2s, "%H:%M").time()  # noqa: DTZ007
         except ValueError:
             return None
 
@@ -135,7 +147,11 @@ def get_bookings_router() -> Router:
 
     @router.callback_query(lambda c: c.data and c.data.startswith("book:res:"))
     @handler
-    async def pick_resource(callback: types.CallbackQuery, state: FSMContext, user: User):
+    async def pick_resource(
+        callback: types.CallbackQuery,
+        state: FSMContext,
+        user: User,
+    ):
         _, _, resource_id_str = callback.data.split(":", 2)
         try:
             resource_id = int(resource_id_str)
@@ -168,7 +184,10 @@ def get_bookings_router() -> Router:
         resource_id = data.get("resource_id")
         if not resource_id:
             await state.clear()
-            await message.answer("Начните заново: нажмите «📅 Забронировать».", reply_markup=get_main_menu())
+            await message.answer(
+                "Начните заново: нажмите «📅 Забронировать».",
+                reply_markup=get_main_menu(),
+            )
             return
 
         parsed = _parse_period(message.text or "")
@@ -191,7 +210,8 @@ def get_bookings_router() -> Router:
         booking = await booking_service.create_booking(params=params)
         if not booking:
             await message.answer(
-                "Не удалось создать бронирование (время занято или введены некорректные даты). "
+                "Не удалось создать бронирование"
+                "(время занято или введены некорректные даты). "
                 "Попробуйте другой интервал.",
             )
             return
@@ -211,9 +231,15 @@ def get_bookings_router() -> Router:
     async def my_bookings(message: types.Message, state: FSMContext, user: User):
         await state.clear()
         customer_id = await _get_customer_id(message.bot.id)
-        bookings = await booking_service.get_user_bookings(user_id=user.id, customer_id=customer_id)
+        bookings = await booking_service.get_user_bookings(
+            user_id=user.id,
+            customer_id=customer_id,
+        )
         if not bookings:
-            await message.answer("У вас пока нет бронирований.", reply_markup=get_main_menu())
+            await message.answer(
+                "У вас пока нет бронирований.",
+                reply_markup=get_main_menu(),
+            )
             return
 
         resource_ids = sorted({b.resource_id for b in bookings})
@@ -223,11 +249,17 @@ def get_bookings_router() -> Router:
         rows: list[list[InlineKeyboardButton]] = []
         for b in bookings:
             title = (
-                f"#{b.id} · {resource_name_by_id.get(b.resource_id, f'ресурс {b.resource_id}')}"
+                f"#{b.id} · {
+                    resource_name_by_id.get(b.resource_id, f'ресурс {b.resource_id}')
+                }"
                 f" · {_format_dt(b.start_time)}"
             )
-            rows.append([InlineKeyboardButton(text=title, callback_data=f"mybook:show:{b.id}")])
-        rows.append([InlineKeyboardButton(text="⬅️ В главное меню", callback_data="nav:main")])
+            rows.append(
+                [InlineKeyboardButton(text=title, callback_data=f"mybook:show:{b.id}")],
+            )
+        rows.append(
+            [InlineKeyboardButton(text="⬅️ В главное меню", callback_data="nav:main")],
+        )
 
         await message.answer(
             "Ваши бронирования:",
@@ -245,7 +277,10 @@ def get_bookings_router() -> Router:
             return
 
         customer_id = await _get_customer_id(callback.bot.id)
-        bookings = await booking_service.get_user_bookings(user_id=user.id, customer_id=customer_id)
+        bookings = await booking_service.get_user_bookings(
+            user_id=user.id,
+            customer_id=customer_id,
+        )
         booking = next((b for b in bookings if b.id == booking_id), None)
         if not booking:
             await callback.answer("Бронирование не найдено")
@@ -289,9 +324,15 @@ def get_bookings_router() -> Router:
     @handler
     async def back_to_list(callback: types.CallbackQuery, user: User):
         customer_id = await _get_customer_id(callback.bot.id)
-        bookings = await booking_service.get_user_bookings(user_id=user.id, customer_id=customer_id)
+        bookings = await booking_service.get_user_bookings(
+            user_id=user.id,
+            customer_id=customer_id,
+        )
         if not bookings:
-            await callback.message.edit_text("У вас пока нет бронирований.", reply_markup=_main_back_inline())
+            await callback.message.edit_text(
+                "У вас пока нет бронирований.",
+                reply_markup=_main_back_inline(),
+            )
             await callback.answer()
             return
 
@@ -302,12 +343,21 @@ def get_bookings_router() -> Router:
         rows: list[list[InlineKeyboardButton]] = []
         for b in bookings:
             title = (
-                f"#{b.id} · {resource_name_by_id.get(b.resource_id, f'ресурс {b.resource_id}')}"
+                f"#{b.id} · {
+                    resource_name_by_id.get(b.resource_id, f'ресурс {b.resource_id}')
+                }"
                 f" · {_format_dt(b.start_time)}"
             )
-            rows.append([InlineKeyboardButton(text=title, callback_data=f"mybook:show:{b.id}")])
-        rows.append([InlineKeyboardButton(text="⬅️ В главное меню", callback_data="nav:main")])
-        await callback.message.edit_text("Ваши бронирования:", reply_markup=InlineKeyboardMarkup(inline_keyboard=rows))
+            rows.append(
+                [InlineKeyboardButton(text=title, callback_data=f"mybook:show:{b.id}")],
+            )
+        rows.append(
+            [InlineKeyboardButton(text="⬅️ В главное меню", callback_data="nav:main")],
+        )
+        await callback.message.edit_text(
+            "Ваши бронирования:",
+            reply_markup=InlineKeyboardMarkup(inline_keyboard=rows),
+        )
         await callback.answer()
 
     @router.callback_query(lambda c: c.data and c.data.startswith("mybook:cancel:"))
@@ -320,11 +370,17 @@ def get_bookings_router() -> Router:
             await callback.answer("Некорректный ID")
             return
 
-        ok = await booking_service.cancel_booking(booking_id=booking_id, user_id=user.id)
+        ok = await booking_service.cancel_booking(
+            booking_id=booking_id,
+            user_id=user.id,
+        )
         if not ok:
             await callback.answer("Не удалось отменить")
             return
-        await callback.message.edit_text("Бронирование отменено.", reply_markup=_main_back_inline())
+        await callback.message.edit_text(
+            "Бронирование отменено.",
+            reply_markup=_main_back_inline(),
+        )
         await callback.answer()
 
     @router.callback_query(lambda c: c.data == "nav:main")
@@ -332,12 +388,8 @@ def get_bookings_router() -> Router:
     async def nav_main(callback: types.CallbackQuery, state: FSMContext):
         await state.clear()
         await callback.message.answer("Главное меню:", reply_markup=get_main_menu())
-        try:
+        with contextlib.suppress(Exception):
             await callback.message.delete()
-        except Exception:
-            pass
         await callback.answer()
 
     return router
-
-
