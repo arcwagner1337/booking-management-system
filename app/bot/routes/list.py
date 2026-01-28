@@ -1,3 +1,4 @@
+# ruff: noqa: RUF001
 """Handlers for viewing and managing bookings."""
 
 from typing import TYPE_CHECKING
@@ -189,4 +190,5 @@ def get_list_router() -> Router:
         await callback.answer()
 
     return router
+
 
