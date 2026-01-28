@@ -28,4 +28,3 @@ def get_navigation_router() -> Router:
         await callback.answer()
 
     return router
-

@@ -131,7 +131,7 @@ def get_create_router() -> Router:
                 resource_id=int(resource_id),
             )
             bookings_text = format_bookings_list(existing_bookings)
-            
+
             status_emoji = get_status_emoji(False)
             await message.answer(
                 f"{status_emoji} *Ресурс занят на выбранное время*\n\n"
@@ -171,6 +171,3 @@ def get_create_router() -> Router:
         )
 
     return router
-
-
-

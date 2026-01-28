@@ -55,7 +55,11 @@ def get_list_router() -> Router:
                 f"{status_emoji} #{b.id} · {resource_name} · {format_dt(b.start_time)}"
             )
             rows.append(
-                [InlineKeyboardButton(text=title, callback_data=f"booking:show:{b.id}")],
+                [
+                    InlineKeyboardButton(
+                        text=title, callback_data=f"booking:show:{b.id}"
+                    )
+                ],
             )
         rows.append(
             [InlineKeyboardButton(text="⬅️ В главное меню", callback_data="nav:main")],
@@ -154,7 +158,11 @@ def get_list_router() -> Router:
                 f"{status_emoji} #{b.id} · {resource_name} · {format_dt(b.start_time)}"
             )
             rows.append(
-                [InlineKeyboardButton(text=title, callback_data=f"booking:show:{b.id}")],
+                [
+                    InlineKeyboardButton(
+                        text=title, callback_data=f"booking:show:{b.id}"
+                    )
+                ],
             )
         rows.append(
             [InlineKeyboardButton(text="⬅️ В главное меню", callback_data="nav:main")],
@@ -190,7 +198,3 @@ def get_list_router() -> Router:
         await callback.answer()
 
     return router
-
-
-
-

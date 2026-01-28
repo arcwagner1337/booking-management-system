@@ -76,16 +76,16 @@ def format_bookings_list(bookings: list) -> str:
     """Format list of bookings for display."""
     if not bookings:
         return "Нет забронированных слотов."
-    
+
     lines = ["📅 *Занятые слоты:*\n"]
     for booking in bookings[:MAX_BOOKINGS_LIST]:  # Limit to 10 most recent
         start = format_short_dt(booking.start_time)
         end = format_short_dt(booking.end_time)
         lines.append(f"🔴 {start} - {end}")
-    
+
     if len(bookings) > MAX_BOOKINGS_LIST:
         lines.append(f"\n... и еще {len(bookings) - 10} бронирований")
-    
+
     return "\n".join(lines)
 
 
@@ -145,5 +145,3 @@ def parse_period(text: str) -> tuple[datetime, datetime] | None:
     start = datetime.combine(date_obj, t1).replace(tzinfo=timezone.utc)
     end = datetime.combine(date_obj, t2).replace(tzinfo=timezone.utc)
     return (start, end)
-
-

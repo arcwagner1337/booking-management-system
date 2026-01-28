@@ -30,13 +30,17 @@ def get_main_menu_router() -> Router:
     async def back_button(message: Message, state: FSMContext):
         """Handle back button."""
         await state.clear()
-        await message.answer("Вы вернулись в главное меню", reply_markup=get_main_menu())
+        await message.answer(
+            "Вы вернулись в главное меню", reply_markup=get_main_menu()
+        )
 
     @router.message(lambda m: m.text == "⚙️ Настройки")
     @handler
     async def start_settings(message: Message):
         """Handle settings button."""
-        await message.answer("Выберите настройки: ", reply_markup=get_settings_keyboard())
+        await message.answer(
+            "Выберите настройки: ", reply_markup=get_settings_keyboard()
+        )
 
     @router.message(lambda m: m.text == "⭐️ Оставить отзыв")
     @handler
@@ -49,4 +53,3 @@ def get_main_menu_router() -> Router:
         )
 
     return router
-
