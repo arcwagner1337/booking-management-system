@@ -1,7 +1,6 @@
 # ruff: noqa: RUF001, PLR0915
 """Handlers for viewing and managing bookings."""
 
-
 from aiogram import Router, types
 from aiogram.fsm.context import FSMContext
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -53,7 +52,8 @@ def get_list_router() -> Router:
             rows.append(
                 [
                     InlineKeyboardButton(
-                        text=title, callback_data=f"booking:show:{b.id}",
+                        text=title,
+                        callback_data=f"booking:show:{b.id}",
                     ),
                 ],
             )
@@ -156,7 +156,8 @@ def get_list_router() -> Router:
             rows.append(
                 [
                     InlineKeyboardButton(
-                        text=title, callback_data=f"booking:show:{b.id}",
+                        text=title,
+                        callback_data=f"booking:show:{b.id}",
                     ),
                 ],
             )

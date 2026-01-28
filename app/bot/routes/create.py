@@ -1,7 +1,6 @@
 # ruff: noqa: RUF001, PLR0915
 """Handlers for creating bookings."""
 
-
 from aiogram import Router, types
 from aiogram.fsm.context import FSMContext
 
