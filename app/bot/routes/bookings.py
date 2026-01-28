@@ -139,7 +139,7 @@ def _parse_period(text: str) -> tuple[datetime, datetime] | None:
     return (start, end)
 
 
-def get_bookings_router() -> Router:
+def get_bookings_router() -> Router:  # noqa: PLR0915
     router: Router = Router()
 
     @router.message(lambda m: m.text == "📅 Забронировать")
