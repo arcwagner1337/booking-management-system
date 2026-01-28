@@ -205,6 +205,8 @@ class NotificationScheduler:
             return await self.notification_service.send_booking_start(notification)
         if notification_type == "booking_end":
             return await self.notification_service.send_booking_end(notification)
+        if notification_type == "booking_eval":
+            return await self.notification_service.send_booking_eval(notification)
         log(
             level="error",
             method="_send_by_type",
