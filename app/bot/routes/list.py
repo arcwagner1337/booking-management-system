@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from app.infrastructure.database.models.users import User
 
 
-def get_list_router() -> Router:
+def get_list_router() -> Router: # ruff: noqa: RUF001
     """Create router for booking list handlers."""
     router = Router()
 
@@ -190,5 +190,6 @@ def get_list_router() -> Router:
         await callback.answer()
 
     return router
+
 
 
