@@ -1,3 +1,6 @@
+import base64
+import uuid
+
 from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
@@ -82,6 +85,28 @@ def get_create_owner_router() -> Router:
 
 def get_admin_handlers_router() -> Router:
     router = Router()
+
+    async def token_answer(message: Message, user: User):
+        binary_data = user.api_token.bytes
+        token = base64.urlsafe_b64encode(binary_data).decode("utf-8").rstrip("=")
+        response = (
+            "🔐 **Ваш API токен:**\n\n"
+            f"```\n{token}\n```\n\n"
+            "**Инструкции:**\n"
+            "1. Используйте этот токен для авторизации в API\n"
+            "2. Храните его в защищенном месте\n"  # noqa: RUF001
+            "3. В случае компрометации немедленно сбросьте токен"  # noqa: RUF001
+        )
+        await message.answer(response)
+
+    @router.message(Command(commands=["token"]))
+    async def token(message: Message, user: User):
+        await token_answer(message, user)
+
+    @router.message(Command(commands=["refresh_token"]))
+    async def refresh_token(message: Message, user: User):
+        new_user = await User.update(id=user.id, api_token=uuid.uuid4())
+        await token_answer(message, new_user)
 
     @router.message(Command(commands=["start"]))
     async def start(message: Message):
