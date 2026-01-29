@@ -20,7 +20,6 @@ class Provider:
             pool_timeout=15.0,
             pool_recycle=3600,
             pool_pre_ping=True,
-            echo_pool=True,  # Логирование пула
         )
 
         self.session_factory = async_sessionmaker(
