@@ -9,14 +9,37 @@ from app.infrastructure.database.models.users import User
 
 from .keyboards import main_menu
 
+
 # TODO: <разберемся почему не работает позже>  # noqa: TD002, TD003
-"""
 def get_create_owner_router() -> Router:
     router = Router()
 
-    @router.message(Command(commands=["create_owner"]))
+    async def token_answer(message: Message, user: User):
+        binary_data = user.api_token.bytes
+        token = base64.urlsafe_b64encode(binary_data).decode("utf-8").rstrip("=")
+        response = (
+            "🔐 **Ваш API токен:**\n\n"
+            f'<span class="tg-spoiler">\n{token}\n</span>\n\n'
+            "**Инструкции:**\n"
+            "1. Используйте этот токен для авторизации в API\n"
+            "2. Храните его в защищенном месте\n"  # noqa: RUF001
+            "3. В случае компрометации немедленно сбросьте токен"  # noqa: RUF001
+        )
+        await message.answer(response, parse_mode="HTML")
+        await message.delete()
+
+    @router.message(Command(commands=["token"]))
+    async def token(message: Message, user: User):
+        await token_answer(message, user)
+
+    @router.message(Command(commands=["refresh_token"]))
+    async def refresh_token(message: Message, user: User):
+        new_user = await User.update(id=user.id, api_token=uuid.uuid4())
+        await token_answer(message, new_user)
+
+    """@router.message(Command(commands=["create_owner"]))
     async def create_owner(message: Message):
-        from app.depends import provider  # noqa: PLC0415
+        from app.depends import provider
 
         async with provider.session_factory() as session:
             tg_user = message.from_user
@@ -46,7 +69,7 @@ def get_create_owner_router() -> Router:
                 return
 
             command_parts = message.text.split(maxsplit=1)
-            if len(command_parts) < 2:  # noqa: PLR2004
+            if len(command_parts) < 2:
                 await message.answer(
                     "❌ Неверный формат команды.\n"
                     "Использование:\n"
@@ -62,7 +85,7 @@ def get_create_owner_router() -> Router:
                 return
 
             try:
-                customer = await customer_service.create_customer_with_admin_and_member(  # noqa: F841
+                customer = await customer_service.create_customer_with_admin_and_member(
                     current_user=user,
                     name=company_name,
                     session=session,
@@ -75,38 +98,15 @@ def get_create_owner_router() -> Router:
                     f"Теперь используйте /menu для входа в админ-панель.",
                 )
 
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 await session.rollback()
-                await message.answer(f"❌ Ошибка при создании компании: {e!s}")
+                await message.answer(f"❌ Ошибка при создании компании: {e!s}")"""
 
     return router
-"""  # noqa: E501
 
 
 def get_admin_handlers_router() -> Router:
     router = Router()
-
-    async def token_answer(message: Message, user: User):
-        binary_data = user.api_token.bytes
-        token = base64.urlsafe_b64encode(binary_data).decode("utf-8").rstrip("=")
-        response = (
-            "🔐 **Ваш API токен:**\n\n"
-            f"```\n{token}\n```\n\n"
-            "**Инструкции:**\n"
-            "1. Используйте этот токен для авторизации в API\n"
-            "2. Храните его в защищенном месте\n"  # noqa: RUF001
-            "3. В случае компрометации немедленно сбросьте токен"  # noqa: RUF001
-        )
-        await message.answer(response)
-
-    @router.message(Command(commands=["token"]))
-    async def token(message: Message, user: User):
-        await token_answer(message, user)
-
-    @router.message(Command(commands=["refresh_token"]))
-    async def refresh_token(message: Message, user: User):
-        new_user = await User.update(id=user.id, api_token=uuid.uuid4())
-        await token_answer(message, new_user)
 
     @router.message(Command(commands=["start"]))
     async def start(message: Message):
